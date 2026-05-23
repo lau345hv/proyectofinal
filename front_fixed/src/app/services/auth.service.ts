@@ -131,7 +131,7 @@ export class AuthService {
       nombre: '', apellido: '', correo: '', telefono: '',
       roles: [res.rol], rol: res.rol
     };
-    this.userSubject.getValue();
+    void this.userSubject.getValue();
     return { mensaje: 'ok', usuario };
   }
 

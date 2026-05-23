@@ -11,8 +11,8 @@ import { HistorialConversionDTO } from '../../models/models';
 export class HistorialComponent implements OnInit {
 
   conversiones: HistorialConversionDTO[] = [];
-  cargando: boolean = false;
-  error: string = '';
+  cargando = false;
+  error = '';
 
   constructor(
     private historialService: HistorialService,

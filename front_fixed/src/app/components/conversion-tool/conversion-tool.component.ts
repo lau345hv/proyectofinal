@@ -20,14 +20,14 @@ interface ConversionConfig {
 })
 export class ConversionToolComponent implements OnInit {
 
-  tipo: string = '';
+  tipo = '';
   archivoSeleccionado: File | null = null;
-  formatoDestino: string = '';
-  convirtiendo: boolean = false;
+  formatoDestino = '';
+  convirtiendo = false;
   urlDescarga: string | null = null;
-  nombreArchivo: string = '';
-  error: string = '';
-  exito: boolean = false;
+  nombreArchivo = '';
+  error = '';
+  exito = false;
 
   configs: { [key: string]: ConversionConfig } = {
     audio: {
@@ -236,9 +236,9 @@ export class ConversionToolComponent implements OnInit {
   }
 
   formatearTamano(bytes: number): string {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   }
 
   private obtenerExtension(nombre: string): string | null {

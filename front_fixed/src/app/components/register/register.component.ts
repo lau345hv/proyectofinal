@@ -12,15 +12,15 @@ import { ErrorHandlerService } from '../../services/error-handler.service';
 export class RegisterComponent {
 
   paso: 1 | 2 = 1;
-  cargando: boolean = false;
-  error: string = '';
-  mensajeExito: string = '';
-  mostrarContrasena: boolean = false;
+  cargando = false;
+  error = '';
+  mensajeExito = '';
+  mostrarContrasena = false;
 
   formCorreo: FormGroup;
   formRegistro: FormGroup;
 
-  correoVerificado: string = '';
+  correoVerificado = '';
 
   constructor(
     private fb: FormBuilder,
@@ -109,16 +109,16 @@ export class RegisterComponent {
     this.error = '';
     this.mensajeExito = '';
 
-    const v = this.formRegistro.value;
+    const valores = this.formRegistro.value;
 
     this.auth.registrar({
-      nombre: v.nombre.trim(),
-      apellido: v.apellido.trim(),
+      nombre: valores.nombre.trim(),
+      apellido: valores.apellido.trim(),
       correo: this.correoVerificado,
-      nombreUsuario: v.nombreUsuario.trim(),
-      contrasena: v.contrasena,
-      telefono: v.telefono.trim(),
-      codigoVerificacion: v.codigoVerificacion.trim()
+      nombreUsuario: valores.nombreUsuario.trim(),
+      contrasena: valores.contrasena,
+      telefono: valores.telefono.trim(),
+      codigoVerificacion: valores.codigoVerificacion.trim()
     }).subscribe({
       next: () => {
         this.cargando = false;
@@ -157,13 +157,14 @@ export class RegisterComponent {
     });
   }
 
-  private obtenerTextoErrorRaw(err: any): string {
+  private obtenerTextoErrorRaw(err: unknown): string {
     if (!err) return '';
-    const body = err?.error;
+    const e = err as Record<string, unknown>;
+    const body = e?.['error'];
     if (typeof body === 'string') return body;
     if (body && typeof body === 'object') {
-      return (body.message || '') + ' ' + (body.trace || '');
+      return `${body.message ?? ''} ${body.trace ?? ''}`;
     }
-    return err?.message || '';
+    return (err as Record<string, unknown>)?.['message'] as string || '';
   }
 }

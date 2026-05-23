@@ -4,9 +4,7 @@ import { ConversionService } from './conversion.service';
 import { AdminService } from './admin.service';
 import { HistorialService } from './historial.service';
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ConversionService
-// ═══════════════════════════════════════════════════════════════════════════
+
 describe('ConversionService', () => {
   let service: ConversionService;
   let httpMock: HttpTestingController;
@@ -61,9 +59,7 @@ describe('ConversionService', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// AdminService
-// ═══════════════════════════════════════════════════════════════════════════
+
 describe('AdminService', () => {
   let service: AdminService;
   let httpMock: HttpTestingController;
@@ -155,9 +151,7 @@ describe('AdminService', () => {
   });
 });
 
-// ═══════════════════════════════════════════════════════════════════════════
-// HistorialService
-// ═══════════════════════════════════════════════════════════════════════════
+
 describe('HistorialService', () => {
   let service: HistorialService;
   let httpMock: HttpTestingController;

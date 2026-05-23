@@ -106,51 +106,57 @@ describe('JwtInterceptor', () => {
     localStorage.setItem('jwt_token', 'mi-jwt-token');
 
     const req = new HttpRequest('GET', '/api/recurso');
-    let requestCapturado: HttpRequest<any> | null = null;
+    let requestCapturado: HttpRequest<unknown> | null = null;
 
     const handler: HttpHandler = {
-      handle: (r: HttpRequest<any>) => {
+      handle: (r: HttpRequest<unknown>) => {
         requestCapturado = r;
-        return of({} as HttpEvent<any>);
+        return of({} as HttpEvent<unknown>);
       }
     };
 
     interceptor.intercept(req, handler).subscribe();
 
     expect(requestCapturado).not.toBeNull();
-    expect(requestCapturado!.headers.get('Authorization')).toBe('Bearer mi-jwt-token');
+    if (requestCapturado) {
+      expect(requestCapturado.headers.get('Authorization')).toBe('Bearer mi-jwt-token');
+    }
   });
 
   it('NO agrega el header Authorization cuando NO hay token en localStorage', () => {
     const req = new HttpRequest('GET', '/api/recurso');
-    let requestCapturado: HttpRequest<any> | null = null;
+    let requestCapturado: HttpRequest<unknown> | null = null;
 
     const handler: HttpHandler = {
-      handle: (r: HttpRequest<any>) => {
+      handle: (r: HttpRequest<unknown>) => {
         requestCapturado = r;
-        return of({} as HttpEvent<any>);
+        return of({} as HttpEvent<unknown>);
       }
     };
 
     interceptor.intercept(req, handler).subscribe();
 
-    expect(requestCapturado!.headers.has('Authorization')).toBeFalse();
+    if (requestCapturado) {
+      expect(requestCapturado.headers.has('Authorization')).toBeFalse();
+    }
   });
 
   it('pasa la petición sin modificar cuando no hay token', () => {
     const req = new HttpRequest('POST', '/api/login', { user: 'test' });
-    let requestCapturado: HttpRequest<any> | null = null;
+    let requestCapturado: HttpRequest<unknown> | null = null;
 
     const handler: HttpHandler = {
-      handle: (r: HttpRequest<any>) => {
+      handle: (r: HttpRequest<unknown>) => {
         requestCapturado = r;
-        return of({} as HttpEvent<any>);
+        return of({} as HttpEvent<unknown>);
       }
     };
 
     interceptor.intercept(req, handler).subscribe();
 
-    expect(requestCapturado!.url).toBe('/api/login');
-    expect(requestCapturado!.method).toBe('POST');
+    if (requestCapturado) {
+      expect(requestCapturado.url).toBe('/api/login');
+      expect(requestCapturado.method).toBe('POST');
+    }
   });
 });

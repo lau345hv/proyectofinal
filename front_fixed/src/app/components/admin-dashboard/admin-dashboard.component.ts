@@ -13,13 +13,13 @@ export class AdminDashboardComponent implements OnInit {
   usuarios: UsuarioDTO[] = [];
   conversiones: HistorialConversionDTO[] = [];
   tabActiva: 'usuarios' | 'conversiones' = 'usuarios';
-  cargandoUsuarios: boolean = false;
-  cargandoConversiones: boolean = false;
-  errorUsuarios: string = '';
-  errorConversiones: string = '';
-  resumenTexto: string = '';
-  filtroTipo: string = '';
-  filtroEstado: string = '';
+  cargandoUsuarios = false;
+  cargandoConversiones = false;
+  errorUsuarios = '';
+  errorConversiones = '';
+  resumenTexto = '';
+  filtroTipo = '';
+  filtroEstado = '';
 
   constructor(
     private adminService: AdminService,
@@ -33,10 +33,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   cargarResumen(): void {
-    this.adminService.resumen().subscribe({
-      next: () => {},
-      error: () => {}
-    });
+    this.adminService.resumen().subscribe();
   }
 
   cargarUsuarios(): void {
@@ -100,7 +97,7 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarUsuario(id: number | undefined): void {
     if (!id) return;
-    if (!confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) return;
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
     this.adminService.eliminarUsuario(id).subscribe({
       next: () => {
@@ -117,10 +114,10 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarHistorialDeUsuario(usuarioId: number | undefined, nombreUsuario: string): void {
     if (!usuarioId) return;
-    if (!confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`)) return;
+    if (!window.confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`)) return;
 
     this.adminService.eliminarHistorialPorUsuario(usuarioId).subscribe({
-      next: (msg) => {
+      next: () => {
         this.conversiones = this.conversiones.filter(c => c.usuarioId !== usuarioId);
         this.cargarResumen();
       },

@@ -16,6 +16,9 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -28,7 +31,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * </p>
  *
  * @author Equipo de desarrollo
- * @version 2.0
+ * @version 2.1
  */
 @RestController
 @RequestMapping("/diagnostico")
@@ -50,7 +53,24 @@ public class DiagnosticoController {
 	}
 
 	@GetMapping("/cloudconvert")
-	@Operation(summary = "Verificar configuración de CloudConvert (SOLO ADMIN)")
+	@Operation(
+		summary = "Verificar configuración de CloudConvert (SOLO ADMIN)",
+		responses = {
+			@ApiResponse(responseCode = "200", description = "Configuración leída correctamente",
+				content = @Content(mediaType = "application/json",
+					examples = @ExampleObject(value = """
+						{
+						  "ambiente": "SANDBOX",
+						  "urlApi": "https://api.sandbox.cloudconvert.com/v2",
+						  "urlDashboardCorrecto": "https://sandbox.cloudconvert.com/dashboard/api/v2/keys",
+						  "apiKeyConfigurada": true,
+						  "longitudKey": 512,
+						  "ultimos6Caracteres": "...abc123",
+						  "origen": "application.properties"
+						}
+						""")))
+		}
+	)
 	public ResponseEntity<Map<String, Object>> verificarCloudConvert() {
 		Map<String, Object> resultado = new LinkedHashMap<>();
 		String key = resolverApiKey();
@@ -85,7 +105,22 @@ public class DiagnosticoController {
 	}
 
 	@GetMapping("/cloudconvert/probar")
-	@Operation(summary = "Probar la API key contra CloudConvert (SOLO ADMIN)")
+	@Operation(
+		summary = "Probar la API key contra CloudConvert (SOLO ADMIN)",
+		responses = {
+			@ApiResponse(responseCode = "200", description = "Resultado de la prueba contra CloudConvert",
+				content = @Content(mediaType = "application/json",
+					examples = @ExampleObject(value = """
+						{
+						  "ambiente": "SANDBOX",
+						  "estado": "OK",
+						  "codigoHttp": 200,
+						  "respuesta": "{ ...datos del usuario CloudConvert... }",
+						  "mensaje": "La API key es VÁLIDA para el ambiente SANDBOX."
+						}
+						""")))
+		}
+	)
 	public ResponseEntity<Map<String, Object>> probarCloudConvert() {
 		Map<String, Object> resultado = new LinkedHashMap<>();
 		String key = resolverApiKey();

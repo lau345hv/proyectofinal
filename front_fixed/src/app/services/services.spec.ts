@@ -3,8 +3,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ConversionService } from './conversion.service';
 import { AdminService } from './admin.service';
 import { HistorialService } from './historial.service';
+import { HistorialConversionDTO } from '../models/models';
 
-
+// ═══════════════════════════════════════════════════════════════════════════
+// ConversionService
+// ═══════════════════════════════════════════════════════════════════════════
 describe('ConversionService', () => {
   let service: ConversionService;
   let httpMock: HttpTestingController;
@@ -51,7 +54,7 @@ describe('ConversionService', () => {
   it('convertir() retorna la URL de descarga como string', () => {
     const file = new File(['x'], 'img.png', { type: 'image/png' });
     let url = '';
-    service.convertir(file, 'IMAGEN', 'webp').subscribe((u: any) => (url = u));
+    service.convertir(file, 'IMAGEN', 'webp').subscribe((u: string) => { url = u; });
 
     const req = httpMock.expectOne('http://localhost:8080/conversion/convertir');
     req.flush('http://server/img.webp');
@@ -59,7 +62,9 @@ describe('ConversionService', () => {
   });
 });
 
-
+// ═══════════════════════════════════════════════════════════════════════════
+// AdminService
+// ═══════════════════════════════════════════════════════════════════════════
 describe('AdminService', () => {
   let service: AdminService;
   let httpMock: HttpTestingController;
@@ -151,7 +156,9 @@ describe('AdminService', () => {
   });
 });
 
-
+// ═══════════════════════════════════════════════════════════════════════════
+// HistorialService
+// ═══════════════════════════════════════════════════════════════════════════
 describe('HistorialService', () => {
   let service: HistorialService;
   let httpMock: HttpTestingController;
@@ -187,12 +194,12 @@ describe('HistorialService', () => {
         urlDescarga: 'http://server/video.mkv', fechaConversion: '2024-01-01'
       }
     ];
-    let resultado: any;
-    service.misConversiones().subscribe((d: any) => (resultado = d));
+    let resultado: HistorialConversionDTO[] | undefined;
+    service.misConversiones().subscribe((d: HistorialConversionDTO[]) => { resultado = d; });
 
     const req = httpMock.expectOne('http://localhost:8080/historial/misConversiones');
     req.flush(mockData);
-    expect(resultado.length).toBe(1);
-    expect(resultado[0].formatoDestino).toBe('MKV');
+    expect(resultado?.length).toBe(1);
+    expect(resultado?.[0].formatoDestino).toBe('MKV');
   });
 });

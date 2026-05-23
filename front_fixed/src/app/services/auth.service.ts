@@ -78,14 +78,14 @@ export class AuthService {
   // ── Estado ────────────────────────────────────────────────────────
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('jwt_token') && !!this.userSubject.value;
+    return Boolean(localStorage.getItem('jwt_token')) && Boolean(this.userSubject.value);
   }
 
   isAdmin(): boolean {
-    const u = this.userSubject.value;
-    if (!u) return false;
-    const rol = (u as any).rol as string | undefined;
-    return u.roles?.includes('ADMIN') || rol === 'ADMIN' || false;
+    const usuario = this.userSubject.value;
+    if (!usuario) return false;
+    const rol = (usuario as UsuarioDTO & { rol?: string }).rol;
+    return usuario.roles?.includes('ADMIN') || rol === 'ADMIN' || false;
   }
 
   getCurrentUser(): UsuarioDTO | null {
@@ -107,7 +107,7 @@ export class AuthService {
   private persistirSesion(res: AuthResponse): void {
     localStorage.setItem('jwt_token', res.token);
     // Primero guardamos con datos mínimos para que el interceptor envíe el token
-    const minimo: any = {
+    const minimo: UsuarioDTO & { rol: string } = {
       id: res.id, nombreUsuario: res.nombreUsuario,
       nombre: '', apellido: '', correo: '', telefono: '',
       roles: [res.rol], rol: res.rol
@@ -117,15 +117,14 @@ export class AuthService {
     // Luego enriquecemos con el perfil completo
     this.http.get<UsuarioDTO>(`${USER}/miPerfil`).subscribe({
       next: perfil => {
-        const completo: any = { ...perfil, roles: [res.rol], rol: res.rol };
+        const completo: UsuarioDTO & { rol: string } = { ...perfil, roles: [res.rol], rol: res.rol };
         this.guardarUsuario(completo);
       },
-      error: () => {}
     });
   }
 
   private toLoginResponse(res: AuthResponse): LoginResponse {
-    const usuario: any = {
+    const usuario: UsuarioDTO & { rol: string } = {
       id: res.id, nombreUsuario: res.nombreUsuario,
       nombre: '', apellido: '', correo: '', telefono: '',
       roles: [res.rol], rol: res.rol
@@ -133,7 +132,7 @@ export class AuthService {
     return { mensaje: 'ok', usuario };
   }
 
-  private guardarUsuario(u: any): void {
+  private guardarUsuario(u: UsuarioDTO): void {
     localStorage.setItem('usuario', JSON.stringify(u));
     this.userSubject.next(u);
   }

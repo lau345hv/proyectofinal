@@ -159,12 +159,13 @@ export class RegisterComponent {
 
   private obtenerTextoErrorRaw(err: unknown): string {
     if (!err) return '';
-    const e = err as Record<string, unknown>;
-    const body = e?.['error'];
+    const errObj = err as Record<string, unknown>;
+    const body = errObj?.['error'];
     if (typeof body === 'string') return body;
     if (body && typeof body === 'object') {
       return `${body.message ?? ''} ${body.trace ?? ''}`;
     }
-    return (err as Record<string, unknown>)?.['message'] as string || '';
+    const errRecord = err as Record<string, unknown>;
+    return errRecord?.['message'] as string || '';
   }
 }

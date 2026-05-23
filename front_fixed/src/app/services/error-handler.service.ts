@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class ErrorHandlerService {
 
-  extraerMensaje(err: any, fallback: string = 'Ocurrió un error inesperado.'): string {
+  extraerMensaje(err: unknown, fallback = 'Ocurrió un error inesperado.'): string {
 
     if (err instanceof HttpErrorResponse) {
 
@@ -19,7 +19,7 @@ export class ErrorHandlerService {
       }
 
       if (body && typeof body === 'object') {
-        const msg = this.extraerDeObjeto(body);
+        const msg = this.extraerDeObjeto(body as Record<string, unknown>);
         if (msg) return msg;
       }
 
@@ -31,30 +31,30 @@ export class ErrorHandlerService {
     }
 
     if (typeof err === 'string') return err;
-    if (err?.message) return err.message;
+    if (err && typeof err === 'object' && 'message' in err) return (err as { message: string }).message;
     return fallback;
   }
 
-  private intentarParsearJSON(texto: string): any {
+  private intentarParsearJSON(texto: string): unknown {
     try {
       const parsed = JSON.parse(texto);
       if (parsed && typeof parsed === 'object') return parsed;
-    } catch {}
+    } catch { /* invalid JSON, return original text */ }
     return texto;
   }
 
-  private extraerDeObjeto(obj: any): string | null {
-    if (obj.message && typeof obj.message === 'string') {
-      return this.limpiarMensaje(obj.message);
+  private extraerDeObjeto(obj: Record<string, unknown>): string | null {
+    if (obj['message'] && typeof obj['message'] === 'string') {
+      return this.limpiarMensaje(obj['message']);
     }
 
-    if (obj.trace && typeof obj.trace === 'string') {
-      const msgDeTrace = this.extraerMensajeDeTrace(obj.trace);
+    if (obj['trace'] && typeof obj['trace'] === 'string') {
+      const msgDeTrace = this.extraerMensajeDeTrace(obj['trace']);
       if (msgDeTrace) return msgDeTrace;
     }
 
-    if (obj.error && typeof obj.error === 'string' && obj.error !== 'Internal Server Error') {
-      return obj.error;
+    if (obj['error'] && typeof obj['error'] === 'string' && obj['error'] !== 'Internal Server Error') {
+      return obj['error'];
     }
 
     return null;
@@ -62,7 +62,7 @@ export class ErrorHandlerService {
 
   private extraerMensajeDeTrace(trace: string): string | null {
     const match = trace.match(/Exception:\s*(.+?)(?:\r|\n|$)/);
-    if (match && match[1]) {
+    if (match?.[1]) {
       return this.limpiarMensaje(match[1]);
     }
     return null;
@@ -80,7 +80,7 @@ export class ErrorHandlerService {
       if (punto > 0 && punto < 200) {
         limpio = limpio.substring(0, punto + 1);
       } else {
-        limpio = limpio.substring(0, 200) + '...';
+        limpio = `${limpio.substring(0, 200)}...`;
       }
     }
 

@@ -160,7 +160,7 @@ export class ConversionToolComponent implements OnInit {
     if (!coincide) {
       const esperado = nombresUsuarioAmigables[this.tipo] || this.tipo;
       if (tipoDetectado && tipoDetectado !== this.tipo) {
-        return `El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${tipoDetectado === 'imagen' ? 'imágenes' : tipoDetectado + 's'}.`;
+        return `El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${tipoDetectado === 'imagen' ? 'imágenes' : \`${tipoDetectado}s\`}.`;
       }
       return `El archivo seleccionado no es un archivo de ${esperado} válido. Sube un archivo del tipo correcto.`;
     }
@@ -200,7 +200,7 @@ export class ConversionToolComponent implements OnInit {
           return;
         }
         this.urlDescarga = urlDescarga.trim();
-        const nombreBase = this.archivoSeleccionado!.name.replace(/\.[^/.]+$/, '');
+        const nombreBase = (this.archivoSeleccionado?.name ?? '').replace(/\.[^/.]+$/, '');
         this.nombreArchivo = `${nombreBase}.${this.formatoDestino}`;
         this.exito = true;
       },

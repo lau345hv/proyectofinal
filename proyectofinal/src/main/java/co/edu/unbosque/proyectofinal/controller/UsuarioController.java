@@ -142,10 +142,6 @@ public class UsuarioController {
 		return new ResponseEntity<>("Usuario actualizado correctamente.", HttpStatus.OK);
 	}
 
-	// =====================================================================
-	// ENDPOINTS SOLO PARA ADMIN
-	// =====================================================================
-
 	@GetMapping("/listar")
 	@Operation(summary = "Listar todos los usuarios (SOLO ADMIN)")
 	@ApiResponses({

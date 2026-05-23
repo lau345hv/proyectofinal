@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -80,7 +79,9 @@ public class VerificacionCorreoService {
 	@Autowired
 	private LanzadorDeExcepcion lanzador;
 
-	private final Gson gson = new Gson();
+	// FIX JAVA-W1025: se eliminó el campo "gson" que nunca era usado en esta clase.
+	// Los JsonObject que sí se usan en enviarCorreoBrevo se construyen directamente
+	// con la API de JsonObject/JsonArray de Gson, sin necesidad de la instancia Gson.
 
 	/**
 	 * Genera un código aleatorio de 6 dígitos, lo guarda asociado al

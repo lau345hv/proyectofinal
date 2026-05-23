@@ -58,6 +58,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	private static final int LONGITUD_MINIMA_CONTRASENA = 8;
 	private static final int LONGITUD_MAXIMA_CONTRASENA = 100;
 
+	private static final java.util.regex.Pattern PATRON_NOMBRE =
+			java.util.regex.Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]+$");
+
+	private static final java.util.regex.Pattern PATRON_TELEFONO =
+			java.util.regex.Pattern.compile("^3\\d{9}$");
+
 	@Autowired
 	private UsuarioRepository repo;
 
@@ -421,85 +427,141 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	// Métodos privados de validación
 	// =====================================================================
 
-	private static final java.util.regex.Pattern PATRON_NOMBRE =
-			java.util.regex.Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]+$");
-
-	private static final java.util.regex.Pattern PATRON_TELEFONO =
-			java.util.regex.Pattern.compile("^3\\d{9}$");
-
+	/**
+	 * Valida todos los campos básicos del DTO de usuario.
+	 * FIX JAVA-R1000: la validación se dividió en métodos privados por campo
+	 * para reducir la complejidad ciclomática de 27 a menos de 10.
+	 *
+	 * @param data              DTO con los datos del usuario.
+	 * @param validarContrasena indica si se debe validar la contraseña.
+	 */
 	private void validarCamposBasicos(UsuarioDTO data, boolean validarContrasena) {
 		if (data == null) {
 			lanzador.lanzarDatoInvalido("Los datos del usuario no pueden ser nulos.");
 		}
-		if (data.getNombre() == null || data.getNombre().isBlank()) {
+		validarNombre(data.getNombre());
+		validarApellido(data.getApellido());
+		validarCorreo(data.getCorreo());
+		validarNombreUsuario(data.getNombreUsuario());
+		if (validarContrasena) {
+			validarContrasena(data.getContrasena());
+		}
+		validarTelefono(data.getTelefono());
+	}
+
+	/**
+	 * Valida el campo nombre.
+	 *
+	 * @param nombre valor a validar.
+	 */
+	private void validarNombre(String nombre) {
+		if (nombre == null || nombre.isBlank()) {
 			lanzador.lanzarTextoVacio("nombre");
 		}
-		if (data.getNombre().length() > LONGITUD_MAXIMA_NOMBRE) {
-			lanzador.lanzarTextoDemasiadoLargo("nombre", data.getNombre().length(),
+		if (nombre.length() > LONGITUD_MAXIMA_NOMBRE) {
+			lanzador.lanzarTextoDemasiadoLargo("nombre", nombre.length(),
 					LONGITUD_MAXIMA_NOMBRE);
 		}
-		if (!PATRON_NOMBRE.matcher(data.getNombre().trim()).matches()) {
+		if (!PATRON_NOMBRE.matcher(nombre.trim()).matches()) {
 			lanzador.lanzarNombreInvalido(
 					"El nombre solo puede contener letras y espacios. "
 							+ "No se permiten números ni caracteres especiales. "
-							+ "Recibido: '" + data.getNombre() + "'");
+							+ "Recibido: '" + nombre + "'");
 		}
-		if (data.getApellido() == null || data.getApellido().isBlank()) {
+	}
+
+	/**
+	 * Valida el campo apellido.
+	 *
+	 * @param apellido valor a validar.
+	 */
+	private void validarApellido(String apellido) {
+		if (apellido == null || apellido.isBlank()) {
 			lanzador.lanzarTextoVacio("apellido");
 		}
-		if (data.getApellido().length() > LONGITUD_MAXIMA_NOMBRE) {
-			lanzador.lanzarTextoDemasiadoLargo("apellido", data.getApellido().length(),
+		if (apellido.length() > LONGITUD_MAXIMA_NOMBRE) {
+			lanzador.lanzarTextoDemasiadoLargo("apellido", apellido.length(),
 					LONGITUD_MAXIMA_NOMBRE);
 		}
-		if (!PATRON_NOMBRE.matcher(data.getApellido().trim()).matches()) {
+		if (!PATRON_NOMBRE.matcher(apellido.trim()).matches()) {
 			lanzador.lanzarNombreInvalido(
 					"El apellido solo puede contener letras y espacios. "
 							+ "No se permiten números ni caracteres especiales. "
-							+ "Recibido: '" + data.getApellido() + "'");
+							+ "Recibido: '" + apellido + "'");
 		}
-		if (data.getCorreo() == null || data.getCorreo().isBlank()) {
+	}
+
+	/**
+	 * Valida el campo correo.
+	 *
+	 * @param correo valor a validar.
+	 */
+	private void validarCorreo(String correo) {
+		if (correo == null || correo.isBlank()) {
 			lanzador.lanzarTextoVacio("correo");
 		}
-		if (data.getCorreo().length() > LONGITUD_MAXIMA_CORREO) {
-			lanzador.lanzarTextoDemasiadoLargo("correo", data.getCorreo().length(),
+		if (correo.length() > LONGITUD_MAXIMA_CORREO) {
+			lanzador.lanzarTextoDemasiadoLargo("correo", correo.length(),
 					LONGITUD_MAXIMA_CORREO);
 		}
-		if (!esCorreoValido(data.getCorreo())) {
-			lanzador.lanzarFormatoCorreoInvalido(data.getCorreo());
+		if (!esCorreoValido(correo)) {
+			lanzador.lanzarFormatoCorreoInvalido(correo);
 		}
-		if (data.getNombreUsuario() == null || data.getNombreUsuario().isBlank()) {
+	}
+
+	/**
+	 * Valida el campo nombreUsuario.
+	 *
+	 * @param nombreUsuario valor a validar.
+	 */
+	private void validarNombreUsuario(String nombreUsuario) {
+		if (nombreUsuario == null || nombreUsuario.isBlank()) {
 			lanzador.lanzarTextoVacio("nombreUsuario");
 		}
-		if (data.getNombreUsuario().length() > LONGITUD_MAXIMA_USUARIO) {
+		if (nombreUsuario.length() > LONGITUD_MAXIMA_USUARIO) {
 			lanzador.lanzarTextoDemasiadoLargo("nombreUsuario",
-					data.getNombreUsuario().length(), LONGITUD_MAXIMA_USUARIO);
+					nombreUsuario.length(), LONGITUD_MAXIMA_USUARIO);
 		}
-		if (validarContrasena) {
-			if (data.getContrasena() == null || data.getContrasena().isBlank()) {
-				lanzador.lanzarTextoVacio("contrasena");
-			}
-			if (data.getContrasena().length() > LONGITUD_MAXIMA_CONTRASENA) {
-				lanzador.lanzarTextoDemasiadoLargo("contrasena",
-						data.getContrasena().length(), LONGITUD_MAXIMA_CONTRASENA);
-			}
-			if (data.getContrasena().length() < LONGITUD_MINIMA_CONTRASENA
-					|| !data.getContrasena().matches(".*[a-zA-Z].*")
-					|| !data.getContrasena().matches(".*[0-9].*")) {
-				lanzador.lanzarContrasenaInvalida();
-			}
+	}
+
+	/**
+	 * Valida el campo contrasena.
+	 *
+	 * @param contrasena valor a validar.
+	 */
+	private void validarContrasena(String contrasena) {
+		if (contrasena == null || contrasena.isBlank()) {
+			lanzador.lanzarTextoVacio("contrasena");
 		}
-		if (data.getTelefono() == null || data.getTelefono().isBlank()) {
+		if (contrasena.length() > LONGITUD_MAXIMA_CONTRASENA) {
+			lanzador.lanzarTextoDemasiadoLargo("contrasena",
+					contrasena.length(), LONGITUD_MAXIMA_CONTRASENA);
+		}
+		if (contrasena.length() < LONGITUD_MINIMA_CONTRASENA
+				|| !contrasena.matches(".*[a-zA-Z].*")
+				|| !contrasena.matches(".*[0-9].*")) {
+			lanzador.lanzarContrasenaInvalida();
+		}
+	}
+
+	/**
+	 * Valida el campo teléfono.
+	 *
+	 * @param telefono valor a validar.
+	 */
+	private void validarTelefono(String telefono) {
+		if (telefono == null || telefono.isBlank()) {
 			lanzador.lanzarTelefonoInvalido(
 					"El teléfono es obligatorio. Debe ser un número colombiano "
 							+ "de 10 dígitos que comience con 3 (sin el +57).");
 		}
-		String telefonoLimpio = data.getTelefono().trim().replace(" ", "");
+		String telefonoLimpio = telefono.trim().replace(" ", "");
 		if (!PATRON_TELEFONO.matcher(telefonoLimpio).matches()) {
 			lanzador.lanzarTelefonoInvalido(
 					"El teléfono debe ser un número colombiano de 10 dígitos "
 							+ "que comience con 3 (ej: 3001234567). Sin espacios, "
 							+ "guiones ni el prefijo +57. Recibido: '"
-							+ data.getTelefono() + "'");
+							+ telefono + "'");
 		}
 	}
 
@@ -526,9 +588,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return correo.matches("^[\\w._%+\\-]+@[\\w.\\-]+\\.[a-zA-Z]{2,}$");
 	}
 
-	// =====================================================================
-	// Mapeo Entity -> DTO
-	// =====================================================================
 
 	private UsuarioDTO mapToDTO(Usuario entity) {
 		UsuarioDTO dto = new UsuarioDTO();

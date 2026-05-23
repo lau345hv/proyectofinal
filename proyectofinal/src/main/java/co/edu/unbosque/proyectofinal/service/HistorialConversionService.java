@@ -130,52 +130,23 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 		return 1;
 	}
 
+	/**
+	 * Actualiza un registro del historial identificado por su ID.
+	 * Solo se modifican los campos que vengan con valor en el DTO.
+	 *
+	 * @param id   ID del registro a actualizar.
+	 * @param data DTO con los nuevos valores.
+	 * @return 0 si la operación fue exitosa.
+	 */
+	// FIX JAVA-R1000: la lógica de actualización de campos se extrajo al método
+	// privado aplicarCambiosHistorial para reducir la complejidad ciclomática.
 	@Override
 	public int updateById(Long id, HistorialConversionDTO data) {
 		try {
-			if (id == null || id <= 0) {
-				lanzador.lanzarIdInvalido("historialConversion", id);
-			}
-			Optional<HistorialConversion> encontrado = repo.findById(id);
-			if (!encontrado.isPresent()) {
-				lanzador.lanzarRecursoNoEncontrado("No existe una conversión con el ID: " + id);
-			}
-			HistorialConversion entity = encontrado.get();
-			if (data.getUsuarioId() != null && data.getUsuarioId() > 0) {
-				Optional<Usuario> usuario = usuarioRepo.findById(data.getUsuarioId());
-				if (!usuario.isPresent()) {
-					lanzador.lanzarRecursoNoEncontrado(
-							"No existe un usuario con el ID: " + data.getUsuarioId());
-				}
-				entity.setUsuario(usuario.get());
-			}
-			if (data.getFechaConversion() != null) {
-				entity.setFechaConversion(data.getFechaConversion());
-			}
-			if (data.getTipoArchivo() != null) {
-				entity.setTipoArchivo(data.getTipoArchivo());
-			}
-			if (data.getFormatoOrigen() != null && !data.getFormatoOrigen().isBlank()) {
-				entity.setFormatoOrigen(data.getFormatoOrigen().toLowerCase());
-			}
-			if (data.getFormatoDestino() != null && !data.getFormatoDestino().isBlank()) {
-				entity.setFormatoDestino(data.getFormatoDestino().toLowerCase());
-			}
-			if (data.getNombreArchivoOriginal() != null) {
-				entity.setNombreArchivoOriginal(data.getNombreArchivoOriginal());
-			}
-			if (data.getNombreArchivoConvertido() != null) {
-				entity.setNombreArchivoConvertido(data.getNombreArchivoConvertido());
-			}
-			if (data.getRutaArchivoOriginal() != null) {
-				entity.setRutaArchivoOriginal(data.getRutaArchivoOriginal());
-			}
-			if (data.getRutaArchivoConvertido() != null) {
-				entity.setRutaArchivoConvertido(data.getRutaArchivoConvertido());
-			}
-			if (data.getEstado() != null) {
-				entity.setEstado(data.getEstado());
-			}
+			validarIdYObtenerEntidad(id);
+			HistorialConversion entity = obtenerEntidadHistorial(id);
+			actualizarUsuarioSiCorresponde(entity, data);
+			aplicarCambiosHistorial(entity, data);
 			repo.save(entity);
 		} catch (IdInvalidoException | RecursoNoEncontradoException e) {
 			throw e;
@@ -442,6 +413,90 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 		} catch (Exception e) {
 			throw new RuntimeException(
 					"Error inesperado al buscar por rango de fechas: " + e.getMessage());
+		}
+	}
+
+	// =====================================================================
+	// Métodos privados auxiliares para updateById
+	// =====================================================================
+
+	/**
+	 * Valida que el ID sea válido y que el registro exista.
+	 *
+	 * @param id ID a validar.
+	 */
+	private void validarIdYObtenerEntidad(Long id) {
+		if (id == null || id <= 0) {
+			lanzador.lanzarIdInvalido("historialConversion", id);
+		}
+		if (!repo.existsById(id)) {
+			lanzador.lanzarRecursoNoEncontrado("No existe una conversión con el ID: " + id);
+		}
+	}
+
+	/**
+	 * Obtiene la entidad del historial por su ID (asume que ya fue validado).
+	 *
+	 * @param id ID del registro.
+	 * @return Entidad encontrada.
+	 */
+	private HistorialConversion obtenerEntidadHistorial(Long id) {
+		return repo.findById(id).orElseThrow(() ->
+				new RuntimeException("No existe una conversión con el ID: " + id));
+	}
+
+	/**
+	 * Actualiza el usuario de la entidad si el DTO trae un usuarioId distinto.
+	 *
+	 * @param entity Entidad a actualizar.
+	 * @param data   DTO con los nuevos valores.
+	 */
+	private void actualizarUsuarioSiCorresponde(HistorialConversion entity,
+			HistorialConversionDTO data) {
+		if (data.getUsuarioId() != null && data.getUsuarioId() > 0) {
+			Optional<Usuario> usuario = usuarioRepo.findById(data.getUsuarioId());
+			if (!usuario.isPresent()) {
+				lanzador.lanzarRecursoNoEncontrado(
+						"No existe un usuario con el ID: " + data.getUsuarioId());
+			}
+			entity.setUsuario(usuario.get());
+		}
+	}
+
+	/**
+	 * Aplica los cambios del DTO a la entidad para los campos opcionales.
+	 *
+	 * @param entity Entidad a modificar.
+	 * @param data   DTO con los nuevos valores.
+	 */
+	private void aplicarCambiosHistorial(HistorialConversion entity,
+			HistorialConversionDTO data) {
+		if (data.getFechaConversion() != null) {
+			entity.setFechaConversion(data.getFechaConversion());
+		}
+		if (data.getTipoArchivo() != null) {
+			entity.setTipoArchivo(data.getTipoArchivo());
+		}
+		if (data.getFormatoOrigen() != null && !data.getFormatoOrigen().isBlank()) {
+			entity.setFormatoOrigen(data.getFormatoOrigen().toLowerCase());
+		}
+		if (data.getFormatoDestino() != null && !data.getFormatoDestino().isBlank()) {
+			entity.setFormatoDestino(data.getFormatoDestino().toLowerCase());
+		}
+		if (data.getNombreArchivoOriginal() != null) {
+			entity.setNombreArchivoOriginal(data.getNombreArchivoOriginal());
+		}
+		if (data.getNombreArchivoConvertido() != null) {
+			entity.setNombreArchivoConvertido(data.getNombreArchivoConvertido());
+		}
+		if (data.getRutaArchivoOriginal() != null) {
+			entity.setRutaArchivoOriginal(data.getRutaArchivoOriginal());
+		}
+		if (data.getRutaArchivoConvertido() != null) {
+			entity.setRutaArchivoConvertido(data.getRutaArchivoConvertido());
+		}
+		if (data.getEstado() != null) {
+			entity.setEstado(data.getEstado());
 		}
 	}
 

@@ -213,8 +213,12 @@ public class Usuario implements UserDetails {
 		return historialConversiones;
 	}
 
+	// FIX JAVA-E1086: se copia la lista recibida para evitar que referencias
+	// externas puedan modificar el estado interno de la entidad.
 	public void setHistorialConversiones(List<HistorialConversion> historialConversiones) {
-		this.historialConversiones = historialConversiones;
+		this.historialConversiones = historialConversiones != null
+				? new ArrayList<>(historialConversiones)
+				: new ArrayList<>();
 	}
 
 	@Override

@@ -177,27 +177,12 @@ public class CloudConvertService {
 	 * @param usuarioId      ID del usuario que solicita la conversión.
 	 * @return URL de descarga del archivo convertido.
 	 */
+	// FIX JAVA-R1000: la lógica del método se dividió en métodos privados
+	// auxiliares para reducir la complejidad ciclomática.
 	public String convertirArchivo(MultipartFile archivo, String formatoDestino,
 			TipoArchivo tipoArchivo, Long usuarioId) {
 
-		// Validaciones de entrada -----------------------------------------
-		if (archivo == null || archivo.isEmpty()) {
-			lanzador.lanzarArchivoVacio("El archivo enviado está vacío o es nulo.");
-		}
-		if (formatoDestino == null || formatoDestino.isBlank()) {
-			lanzador.lanzarFormatoArchivoInvalido(
-					"El formato destino no puede estar vacío.");
-		}
-		if (tipoArchivo == null) {
-			lanzador.lanzarFormatoArchivoInvalido(
-					"El tipo de archivo es obligatorio. Opciones: AUDIO, VIDEO, IMAGEN.");
-		}
-		if (apiKey == null || apiKey.isBlank()) {
-			lanzador.lanzarApiExterna(
-					"No se ha configurado la API key de CloudConvert. "
-							+ "Configure la variable de entorno CLOUDCONVERT_API_KEY "
-							+ "o agregue la propiedad cloudconvert.api.key al sistema.");
-		}
+		validarEntradaConversion(archivo, formatoDestino, tipoArchivo);
 
 		String formatoDestinoNormalizado = formatoDestino.trim().toLowerCase();
 		validarFormatoSegunTipo(formatoDestinoNormalizado, tipoArchivo);
@@ -208,58 +193,14 @@ public class CloudConvertService {
 		String formatoOrigen = obtenerExtension(nombreOriginal);
 
 		try {
-			// 1. Crear el job con tres tareas ----------------------------
 			String urlBase = sandbox ? URL_BASE_SANDBOX : URL_BASE_PRODUCCION;
-			JsonObject jobBody = construirCuerpoJob(formatoDestinoNormalizado);
-			JsonObject jobCreado = postJson(urlBase + "/jobs", jobBody);
-
-			JsonObject dataJob = jobCreado.getAsJsonObject("data");
-			String jobId = dataJob.get("id").getAsString();
-
-			// 2. Subir el archivo a la tarea import-upload ----------------
-			JsonObject tareaImport = encontrarTarea(dataJob, "import-archivo");
-			if (tareaImport == null) {
-				lanzador.lanzarApiExterna(
-						"No se encontró la tarea de importación en el job creado.");
-			}
-			subirArchivoATareaImport(tareaImport, archivo);
-
-			// 3. Esperar a que termine el job ----------------------------
+			String jobId = crearJobYSubirArchivo(urlBase, archivo, formatoDestinoNormalizado);
 			JsonObject jobFinal = esperarJob(urlBase, jobId);
+			String urlDescarga = extraerUrlDescarga(jobFinal, formatoDestinoNormalizado);
+			String nombreConvertido = extraerNombreConvertido(jobFinal, formatoDestinoNormalizado);
 
-			// 4. Tomar la URL de descarga del archivo convertido --------
-			JsonObject tareaExport = encontrarTarea(
-					jobFinal.getAsJsonObject("data"), "export-archivo");
-			if (tareaExport == null) {
-				lanzador.lanzarConversionFallida(
-						"No se encontró la tarea de exportación en el job finalizado.");
-			}
-
-			JsonObject result = tareaExport.getAsJsonObject("result");
-			JsonArray archivos = result.getAsJsonArray("files");
-			if (archivos == null || archivos.size() == 0) {
-				lanzador.lanzarConversionFallida(
-						"La API externa no retornó ningún archivo convertido.");
-			}
-			JsonObject archivoConvertido = archivos.get(0).getAsJsonObject();
-			String urlDescarga = archivoConvertido.get("url").getAsString();
-			String nombreConvertido = archivoConvertido.has("filename")
-					? archivoConvertido.get("filename").getAsString()
-					: "archivo_convertido." + formatoDestinoNormalizado;
-
-			// 5. Registrar la operación exitosa en el historial ---------
-			HistorialConversionDTO historial = new HistorialConversionDTO(
-					LocalDateTime.now(),
-					tipoArchivo,
-					formatoOrigen,
-					formatoDestinoNormalizado,
-					nombreOriginal,
-					nombreConvertido,
-					null,
-					urlDescarga,
-					EstadoConversion.COMPLETADO,
-					usuarioId);
-			historialConversionService.create(historial);
+			registrarHistorialExitoso(tipoArchivo, formatoOrigen, formatoDestinoNormalizado,
+					nombreOriginal, nombreConvertido, urlDescarga, usuarioId);
 
 			return urlDescarga;
 
@@ -302,6 +243,135 @@ public class CloudConvertService {
 	// =====================================================================
 	// Métodos privados
 	// =====================================================================
+
+	/**
+	 * Valida los parámetros de entrada antes de iniciar la conversión.
+	 *
+	 * @param archivo        Archivo a convertir.
+	 * @param formatoDestino Formato destino.
+	 * @param tipoArchivo    Tipo de archivo.
+	 */
+	private void validarEntradaConversion(MultipartFile archivo, String formatoDestino,
+			TipoArchivo tipoArchivo) {
+		if (archivo == null || archivo.isEmpty()) {
+			lanzador.lanzarArchivoVacio("El archivo enviado está vacío o es nulo.");
+		}
+		if (formatoDestino == null || formatoDestino.isBlank()) {
+			lanzador.lanzarFormatoArchivoInvalido(
+					"El formato destino no puede estar vacío.");
+		}
+		if (tipoArchivo == null) {
+			lanzador.lanzarFormatoArchivoInvalido(
+					"El tipo de archivo es obligatorio. Opciones: AUDIO, VIDEO, IMAGEN.");
+		}
+		if (apiKey == null || apiKey.isBlank()) {
+			lanzador.lanzarApiExterna(
+					"No se ha configurado la API key de CloudConvert. "
+							+ "Configure la variable de entorno CLOUDCONVERT_API_KEY "
+							+ "o agregue la propiedad cloudconvert.api.key al sistema.");
+		}
+	}
+
+	/**
+	 * Crea el job en CloudConvert, sube el archivo a la tarea de importación
+	 * y devuelve el ID del job creado.
+	 *
+	 * @param urlBase                URL base de la API.
+	 * @param archivo                Archivo a subir.
+	 * @param formatoDestinoNormalizado Formato destino en minúsculas.
+	 * @return ID del job creado.
+	 * @throws Exception si falla la creación o subida.
+	 */
+	private String crearJobYSubirArchivo(String urlBase, MultipartFile archivo,
+			String formatoDestinoNormalizado) throws Exception {
+		JsonObject jobBody = construirCuerpoJob(formatoDestinoNormalizado);
+		JsonObject jobCreado = postJson(urlBase + "/jobs", jobBody);
+		JsonObject dataJob = jobCreado.getAsJsonObject("data");
+		String jobId = dataJob.get("id").getAsString();
+
+		JsonObject tareaImport = encontrarTarea(dataJob, "import-archivo");
+		if (tareaImport == null) {
+			lanzador.lanzarApiExterna(
+					"No se encontró la tarea de importación en el job creado.");
+		}
+		subirArchivoATareaImport(tareaImport, archivo);
+		return jobId;
+	}
+
+	/**
+	 * Extrae la URL de descarga del resultado del job finalizado.
+	 *
+	 * @param jobFinal               Resultado del job.
+	 * @param formatoDestinoNormalizado Formato destino en minúsculas.
+	 * @return URL de descarga.
+	 */
+	private String extraerUrlDescarga(JsonObject jobFinal, String formatoDestinoNormalizado) {
+		JsonObject tareaExport = encontrarTarea(
+				jobFinal.getAsJsonObject("data"), "export-archivo");
+		if (tareaExport == null) {
+			lanzador.lanzarConversionFallida(
+					"No se encontró la tarea de exportación en el job finalizado.");
+		}
+		JsonObject result = tareaExport.getAsJsonObject("result");
+		JsonArray archivos = result.getAsJsonArray("files");
+		if (archivos == null || archivos.size() == 0) {
+			lanzador.lanzarConversionFallida(
+					"La API externa no retornó ningún archivo convertido.");
+		}
+		return archivos.get(0).getAsJsonObject().get("url").getAsString();
+	}
+
+	/**
+	 * Extrae el nombre del archivo convertido del resultado del job.
+	 *
+	 * @param jobFinal               Resultado del job.
+	 * @param formatoDestinoNormalizado Formato destino en minúsculas.
+	 * @return Nombre del archivo convertido.
+	 */
+	private String extraerNombreConvertido(JsonObject jobFinal, String formatoDestinoNormalizado) {
+		JsonObject tareaExport = encontrarTarea(
+				jobFinal.getAsJsonObject("data"), "export-archivo");
+		if (tareaExport == null) {
+			return "archivo_convertido." + formatoDestinoNormalizado;
+		}
+		JsonObject result = tareaExport.getAsJsonObject("result");
+		JsonArray archivos = result.getAsJsonArray("files");
+		if (archivos == null || archivos.size() == 0) {
+			return "archivo_convertido." + formatoDestinoNormalizado;
+		}
+		JsonObject archivoConvertido = archivos.get(0).getAsJsonObject();
+		return archivoConvertido.has("filename")
+				? archivoConvertido.get("filename").getAsString()
+				: "archivo_convertido." + formatoDestinoNormalizado;
+	}
+
+	/**
+	 * Registra una conversión exitosa en el historial del usuario.
+	 *
+	 * @param tipoArchivo    Tipo de archivo.
+	 * @param formatoOrigen  Formato origen.
+	 * @param formatoDestino Formato destino.
+	 * @param nombreOriginal Nombre del archivo original.
+	 * @param nombreConvertido Nombre del archivo convertido.
+	 * @param urlDescarga    URL de descarga.
+	 * @param usuarioId      ID del usuario.
+	 */
+	private void registrarHistorialExitoso(TipoArchivo tipoArchivo, String formatoOrigen,
+			String formatoDestino, String nombreOriginal, String nombreConvertido,
+			String urlDescarga, Long usuarioId) {
+		HistorialConversionDTO historial = new HistorialConversionDTO(
+				LocalDateTime.now(),
+				tipoArchivo,
+				formatoOrigen,
+				formatoDestino,
+				nombreOriginal,
+				nombreConvertido,
+				null,
+				urlDescarga,
+				EstadoConversion.COMPLETADO,
+				usuarioId);
+		historialConversionService.create(historial);
+	}
 
 	private JsonObject construirCuerpoJob(String formatoDestino) {
 		Map<String, Object> tareas = new HashMap<>();
@@ -406,8 +476,10 @@ public class CloudConvertService {
 		JsonObject parametros = form.getAsJsonObject("parameters");
 
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		for (String key : parametros.keySet()) {
-			body.add(key, parametros.get(key).getAsString());
+		// FIX JAVA-P0361: se usa entrySet() en lugar de keySet() para evitar la
+		// doble búsqueda en el mapa (una por clave y otra por valor).
+		for (Map.Entry<String, JsonElement> entry : parametros.entrySet()) {
+			body.add(entry.getKey(), entry.getValue().getAsString());
 		}
 		ByteArrayResource recurso = new ByteArrayResource(archivo.getBytes()) {
 			@Override

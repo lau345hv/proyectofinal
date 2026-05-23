@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unbosque.proyectofinal.dto.AuditoriaDTO;
 import co.edu.unbosque.proyectofinal.dto.UsuarioDTO;
 import co.edu.unbosque.proyectofinal.entity.HistorialConversion;
 import co.edu.unbosque.proyectofinal.entity.Usuario;
@@ -26,6 +27,7 @@ import co.edu.unbosque.proyectofinal.exception.TextoDemasiadoLargoException;
 import co.edu.unbosque.proyectofinal.exception.TextoVacioException;
 import co.edu.unbosque.proyectofinal.repository.UsuarioRepository;
 import co.edu.unbosque.proyectofinal.util.enums.RolUsuario;
+import co.edu.unbosque.proyectofinal.util.enums.TipoAccion;
 
 /**
  * Servicio encargado de gestionar los usuarios de la plataforma de
@@ -37,14 +39,9 @@ import co.edu.unbosque.proyectofinal.util.enums.RolUsuario;
  * al cliente HTTP. Todas las contraseñas se cifran con BCrypt antes de
  * persistirse en la base de datos.
  * </p>
- * <p>
- * La autenticación (login) ya no reside en este servicio: es
- * responsabilidad del {@code AuthController} usando el
- * {@code AuthenticationManager} de Spring Security.
- * </p>
  *
  * @author Equipo de desarrollo
- * @version 3.0
+ * @version 3.1
  */
 @Service
 @Transactional
@@ -78,6 +75,9 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private AuditoriaService auditoriaService;
 
 	public UsuarioService() {
 	}
@@ -123,10 +123,8 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 
 	/**
 	 * Solicita un código de verificación para un correo, validando primero
-	 * que el correo tenga formato válido, exista realmente (consulta API
-	 * externa) y no esté ya registrado en el sistema.
-	 *
-	 * @param correo correo electrónico a verificar
+	 * que el correo tenga formato válido, exista realmente y no esté ya
+	 * registrado en el sistema.
 	 */
 	public void solicitarCodigoRegistro(String correo) {
 		if (correo == null || correo.isBlank()) {
@@ -147,9 +145,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	/**
 	 * Crea un usuario nuevo después de validar el código de verificación
 	 * que se le envió por correo electrónico.
-	 *
-	 * @param data datos del usuario a crear
-	 * @param codigoVerificacion código de 6 dígitos recibido por correo
 	 */
 	public void crearConVerificacion(UsuarioDTO data, String codigoVerificacion) {
 		if (data == null || data.getCorreo() == null) {
@@ -164,6 +159,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		List<Usuario> lista = (List<Usuario>) repo.findAll();
 		List<UsuarioDTO> dtoList = new ArrayList<>();
 		lista.forEach(entity -> dtoList.add(mapToDTO(entity)));
+
+		// Auditoría: admin consultó la lista completa de usuarios
+		AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.READ,
+				"Consulta de todos los usuarios del sistema");
+		auditoriaService.create(auditoria);
+
 		return dtoList;
 	}
 
@@ -180,6 +181,13 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 					lanzador.lanzarUsuarioSinPermiso(
 							"La cuenta de administrador no puede ser eliminada.");
 				}
+
+				// Auditoría: eliminación de usuario (antes de borrar para tener el nombre)
+				AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.DELETE,
+						"Usuario eliminado: " + u.getNombreUsuario()
+								+ " (id=" + u.getId() + ", correo=" + u.getCorreo() + ")");
+				auditoriaService.create(auditoria);
+
 				repo.delete(u);
 				return 0;
 			}
@@ -224,6 +232,13 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 				entity.setRol(data.getRol());
 			}
 			repo.save(entity);
+
+			// Auditoría: perfil actualizado
+			AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.UPDATE,
+					"Perfil actualizado para usuario: " + entity.getNombreUsuario()
+							+ " (id=" + id + ")");
+			auditoriaService.create(auditoria);
+
 		} catch (IdInvalidoException | RecursoNoEncontradoException
 				| TextoVacioException | TextoDemasiadoLargoException
 				| FormatoCorreoInvalidoException | OpcionNoValidaException
@@ -250,12 +265,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return id != null && repo.existsById(id);
 	}
 
-	/**
-	 * Verifica si existe un usuario con el nombre de usuario dado.
-	 *
-	 * @param nombreUsuario nombre de usuario a buscar
-	 * @return {@code true} si existe, {@code false} en caso contrario
-	 */
 	public boolean existsByNombreUsuario(String nombreUsuario) {
 		if (nombreUsuario == null || nombreUsuario.isBlank()) {
 			return false;
@@ -263,12 +272,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return repo.findByNombreUsuario(nombreUsuario.trim()).isPresent();
 	}
 
-	/**
-	 * Verifica si existe un usuario con el correo dado.
-	 *
-	 * @param correo correo a buscar
-	 * @return {@code true} si existe, {@code false} en caso contrario
-	 */
 	public boolean existsByCorreo(String correo) {
 		if (correo == null || correo.isBlank()) {
 			return false;
@@ -276,12 +279,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return repo.findByCorreo(correo.trim()).isPresent();
 	}
 
-	/**
-	 * Busca un usuario por su ID.
-	 *
-	 * @param id ID del usuario.
-	 * @return DTO del usuario encontrado.
-	 */
 	public UsuarioDTO findById(Long id) {
 		try {
 			if (id == null || id <= 0) {
@@ -299,12 +296,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	/**
-	 * Busca un usuario por su correo electrónico.
-	 *
-	 * @param correo Correo a buscar.
-	 * @return DTO del usuario encontrado.
-	 */
 	public UsuarioDTO findByCorreo(String correo) {
 		try {
 			if (correo == null || correo.isBlank()) {
@@ -315,23 +306,19 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 			}
 			Optional<Usuario> encontrado = repo.findByCorreo(correo.trim());
 			if (!encontrado.isPresent()) {
-				lanzador.lanzarRecursoNoEncontrado("No existe un usuario con el correo: " + correo);
+				lanzador.lanzarRecursoNoEncontrado(
+						"No existe un usuario con el correo: " + correo);
 			}
 			return mapToDTO(encontrado.get());
 		} catch (TextoVacioException | FormatoCorreoInvalidoException
 				| RecursoNoEncontradoException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RuntimeException("Error inesperado al buscar por correo: " + e.getMessage());
+			throw new RuntimeException(
+					"Error inesperado al buscar por correo: " + e.getMessage());
 		}
 	}
 
-	/**
-	 * Busca un usuario por su nombre de usuario único.
-	 *
-	 * @param nombreUsuario Nombre de usuario a buscar.
-	 * @return DTO del usuario encontrado.
-	 */
 	public UsuarioDTO findByNombreUsuario(String nombreUsuario) {
 		try {
 			if (nombreUsuario == null || nombreUsuario.isBlank()) {
@@ -351,12 +338,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	/**
-	 * Busca usuarios por su nombre.
-	 *
-	 * @param nombre Nombre a buscar.
-	 * @return Lista de DTOs encontrados.
-	 */
 	public List<UsuarioDTO> findByNombre(String nombre) {
 		try {
 			if (nombre == null || nombre.isBlank()) {
@@ -371,16 +352,11 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		} catch (TextoVacioException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RuntimeException("Error inesperado al buscar por nombre: " + e.getMessage());
+			throw new RuntimeException(
+					"Error inesperado al buscar por nombre: " + e.getMessage());
 		}
 	}
 
-	/**
-	 * Busca usuarios por su apellido.
-	 *
-	 * @param apellido Apellido a buscar.
-	 * @return Lista de DTOs encontrados.
-	 */
 	public List<UsuarioDTO> findByApellido(String apellido) {
 		try {
 			if (apellido == null || apellido.isBlank()) {
@@ -395,16 +371,11 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		} catch (TextoVacioException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RuntimeException("Error inesperado al buscar por apellido: " + e.getMessage());
+			throw new RuntimeException(
+					"Error inesperado al buscar por apellido: " + e.getMessage());
 		}
 	}
 
-	/**
-	 * Busca usuarios que tengan un rol específico.
-	 *
-	 * @param rol Rol a buscar.
-	 * @return Lista de DTOs encontrados.
-	 */
 	public List<UsuarioDTO> findByRol(RolUsuario rol) {
 		try {
 			if (rol == null) {
@@ -419,7 +390,8 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		} catch (OpcionNoValidaException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RuntimeException("Error inesperado al buscar por rol: " + e.getMessage());
+			throw new RuntimeException(
+					"Error inesperado al buscar por rol: " + e.getMessage());
 		}
 	}
 
@@ -427,14 +399,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	// Métodos privados de validación
 	// =====================================================================
 
-	/**
-	 * Valida todos los campos básicos del DTO de usuario.
-	 * FIX JAVA-R1000: la validación se dividió en métodos privados por campo
-	 * para reducir la complejidad ciclomática de 27 a menos de 10.
-	 *
-	 * @param data              DTO con los datos del usuario.
-	 * @param validarContrasena indica si se debe validar la contraseña.
-	 */
 	private void validarCamposBasicos(UsuarioDTO data, boolean validarContrasena) {
 		if (data == null) {
 			lanzador.lanzarDatoInvalido("Los datos del usuario no pueden ser nulos.");
@@ -449,11 +413,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		validarTelefono(data.getTelefono());
 	}
 
-	/**
-	 * Valida el campo nombre.
-	 *
-	 * @param nombre valor a validar.
-	 */
 	private void validarNombre(String nombre) {
 		if (nombre == null || nombre.isBlank()) {
 			lanzador.lanzarTextoVacio("nombre");
@@ -470,11 +429,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	/**
-	 * Valida el campo apellido.
-	 *
-	 * @param apellido valor a validar.
-	 */
 	private void validarApellido(String apellido) {
 		if (apellido == null || apellido.isBlank()) {
 			lanzador.lanzarTextoVacio("apellido");
@@ -491,11 +445,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	/**
-	 * Valida el campo correo.
-	 *
-	 * @param correo valor a validar.
-	 */
 	private void validarCorreo(String correo) {
 		if (correo == null || correo.isBlank()) {
 			lanzador.lanzarTextoVacio("correo");
@@ -509,11 +458,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	/**
-	 * Valida el campo nombreUsuario.
-	 *
-	 * @param nombreUsuario valor a validar.
-	 */
 	private void validarNombreUsuario(String nombreUsuario) {
 		if (nombreUsuario == null || nombreUsuario.isBlank()) {
 			lanzador.lanzarTextoVacio("nombreUsuario");
@@ -524,11 +468,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	/**
-	 * Valida el campo contrasena.
-	 *
-	 * @param contrasena valor a validar.
-	 */
 	private void validarContrasena(String contrasena) {
 		if (contrasena == null || contrasena.isBlank()) {
 			lanzador.lanzarTextoVacio("contrasena");
@@ -544,11 +483,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	/**
-	 * Valida el campo teléfono.
-	 *
-	 * @param telefono valor a validar.
-	 */
 	private void validarTelefono(String telefono) {
 		if (telefono == null || telefono.isBlank()) {
 			lanzador.lanzarTelefonoInvalido(
@@ -572,7 +506,8 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 			lanzador.lanzarCorreoDuplicado(
 					"Ya existe un usuario registrado con el correo: " + data.getCorreo());
 		}
-		Optional<Usuario> porNombreUsuario = repo.findByNombreUsuario(data.getNombreUsuario().trim());
+		Optional<Usuario> porNombreUsuario =
+				repo.findByNombreUsuario(data.getNombreUsuario().trim());
 		if (porNombreUsuario.isPresent()
 				&& (idActual == null || !porNombreUsuario.get().getId().equals(idActual))) {
 			lanzador.lanzarNombreUsuarioDuplicado(
@@ -587,7 +522,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 		return correo.matches("^[\\w._%+\\-]+@[\\w.\\-]+\\.[a-zA-Z]{2,}$");
 	}
-
 
 	private UsuarioDTO mapToDTO(Usuario entity) {
 		UsuarioDTO dto = new UsuarioDTO();

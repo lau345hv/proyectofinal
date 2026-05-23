@@ -21,12 +21,15 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
+import co.edu.unbosque.proyectofinal.service.AuditoriaService;
+import co.edu.unbosque.proyectofinal.util.enums.TipoAccion;
+ 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import co.edu.unbosque.proyectofinal.dto.AuditoriaDTO;
 import co.edu.unbosque.proyectofinal.dto.HistorialConversionDTO;
 import co.edu.unbosque.proyectofinal.exception.ApiExternaException;
 import co.edu.unbosque.proyectofinal.exception.ArchivoVacioException;
@@ -161,6 +164,9 @@ public class CloudConvertService {
 
 	@Autowired
 	private LanzadorDeExcepcion lanzador;
+	
+	@Autowired
+	private AuditoriaService auditoriaService;
 
 	private final Gson gson = new Gson();
 
@@ -239,10 +245,6 @@ public class CloudConvertService {
 			case IMAGEN -> FORMATOS_IMAGEN;
 		};
 	}
-
-	// =====================================================================
-	// Métodos privados
-	// =====================================================================
 
 	/**
 	 * Valida los parámetros de entrada antes de iniciar la conversión.
@@ -371,6 +373,12 @@ public class CloudConvertService {
 				EstadoConversion.COMPLETADO,
 				usuarioId);
 		historialConversionService.create(historial);
+		
+		AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.CONVERSION,
+	            "Conversión exitosa: " + nombreOriginal
+	                    + " → " + formatoDestino
+	                    + " (" + tipoArchivo.name() + ")");
+	    auditoriaService.create(auditoria);
 	}
 
 	private JsonObject construirCuerpoJob(String formatoDestino) {
@@ -572,6 +580,13 @@ public class CloudConvertService {
 					EstadoConversion.FALLIDO,
 					usuarioId);
 			historialConversionService.create(historialFallido);
+			
+			AuditoriaDTO auditoriaFallida = auditoriaService.preAccion(TipoAccion.CONVERSION,
+	                "Conversión FALLIDA: " + nombreOriginal
+	                        + " → " + formatoDestino
+	                        + " (" + tipoArchivo.name() + ")");
+	        auditoriaService.create(auditoriaFallida);
+			
 		} catch (Exception ignorado) {
 			// Si no se puede registrar el fallo (por ejemplo, el usuario no
 			// existe), no propagamos la excepción para no ocultar la original.

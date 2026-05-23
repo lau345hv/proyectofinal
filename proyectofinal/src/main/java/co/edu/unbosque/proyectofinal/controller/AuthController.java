@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.unbosque.proyectofinal.dto.AuditoriaDTO;
 import co.edu.unbosque.proyectofinal.dto.UsuarioDTO;
 import co.edu.unbosque.proyectofinal.entity.Usuario;
 import co.edu.unbosque.proyectofinal.security.JwtUtil;
+import co.edu.unbosque.proyectofinal.service.AuditoriaService;
 import co.edu.unbosque.proyectofinal.service.UsuarioService;
 import co.edu.unbosque.proyectofinal.util.enums.RolUsuario;
+import co.edu.unbosque.proyectofinal.util.enums.TipoAccion;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,7 +41,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * </ul>
  *
  * @author Equipo de desarrollo
- * @version 1.0
+ * @version 1.1
  */
 @RestController
 @RequestMapping("/autenticacion")
@@ -49,12 +52,14 @@ public class AuthController {
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
 	private final UsuarioService usuarioService;
+	private final AuditoriaService auditoriaService;
 
 	public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil,
-			UsuarioService usuarioService) {
+			UsuarioService usuarioService, AuditoriaService auditoriaService) {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 		this.usuarioService = usuarioService;
+		this.auditoriaService = auditoriaService;
 	}
 
 	@PostMapping("/solicitar-codigo")
@@ -95,6 +100,21 @@ public class AuthController {
 						registerRequest.getNombreUsuario(), registerRequest.getContrasena()));
 		Usuario usuario = (Usuario) authentication.getPrincipal();
 		String jwt = jwtUtil.generateToken(usuario);
+
+		// Auditoría: nuevo usuario registrado
+		// En este punto el ThreadLocal aún no tiene token porque se está registrando
+		// así que construimos el DTO manualmente con los datos disponibles.
+		AuditoriaDTO auditoria = new AuditoriaDTO(
+				usuario.getId(),
+				usuario.getNombreUsuario(),
+				RolUsuario.USUARIO,
+				TipoAccion.CREATE,
+				"Nuevo usuario registrado: " + usuario.getNombreUsuario()
+						+ " (" + usuario.getCorreo() + ")",
+				"/autenticacion/register",
+				java.time.LocalDateTime.now());
+		auditoriaService.create(auditoria);
+
 		AuthResponse respuesta = new AuthResponse(jwt, usuario.getRol().name(),
 				usuario.getId(), usuario.getNombreUsuario());
 		return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
@@ -118,21 +138,33 @@ public class AuthController {
 		String rol = null;
 		Long id = null;
 		String nombreUsuario = null;
+		RolUsuario rolEnum = null;
 		if (userDetails instanceof Usuario u) {
 			rol = u.getRol().name();
+			rolEnum = u.getRol();
 			id = u.getId();
 			nombreUsuario = u.getNombreUsuario();
 		}
+
+		// Auditoría: inicio de sesión
+		// El login tampoco tiene token en el ThreadLocal aún, se está generenado aquí
+		// así que construimos el DTO con los datos del usuario autenticado.
+		AuditoriaDTO auditoria = new AuditoriaDTO(
+				id,
+				nombreUsuario,
+				rolEnum,
+				TipoAccion.LOGIN,
+				"Inicio de sesión: " + nombreUsuario,
+				"/autenticacion/login",
+				java.time.LocalDateTime.now());
+		auditoriaService.create(auditoria);
+
 		return new ResponseEntity<>(new AuthResponse(jwt, rol, id, nombreUsuario), HttpStatus.OK);
 	}
 
 	/**
 	 * Clase interna estática que representa la respuesta de autenticación
 	 * enviada al cliente tras un login o registro exitoso.
-	 * <p>
-	 * Contiene el token JWT generado, el rol del usuario, su ID y su
-	 * nombre de usuario.
-	 * </p>
 	 */
 	private static class AuthResponse {
 

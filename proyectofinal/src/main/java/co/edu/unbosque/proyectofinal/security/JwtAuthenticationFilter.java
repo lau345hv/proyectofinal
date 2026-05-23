@@ -26,17 +26,28 @@ import jakarta.servlet.http.HttpServletResponse;
  * <ol>
  *   <li>Extrae el token JWT del encabezado {@code Authorization}
  *       (formato {@code Bearer <token>})</li>
+ *   <li>Guarda el token en un {@link ThreadLocal} para que el servicio de
+ *       auditoría pueda recuperarlo sin necesidad de pasarlo como
+ *       parámetro.</li>
  *   <li>Extrae el nombre de usuario del token usando {@link JwtUtil}</li>
  *   <li>Si el usuario existe y el token es válido, establece la
  *       autenticación en el {@link SecurityContextHolder}</li>
- *   <li>Continúa la cadena de filtros</li>
+ *   <li>Continúa la cadena de filtros y al terminar limpia el
+ *       {@link ThreadLocal} para evitar memory leaks.</li>
  * </ol>
  *
  * @author Equipo de desarrollo
- * @version 2.0
+ * @version 2.1
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+	/**
+	 * Almacena el token JWT del hilo activo para que los servicios (en
+	 * especial {@code AuditoriaService}) puedan recuperarlo sin acoplarse
+	 * a la capa HTTP.
+	 */
+	private static final ThreadLocal<String> TOKEN_HILO = new ThreadLocal<>();
 
 	private final JwtUtil jwtUtil;
 	private final UserDetailsService userDetailsService;
@@ -44,6 +55,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
 		this.jwtUtil = jwtUtil;
 		this.userDetailsService = userDetailsService;
+	}
+
+	/**
+	 * Devuelve el token JWT asociado al hilo de la petición HTTP actual.
+	 * Retorna {@code null} si la petición es anónima o no lleva token.
+	 *
+	 * @return token JWT en crudo (sin el prefijo "Bearer "), o {@code null}.
+	 */
+	public String getTokenJwt() {
+		return TOKEN_HILO.get();
 	}
 
 	@Override
@@ -57,6 +78,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		if (encabezadoAutorizacion != null && encabezadoAutorizacion.startsWith("Bearer ")) {
 			jwt = encabezadoAutorizacion.substring(7);
+			TOKEN_HILO.set(jwt);
 			try {
 				nombreUsuario = jwtUtil.extractUsername(jwt);
 			} catch (Exception e) {
@@ -77,6 +99,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 		}
 
-		filterChain.doFilter(request, response);
+		try {
+			filterChain.doFilter(request, response);
+		} finally {
+			TOKEN_HILO.remove();
+		}
 	}
 }

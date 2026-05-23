@@ -19,8 +19,41 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * al serializar a JSON.
  * </p>
  *
+ * <h3>Corrección aplicada (DeepSource JAVA-E1086):</h3>
+ * <p>
+ * El setter {@code setHistorialConversionesId} asignaba directamente la
+ * referencia de la lista recibida como parámetro al campo interno. Esto
+ * permite que el código externo que llamó al setter mantenga una
+ * referencia al mismo objeto {@code List} y pueda modificar el estado
+ * interno del DTO sin pasar por ningún método controlado, lo que
+ * constituye una violación del principio de encapsulamiento y puede
+ * causar comportamientos inesperados (bug risk).
+ * </p>
+ * <p>
+ * <strong>Solución — Copia defensiva:</strong> Tanto el setter como el
+ * getter ahora trabajan con copias independientes de la lista mediante
+ * {@code new ArrayList<>(lista)}. El setter crea una copia interna al
+ * recibir el parámetro, y el getter devuelve una copia al exponer el
+ * campo. De esta forma ningún código externo puede alterar la lista
+ * interna del DTO directamente.
+ * </p>
+ * <p>
+ * Ejemplo del problema antes de la corrección:
+ * <pre>
+ *   List&lt;Long&gt; ids = new ArrayList&lt;&gt;(List.of(1L, 2L));
+ *   dto.setHistorialConversionesId(ids);
+ *   ids.clear(); // ¡Esto también vaciaba la lista interna del DTO!
+ * </pre>
+ * Después de la corrección:
+ * <pre>
+ *   List&lt;Long&gt; ids = new ArrayList&lt;&gt;(List.of(1L, 2L));
+ *   dto.setHistorialConversionesId(ids);
+ *   ids.clear(); // El DTO conserva su copia con [1, 2] sin verse afectado.
+ * </pre>
+ * </p>
+ *
  * @author Equipo de desarrollo
- * @version 2.0
+ * @version 2.1
  */
 @Schema(description = "Datos de un usuario de la plataforma")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -141,12 +174,36 @@ public class UsuarioDTO {
 		this.rol = rol;
 	}
 
+	/**
+	 * Devuelve una copia defensiva de la lista de IDs del historial.
+	 * <p>
+	 * Se retorna una copia nueva para que el código externo no pueda modificar
+	 * la lista interna del DTO directamente (corrección JAVA-E1086).
+	 * </p>
+	 *
+	 * @return nueva lista con los mismos IDs del historial de conversiones.
+	 */
 	public List<Long> getHistorialConversionesId() {
-		return historialConversionesId;
+		// Copia defensiva: el llamador recibe su propia lista independiente.
+		return new ArrayList<>(historialConversionesId);
 	}
 
+	/**
+	 * Asigna la lista de IDs del historial realizando una copia defensiva.
+	 * <p>
+	 * Se almacena una copia interna de la lista recibida para que
+	 * modificaciones posteriores sobre la lista original no afecten el
+	 * estado interno del DTO (corrección JAVA-E1086).
+	 * Si se pasa {@code null}, se asigna una lista vacía.
+	 * </p>
+	 *
+	 * @param historialConversionesId lista de IDs a asignar; puede ser {@code null}.
+	 */
 	public void setHistorialConversionesId(List<Long> historialConversionesId) {
-		this.historialConversionesId = historialConversionesId;
+		// Copia defensiva: se guarda una nueva lista para aislar el estado interno.
+		this.historialConversionesId = (historialConversionesId != null)
+				? new ArrayList<>(historialConversionesId)
+				: new ArrayList<>();
 	}
 
 	@Override

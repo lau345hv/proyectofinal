@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unbosque.proyectofinal.dto.HistorialConversionDTO;
-import co.edu.unbosque.proyectofinal.entity.Usuario;
+import co.edu.unbosque.proyectofinal.dto.UsuarioDTO;
 import co.edu.unbosque.proyectofinal.exception.LanzadorDeExcepcion;
 import co.edu.unbosque.proyectofinal.service.HistorialConversionService;
 import co.edu.unbosque.proyectofinal.service.UsuarioService;
@@ -37,8 +38,26 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
  * al rol ADMIN.
  * </p>
  *
+ * <h3>Correcciones aplicadas (DeepSource JAVA-S1061):</h3>
+ * <p>
+ * El endpoint {@code misConversiones} anteriormente recibía la entidad
+ * JPA {@code Usuario} directamente como parámetro mediante
+ * {@code @AuthenticationPrincipal}. Esto viola las buenas prácticas de
+ * seguridad porque expone el objeto de persistencia a la capa web y
+ * puede filtrar información interna del modelo de datos.
+ * </p>
+ * <p>
+ * <strong>Solución:</strong> Se reemplazó {@code Usuario} por
+ * {@link UserDetails} (interfaz estándar de Spring Security). A partir
+ * del {@code UserDetails} solo se extrae el nombre de usuario
+ * ({@link UserDetails#getUsername()}), y luego se delega al
+ * {@link UsuarioService} la responsabilidad de obtener el ID real del
+ * usuario desde la base de datos. Así la capa web nunca toca
+ * directamente la entidad JPA.
+ * </p>
+ *
  * @author Equipo de desarrollo
- * @version 3.0
+ * @version 3.1
  */
 @RestController
 @RequestMapping("/historial")
@@ -56,25 +75,43 @@ public class HistorialController {
 		this.lanzador = lanzador;
 	}
 
-	// =====================================================================
-	// ENDPOINT PARA EL USUARIO AUTENTICADO (cualquier rol)
-	// =====================================================================
 
+	/**
+	 * Devuelve el historial de conversiones del usuario que envió el token JWT.
+	 * <p>
+	 * <strong>Corrección JAVA-S1061:</strong> Se usa {@link UserDetails} en lugar
+	 * de la entidad {@code Usuario} para no exponer el objeto de persistencia en
+	 * la capa web. El nombre de usuario se extrae de {@link UserDetails#getUsername()}
+	 * y se resuelve el ID correspondiente a través de {@link UsuarioService}.
+	 * </p>
+	 *
+	 * @param userDetails principal inyectado por Spring Security a partir del JWT.
+	 *                    Contiene el nombre de usuario pero NO la entidad JPA completa.
+	 * @return lista de {@link HistorialConversionDTO} del usuario autenticado,
+	 *         o {@code 204 No Content} si no tiene conversiones registradas.
+	 */
 	@GetMapping("/misConversiones")
 	@Operation(summary = "Ver el historial del usuario autenticado",
 			description = "Devuelve únicamente las conversiones del propio usuario.")
 	public ResponseEntity<List<HistorialConversionDTO>> misConversiones(
-			@AuthenticationPrincipal Usuario usuarioAutenticado) {
-		List<HistorialConversionDTO> lista = service.findByUsuarioId(usuarioAutenticado.getId());
+			@AuthenticationPrincipal UserDetails userDetails) {
+
+		/*
+		 * Se obtiene el nombre de usuario desde el principal de Spring Security.
+		 * Después se consulta el UsuarioService para recuperar el DTO con el ID,
+		 * evitando así trabajar con la entidad JPA directamente en el controlador.
+		 */
+		String nombreUsuario = userDetails.getUsername();
+		UsuarioDTO usuarioDTO = usuarioService.findByNombreUsuario(nombreUsuario);
+
+		List<HistorialConversionDTO> lista = service.findByUsuarioId(usuarioDTO.getId());
 		if (lista.isEmpty()) {
 			return new ResponseEntity<>(lista, HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
-	// =====================================================================
-	// ENDPOINTS SOLO PARA ADMIN
-	// =====================================================================
+
 
 	@GetMapping("/resumen")
 	@Operation(summary = "Resumen general del sistema (SOLO ADMIN)",

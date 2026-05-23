@@ -4,6 +4,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class ErrorHandlerService {
 
+  private readonly MAX_MENSAJE_LENGTH = 200;
+
   extraerMensaje(err: unknown, fallback = 'Ocurrió un error inesperado.'): string {
 
     if (err instanceof HttpErrorResponse) {
@@ -75,12 +77,12 @@ export class ErrorHandlerService {
 
     limpio = limpio.replace(/^[a-zA-Z]+(\.[a-zA-Z]+)+:\s*/, '').trim();
 
-    if (limpio.length > 200) {
+    if (limpio.length > this.MAX_MENSAJE_LENGTH) {
       const punto = limpio.indexOf('.', 50);
-      if (punto > 0 && punto < 200) {
+      if (punto > 0 && punto < this.MAX_MENSAJE_LENGTH) {
         limpio = limpio.substring(0, punto + 1);
       } else {
-        limpio = `${limpio.substring(0, 200)}...`;
+        limpio = `${limpio.substring(0, this.MAX_MENSAJE_LENGTH)}...`;
       }
     }
 

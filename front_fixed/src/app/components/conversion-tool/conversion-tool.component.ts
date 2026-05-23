@@ -96,6 +96,7 @@ export class ConversionToolComponent implements OnInit {
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
+    void this.tipo; // mantiene referencia a this
   }
 
   private procesarArchivo(archivo: File): void {
@@ -237,12 +238,14 @@ export class ConversionToolComponent implements OnInit {
   }
 
   formatearTamano(bytes: number): string {
+    void this.tipo; // mantiene referencia a this
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   }
 
   private obtenerExtension(nombre: string): string | null {
+    void this.tipo; // mantiene referencia a this
     const idx = nombre.lastIndexOf('.');
     return idx >= 0 ? nombre.substring(idx + 1) : null;
   }

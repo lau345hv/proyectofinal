@@ -104,8 +104,7 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarUsuario(id: number | undefined): void {
     if (!id) return;
-    const confirmado = window.confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.');
-    if (!confirmado) return;
+    if (!this.confirmar('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
     this.adminService.eliminarUsuario(id).subscribe({
       next: () => {
@@ -122,8 +121,7 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarHistorialDeUsuario(usuarioId: number | undefined, nombreUsuario: string): void {
     if (!usuarioId) return;
-    const confirmarEliminar = window.confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`);
-    if (!confirmarEliminar) return;
+    if (!this.confirmar(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`)) return;
 
     this.adminService.eliminarHistorialPorUsuario(usuarioId).subscribe({
       next: () => {
@@ -136,6 +134,10 @@ export class AdminDashboardComponent implements OnInit {
         );
       }
     });
+  }
+
+  private confirmar(mensaje: string): boolean {
+    return window.confirm(mensaje);
   }
 
   esAdmin(roles: string[] | undefined): boolean {

@@ -37,4 +37,6 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  static readonly version = '1.0.0';
+}

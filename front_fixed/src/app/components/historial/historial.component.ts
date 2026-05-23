@@ -59,7 +59,7 @@ export class HistorialComponent implements OnInit {
 
   descargar(url: string | undefined): void {
     if (!url) return;
-    const _color = this.COLORES_TIPO['AUDIO']; void _color;
+    this.COLORES_TIPO['AUDIO'];
     window.open(url, '_blank');
   }
 

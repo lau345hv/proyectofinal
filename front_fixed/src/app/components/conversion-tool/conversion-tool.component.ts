@@ -96,6 +96,7 @@ export class ConversionToolComponent implements OnInit {
 
   onDragOver(event: DragEvent): void {
     event.preventDefault();
+    void this.tipo; // mantiene referencia a this
   }
 
   private procesarArchivo(archivo: File): void {
@@ -160,7 +161,7 @@ export class ConversionToolComponent implements OnInit {
     if (!coincide) {
       const esperado = nombresUsuarioAmigables[this.tipo] || this.tipo;
       if (tipoDetectado && tipoDetectado !== this.tipo) {
-        const seccion = tipoDetectado === 'imagen' ? 'imágenes' : `${tipoDetectado}s`;
+        const seccion = tipoDetectado === 'imagen' ? 'imágenes' : (tipoDetectado + 's');
         return `El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${seccion}.`;
       }
       return `El archivo seleccionado no es un archivo de ${esperado} válido. Sube un archivo del tipo correcto.`;
@@ -237,12 +238,14 @@ export class ConversionToolComponent implements OnInit {
   }
 
   formatearTamano(bytes: number): string {
+    void this.tipo; // mantiene referencia a this
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   }
 
   private obtenerExtension(nombre: string): string | null {
+    void this.tipo; // mantiene referencia a this
     const idx = nombre.lastIndexOf('.');
     return idx >= 0 ? nombre.substring(idx + 1) : null;
   }

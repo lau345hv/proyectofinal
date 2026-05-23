@@ -12,9 +12,9 @@ import { ErrorHandlerService } from '../../services/error-handler.service';
 export class LoginComponent {
 
   form: FormGroup;
-  cargando = false;
-  error = '';
-  mostrarContrasena = false;
+  cargando: boolean = false;
+  error: string = '';
+  mostrarContrasena: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -44,7 +44,7 @@ export class LoginComponent {
     const { nombreUsuario, contrasena } = this.form.value;
 
     this.auth.login(nombreUsuario.trim(), contrasena).subscribe({
-      next: () => {
+      next: (res) => {
         this.cargando = false;
         if (this.auth.isAdmin()) {
           this.router.navigate(['/admin']);

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
@@ -75,7 +75,7 @@ describe('LoginComponent', () => {
   });
 
   it('submit() exitoso redirige a /admin cuando es admin', fakeAsync(() => {
-    auth.login.and.returnValue(of({ mensaje: 'ok', usuario: {} as Record<string, unknown> }));
+    auth.login.and.returnValue(of({ mensaje: 'ok', usuario: {} as any }));
     auth.isAdmin.and.returnValue(true);
     component.form.setValue({ nombreUsuario: 'admin', contrasena: 'pass1234' });
     component.submit();
@@ -84,7 +84,7 @@ describe('LoginComponent', () => {
   }));
 
   it('submit() exitoso redirige a / cuando es usuario normal', fakeAsync(() => {
-    auth.login.and.returnValue(of({ mensaje: 'ok', usuario: {} as Record<string, unknown> }));
+    auth.login.and.returnValue(of({ mensaje: 'ok', usuario: {} as any }));
     auth.isAdmin.and.returnValue(false);
     component.form.setValue({ nombreUsuario: 'user', contrasena: 'pass1234' });
     component.submit();
@@ -179,7 +179,7 @@ describe('RegisterComponent', () => {
   });
 
   it('registrar() exitoso redirige a /login después de 1800ms', fakeAsync(() => {
-    auth.registrar.and.returnValue(of({ mensaje: 'ok', usuario: {} as Record<string, unknown> }));
+    auth.registrar.and.returnValue(of({ mensaje: 'ok', usuario: {} as any }));
     component.paso = 2;
     component.correoVerificado = 'u@m.com';
     component.formRegistro.setValue({
@@ -374,7 +374,7 @@ describe('AdminDashboardComponent', () => {
 
   it('esAdmin() retorna false cuando roles no incluye ADMIN', () => {
     expect(component.esAdmin(['USER'])).toBeFalse();
-    expect(component.esAdmin(undefined as string[] | undefined)).toBeFalse();
+    expect(component.esAdmin(undefined)).toBeFalse();
   });
 
   it('cambiarFiltroTipo() limpia filtroEstado y recarga conversiones', () => {
@@ -414,7 +414,7 @@ describe('AdminDashboardComponent', () => {
   });
 
   it('eliminarUsuario() no hace nada si el id es undefined', () => {
-    component.eliminarUsuario(undefined as number | undefined);
+    component.eliminarUsuario(undefined);
     expect(adminService.eliminarUsuario).not.toHaveBeenCalled();
   });
 

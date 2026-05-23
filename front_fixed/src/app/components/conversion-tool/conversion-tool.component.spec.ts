@@ -64,8 +64,8 @@ describe('ConversionToolComponent', () => {
         { provide: ActivatedRoute, useValue: { params: of({ tipo: 'desconocido' }) } }
       ]
     });
-    const fixtureTemp = TestBed.createComponent(ConversionToolComponent);
-    fixtureTemp.detectChanges();
+    const f = TestBed.createComponent(ConversionToolComponent);
+    f.detectChanges();
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 
@@ -169,7 +169,7 @@ describe('ConversionToolComponent', () => {
     const event = {
       preventDefault: jasmine.createSpy(),
       dataTransfer: { files: [file] }
-    } as unknown as DragEvent;
+    } as any;
 
     component.onDrop(event);
 
@@ -183,7 +183,7 @@ describe('ConversionToolComponent', () => {
     const event = {
       preventDefault: jasmine.createSpy(),
       dataTransfer: { files: [imgFile] }
-    } as unknown as DragEvent;
+    } as any;
 
     component.onDrop(event);
 
@@ -196,7 +196,7 @@ describe('ConversionToolComponent', () => {
     const event = {
       preventDefault: jasmine.createSpy(),
       dataTransfer: { files: [emptyFile] }
-    } as unknown as DragEvent;
+    } as any;
 
     component.onDrop(event);
 

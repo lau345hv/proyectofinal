@@ -13,11 +13,10 @@ describe('ThemeService', () => {
         matches: false,
         media: query,
         onchange: null,
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        addListener: (_: unknown) => { /* no-op stub */ },
-        removeListener: (_: unknown) => { /* no-op stub */ },
-        addEventListener: (_: unknown) => { /* no-op stub */ },
-        removeEventListener: (_: unknown) => { /* no-op stub */ },
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
         dispatchEvent: () => false
       })
     });
@@ -45,16 +44,16 @@ describe('ThemeService', () => {
     // Recrea el servicio
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({ providers: [ThemeService] });
-    const themeService = TestBed.inject(ThemeService);
-    expect(themeService.isDark()).toBeTrue();
+    const s = TestBed.inject(ThemeService);
+    expect(s.isDark()).toBeTrue();
   });
 
   it('inicia en modo claro cuando localStorage tiene "light"', () => {
     localStorage.setItem('superconvert-theme', 'light');
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({ providers: [ThemeService] });
-    const themeService = TestBed.inject(ThemeService);
-    expect(themeService.isDark()).toBeFalse();
+    const s = TestBed.inject(ThemeService);
+    expect(s.isDark()).toBeFalse();
   });
 
   // ── toggle ────────────────────────────────────────────────────────────

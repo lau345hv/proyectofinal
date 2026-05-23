@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class ThemeService {
 
   private readonly STORAGE_KEY = 'superconvert-theme';
-  private oscuro = false;
+  private oscuro: boolean = false;
 
   constructor() {
     const guardado = localStorage.getItem(this.STORAGE_KEY);

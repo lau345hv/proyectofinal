@@ -1,8 +1,7 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
-import { AuthService, LoginResponse } from './auth.service';
-import { UsuarioDTO } from '../models/models';
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -44,8 +43,8 @@ describe('AuthService', () => {
     localStorage.setItem('jwt_token', 'tok');
     localStorage.setItem('usuario', JSON.stringify({ id: 1, nombreUsuario: 'u', nombre: '', apellido: '', correo: '', telefono: '' }));
     // Recrea el servicio para que cargue el usuario guardado
-    const serviceInstance = new (service.constructor as unknown as new (h: HttpClient) => AuthService)(TestBed.inject(HttpClient));
-    expect(serviceInstance.isLoggedIn()).toBeTrue();
+    const s = new (service.constructor as any)(TestBed.inject(HttpClient));
+    expect(s.isLoggedIn()).toBeTrue();
   });
 
   // ── isAdmin ───────────────────────────────────────────────────────────
@@ -82,8 +81,8 @@ describe('AuthService', () => {
   it('logout() elimina el token y emite null en currentUser$', fakeAsync(() => {
     localStorage.setItem('jwt_token', 'tok');
     localStorage.setItem('usuario', JSON.stringify({ id: 1, nombreUsuario: 'u', nombre: '', apellido: '', correo: '', telefono: '' }));
-    let emittedUser: UsuarioDTO | null | string = 'initial';
-    service.currentUser$.subscribe((u: UsuarioDTO | null) => { emittedUser = u; });
+    let emittedUser: any = 'initial';
+    service.currentUser$.subscribe((u: any) => (emittedUser = u));
 
     service.logout().subscribe();
     tick();
@@ -94,8 +93,8 @@ describe('AuthService', () => {
 
   // ── login ─────────────────────────────────────────────────────────────
   it('login() guarda el token y retorna LoginResponse correctamente', fakeAsync(() => {
-    let result: LoginResponse | undefined;
-    service.login('juanito', 'pass1234').subscribe((r: LoginResponse) => { result = r; });
+    let result: any;
+    service.login('juanito', 'pass1234').subscribe((r: any) => (result = r));
 
     const req = httpMock.expectOne('http://localhost:8080/autenticacion/login');
     expect(req.request.method).toBe('POST');
@@ -110,7 +109,7 @@ describe('AuthService', () => {
 
     expect(localStorage.getItem('jwt_token')).toBe('test-token-123');
     expect(result).toBeTruthy();
-    expect(result?.usuario.nombreUsuario).toBe('juanito');
+    expect(result.usuario.nombreUsuario).toBe('juanito');
   }));
 
   // ── registrar ─────────────────────────────────────────────────────────
@@ -120,8 +119,8 @@ describe('AuthService', () => {
       nombreUsuario: 'juanito', contrasena: 'pass1234',
       telefono: '3000000000', codigoVerificacion: '1234'
     };
-    let result: LoginResponse | undefined;
-    service.registrar(datos).subscribe((r: LoginResponse) => { result = r; });
+    let result: any;
+    service.registrar(datos).subscribe((r: any) => (result = r));
 
     const req = httpMock.expectOne(r => r.url === 'http://localhost:8080/autenticacion/register');
     expect(req.request.method).toBe('POST');
@@ -134,7 +133,7 @@ describe('AuthService', () => {
     tick();
 
     expect(localStorage.getItem('jwt_token')).toBe('test-token-123');
-    expect(result?.mensaje).toBe('ok');
+    expect(result.mensaje).toBe('ok');
   }));
 
   // ── solicitarCodigo ───────────────────────────────────────────────────

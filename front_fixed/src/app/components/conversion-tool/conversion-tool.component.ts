@@ -20,14 +20,14 @@ interface ConversionConfig {
 })
 export class ConversionToolComponent implements OnInit {
 
-  tipo = '';
+  tipo: string = '';
   archivoSeleccionado: File | null = null;
-  formatoDestino = '';
-  convirtiendo = false;
+  formatoDestino: string = '';
+  convirtiendo: boolean = false;
   urlDescarga: string | null = null;
-  nombreArchivo = '';
-  error = '';
-  exito = false;
+  nombreArchivo: string = '';
+  error: string = '';
+  exito: boolean = false;
 
   configs: { [key: string]: ConversionConfig } = {
     audio: {
@@ -160,8 +160,7 @@ export class ConversionToolComponent implements OnInit {
     if (!coincide) {
       const esperado = nombresUsuarioAmigables[this.tipo] || this.tipo;
       if (tipoDetectado && tipoDetectado !== this.tipo) {
-        const seccion = tipoDetectado === 'imagen' ? 'imágenes' : (tipoDetectado + 's');
-        return `El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${seccion}.`;
+        return `El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${tipoDetectado === 'imagen' ? 'imágenes' : tipoDetectado + 's'}.`;
       }
       return `El archivo seleccionado no es un archivo de ${esperado} válido. Sube un archivo del tipo correcto.`;
     }
@@ -201,7 +200,7 @@ export class ConversionToolComponent implements OnInit {
           return;
         }
         this.urlDescarga = urlDescarga.trim();
-        const nombreBase = (this.archivoSeleccionado?.name ?? '').replace(/\.[^/.]+$/, '');
+        const nombreBase = this.archivoSeleccionado!.name.replace(/\.[^/.]+$/, '');
         this.nombreArchivo = `${nombreBase}.${this.formatoDestino}`;
         this.exito = true;
       },
@@ -237,9 +236,9 @@ export class ConversionToolComponent implements OnInit {
   }
 
   formatearTamano(bytes: number): string {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   }
 
   private obtenerExtension(nombre: string): string | null {

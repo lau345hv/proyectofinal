@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class ErrorHandlerService {
 
-  extraerMensaje(err: unknown, fallback = 'Ocurrió un error inesperado.'): string {
+  extraerMensaje(err: any, fallback: string = 'Ocurrió un error inesperado.'): string {
 
     if (err instanceof HttpErrorResponse) {
 
@@ -19,7 +19,7 @@ export class ErrorHandlerService {
       }
 
       if (body && typeof body === 'object') {
-        const msg = this.extraerDeObjeto(body as Record<string, unknown>);
+        const msg = this.extraerDeObjeto(body);
         if (msg) return msg;
       }
 
@@ -31,30 +31,30 @@ export class ErrorHandlerService {
     }
 
     if (typeof err === 'string') return err;
-    if (err && typeof err === 'object' && 'message' in err) return (err as { message: string }).message;
+    if (err?.message) return err.message;
     return fallback;
   }
 
-  private intentarParsearJSON(texto: string): unknown {
+  private intentarParsearJSON(texto: string): any {
     try {
       const parsed = JSON.parse(texto);
       if (parsed && typeof parsed === 'object') return parsed;
-    } catch { /* invalid JSON, return original text */ }
-    return this.limpiarMensaje(texto);
+    } catch {}
+    return texto;
   }
 
-  private extraerDeObjeto(obj: Record<string, unknown>): string | null {
-    if (obj['message'] && typeof obj['message'] === 'string') {
-      return this.limpiarMensaje(obj['message']);
+  private extraerDeObjeto(obj: any): string | null {
+    if (obj.message && typeof obj.message === 'string') {
+      return this.limpiarMensaje(obj.message);
     }
 
-    if (obj['trace'] && typeof obj['trace'] === 'string') {
-      const msgDeTrace = this.extraerMensajeDeTrace(obj['trace']);
+    if (obj.trace && typeof obj.trace === 'string') {
+      const msgDeTrace = this.extraerMensajeDeTrace(obj.trace);
       if (msgDeTrace) return msgDeTrace;
     }
 
-    if (obj['error'] && typeof obj['error'] === 'string' && obj['error'] !== 'Internal Server Error') {
-      return obj['error'];
+    if (obj.error && typeof obj.error === 'string' && obj.error !== 'Internal Server Error') {
+      return obj.error;
     }
 
     return null;
@@ -62,7 +62,7 @@ export class ErrorHandlerService {
 
   private extraerMensajeDeTrace(trace: string): string | null {
     const match = trace.match(/Exception:\s*(.+?)(?:\r|\n|$)/);
-    if (match?.[1]) {
+    if (match && match[1]) {
       return this.limpiarMensaje(match[1]);
     }
     return null;
@@ -80,7 +80,7 @@ export class ErrorHandlerService {
       if (punto > 0 && punto < 200) {
         limpio = limpio.substring(0, punto + 1);
       } else {
-        limpio = `${limpio.substring(0, 200)}...`;
+        limpio = limpio.substring(0, 200) + '...';
       }
     }
 
@@ -88,7 +88,6 @@ export class ErrorHandlerService {
   }
 
   private mensajePorCodigo(status: number, fallback: string): string {
-    const fb = this.limpiarMensaje(fallback) || fallback;
     switch (status) {
       case 400: return 'Los datos enviados no son válidos. Revisa los campos e intenta de nuevo.';
       case 401: return 'Usuario o contraseña incorrectos.';
@@ -96,8 +95,8 @@ export class ErrorHandlerService {
       case 404: return 'Recurso no encontrado en el servidor.';
       case 405: return 'Operación no permitida.';
       case 409: return 'Ya existe un registro con esos datos.';
-      case 500: return fb;
-      default: return fb;
+      case 500: return fallback;
+      default: return fallback;
     }
   }
 }

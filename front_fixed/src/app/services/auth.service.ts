@@ -25,8 +25,6 @@ export interface LoginResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private readonly JWT_KEY = 'jwt_token';
-  private readonly USER_KEY = 'usuario';
   private userSubject = new BehaviorSubject<UsuarioDTO | null>(this.cargarUsuario());
   currentUser$ = this.userSubject.asObservable();
 
@@ -67,8 +65,8 @@ export class AuthService {
   }
 
   logout(): Observable<string> {
-    localStorage.removeItem(this.JWT_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('usuario');
     this.userSubject.next(null);
     return of('ok');
   }
@@ -80,14 +78,14 @@ export class AuthService {
   // ── Estado ────────────────────────────────────────────────────────
 
   isLoggedIn(): boolean {
-    return Boolean(localStorage.getItem(this.JWT_KEY)) && Boolean(this.userSubject.value);
+    return !!localStorage.getItem('jwt_token') && !!this.userSubject.value;
   }
 
   isAdmin(): boolean {
-    const usuario = this.userSubject.value;
-    if (!usuario) return false;
-    const rol = (usuario as UsuarioDTO & { rol?: string }).rol;
-    return usuario.roles?.includes('ADMIN') || rol === 'ADMIN' || false;
+    const u = this.userSubject.value;
+    if (!u) return false;
+    const rol = (u as any).rol as string | undefined;
+    return u.roles?.includes('ADMIN') || rol === 'ADMIN' || false;
   }
 
   getCurrentUser(): UsuarioDTO | null {
@@ -95,21 +93,21 @@ export class AuthService {
   }
 
   clearLocal(): void {
-    localStorage.removeItem(this.JWT_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('usuario');
     this.userSubject.next(null);
   }
 
   getAuthToken(): string | null {
-    return localStorage.getItem(this.JWT_KEY);
+    return localStorage.getItem('jwt_token');
   }
 
   // ── Helpers privados ──────────────────────────────────────────────
 
   private persistirSesion(res: AuthResponse): void {
-    localStorage.setItem(this.JWT_KEY, res.token);
+    localStorage.setItem('jwt_token', res.token);
     // Primero guardamos con datos mínimos para que el interceptor envíe el token
-    const minimo: UsuarioDTO & { rol: string } = {
+    const minimo: any = {
       id: res.id, nombreUsuario: res.nombreUsuario,
       nombre: '', apellido: '', correo: '', telefono: '',
       roles: [res.rol], rol: res.rol
@@ -119,30 +117,30 @@ export class AuthService {
     // Luego enriquecemos con el perfil completo
     this.http.get<UsuarioDTO>(`${USER}/miPerfil`).subscribe({
       next: perfil => {
-        const completo: UsuarioDTO & { rol: string } = { ...perfil, roles: [res.rol], rol: res.rol };
+        const completo: any = { ...perfil, roles: [res.rol], rol: res.rol };
         this.guardarUsuario(completo);
       },
+      error: () => {}
     });
   }
 
   private toLoginResponse(res: AuthResponse): LoginResponse {
-    const usuario: UsuarioDTO & { rol: string } = {
+    const usuario: any = {
       id: res.id, nombreUsuario: res.nombreUsuario,
       nombre: '', apellido: '', correo: '', telefono: '',
       roles: [res.rol], rol: res.rol
     };
-    void this.userSubject.getValue();
     return { mensaje: 'ok', usuario };
   }
 
-  private guardarUsuario(u: UsuarioDTO): void {
-    localStorage.setItem(this.USER_KEY, JSON.stringify(u));
+  private guardarUsuario(u: any): void {
+    localStorage.setItem('usuario', JSON.stringify(u));
     this.userSubject.next(u);
   }
 
   private cargarUsuario(): UsuarioDTO | null {
     try {
-      const raw = localStorage.getItem(this.USER_KEY);
+      const raw = localStorage.getItem('usuario');
       return raw ? JSON.parse(raw) : null;
     } catch { return null; }
   }

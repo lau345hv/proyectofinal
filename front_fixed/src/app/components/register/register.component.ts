@@ -12,15 +12,15 @@ import { ErrorHandlerService } from '../../services/error-handler.service';
 export class RegisterComponent {
 
   paso: 1 | 2 = 1;
-  cargando = false;
-  error = '';
-  mensajeExito = '';
-  mostrarContrasena = false;
+  cargando: boolean = false;
+  error: string = '';
+  mensajeExito: string = '';
+  mostrarContrasena: boolean = false;
 
   formCorreo: FormGroup;
   formRegistro: FormGroup;
 
-  correoVerificado = '';
+  correoVerificado: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -109,16 +109,16 @@ export class RegisterComponent {
     this.error = '';
     this.mensajeExito = '';
 
-    const valores = this.formRegistro.value;
+    const v = this.formRegistro.value;
 
     this.auth.registrar({
-      nombre: valores.nombre.trim(),
-      apellido: valores.apellido.trim(),
+      nombre: v.nombre.trim(),
+      apellido: v.apellido.trim(),
       correo: this.correoVerificado,
-      nombreUsuario: valores.nombreUsuario.trim(),
-      contrasena: valores.contrasena,
-      telefono: valores.telefono.trim(),
-      codigoVerificacion: valores.codigoVerificacion.trim()
+      nombreUsuario: v.nombreUsuario.trim(),
+      contrasena: v.contrasena,
+      telefono: v.telefono.trim(),
+      codigoVerificacion: v.codigoVerificacion.trim()
     }).subscribe({
       next: () => {
         this.cargando = false;
@@ -157,15 +157,13 @@ export class RegisterComponent {
     });
   }
 
-  private obtenerTextoErrorRaw(err: unknown): string {
-    if (!err) return this.errorHandler.extraerMensaje(err, '');
-    const errObj = err as Record<string, unknown>;
-    const body = errObj?.['error'];
+  private obtenerTextoErrorRaw(err: any): string {
+    if (!err) return '';
+    const body = err?.error;
     if (typeof body === 'string') return body;
     if (body && typeof body === 'object') {
-      return `${body.message ?? ''} ${body.trace ?? ''}`;
+      return (body.message || '') + ' ' + (body.trace || '');
     }
-    const errRecord = err as Record<string, unknown>;
-    return errRecord?.['message'] as string || '';
+    return err?.message || '';
   }
 }

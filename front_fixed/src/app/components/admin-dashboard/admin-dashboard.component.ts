@@ -10,23 +10,16 @@ import { UsuarioDTO, HistorialConversionDTO } from '../../models/models';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  readonly ROL_ADMIN = 'ADMIN';
-  readonly COLORES_TIPO: Record<string, string> = {
-    AUDIO:  '#FF6B4A',
-    VIDEO:  '#4361EE',
-    IMAGEN: '#2EC4B6',
-  };
-
   usuarios: UsuarioDTO[] = [];
   conversiones: HistorialConversionDTO[] = [];
   tabActiva: 'usuarios' | 'conversiones' = 'usuarios';
-  cargandoUsuarios = false;
-  cargandoConversiones = false;
-  errorUsuarios = '';
-  errorConversiones = '';
-  resumenTexto = '';
-  filtroTipo = '';
-  filtroEstado = '';
+  cargandoUsuarios: boolean = false;
+  cargandoConversiones: boolean = false;
+  errorUsuarios: string = '';
+  errorConversiones: string = '';
+  resumenTexto: string = '';
+  filtroTipo: string = '';
+  filtroEstado: string = '';
 
   constructor(
     private adminService: AdminService,
@@ -40,7 +33,10 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   cargarResumen(): void {
-    this.adminService.resumen().subscribe();
+    this.adminService.resumen().subscribe({
+      next: () => {},
+      error: () => {}
+    });
   }
 
   cargarUsuarios(): void {
@@ -104,8 +100,7 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarUsuario(id: number | undefined): void {
     if (!id) return;
-    const confirmado = window.confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.');
-    if (!confirmado) return;
+    if (!confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
     this.adminService.eliminarUsuario(id).subscribe({
       next: () => {
@@ -122,11 +117,10 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarHistorialDeUsuario(usuarioId: number | undefined, nombreUsuario: string): void {
     if (!usuarioId) return;
-    const confirmarEliminar = window.confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`);
-    if (!confirmarEliminar) return;
+    if (!confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`)) return;
 
     this.adminService.eliminarHistorialPorUsuario(usuarioId).subscribe({
-      next: () => {
+      next: (msg) => {
         this.conversiones = this.conversiones.filter(c => c.usuarioId !== usuarioId);
         this.cargarResumen();
       },
@@ -139,10 +133,15 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   esAdmin(roles: string[] | undefined): boolean {
-    return roles?.includes(this.ROL_ADMIN) ?? false;
+    return roles?.includes('ADMIN') ?? false;
   }
 
   colorTipo(tipo: string): string {
-    return this.COLORES_TIPO[tipo] ?? '#888';
+    switch (tipo) {
+      case 'AUDIO':  return '#FF6B4A';
+      case 'VIDEO':  return '#4361EE';
+      case 'IMAGEN': return '#2EC4B6';
+      default:       return '#888';
+    }
   }
 }

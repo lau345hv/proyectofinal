@@ -19,6 +19,7 @@ import co.edu.unbosque.proyectofinal.exception.RecursoNoEncontradoException;
 import co.edu.unbosque.proyectofinal.exception.TextoVacioException;
 import co.edu.unbosque.proyectofinal.repository.HistorialConversionRepository;
 import co.edu.unbosque.proyectofinal.repository.UsuarioRepository;
+import co.edu.unbosque.proyectofinal.util.AESUtil;
 import co.edu.unbosque.proyectofinal.util.enums.EstadoConversion;
 import co.edu.unbosque.proyectofinal.util.enums.TipoArchivo;
 
@@ -30,9 +31,20 @@ import co.edu.unbosque.proyectofinal.util.enums.TipoArchivo;
  * así como realizar búsquedas filtradas por usuario, tipo de archivo,
  * estado, formato y rango de fechas.
  * </p>
+ * <p>
+ * Los campos sensibles que se persisten en la base de datos se encriptan
+ * con AES/GCM antes de guardarse y se desencriptan automáticamente al
+ * leer, de modo que ninguna capa superior recibe datos cifrados. Los
+ * campos protegidos son:
+ * </p>
+ * <ul>
+ *   <li>{@code nombreArchivoOriginal}: nombre del archivo subido por el usuario.</li>
+ *   <li>{@code rutaArchivoOriginal}: URL o ruta del archivo original.</li>
+ *   <li>{@code rutaArchivoConvertido}: URL de descarga generada por la API externa.</li>
+ * </ul>
  *
  * @author Equipo de desarrollo
- * @version 1.0
+ * @version 2.0
  */
 @Service
 public class HistorialConversionService implements CRUDoperation<HistorialConversionDTO> {
@@ -83,10 +95,10 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 					data.getTipoArchivo(),
 					data.getFormatoOrigen().toLowerCase(),
 					data.getFormatoDestino().toLowerCase(),
-					data.getNombreArchivoOriginal(),
+					encriptarSiNoNulo(data.getNombreArchivoOriginal()),
 					data.getNombreArchivoConvertido(),
-					data.getRutaArchivoOriginal(),
-					data.getRutaArchivoConvertido(),
+					encriptarSiNoNulo(data.getRutaArchivoOriginal()),
+					encriptarSiNoNulo(data.getRutaArchivoConvertido()),
 					data.getEstado() != null ? data.getEstado() : EstadoConversion.PENDIENTE,
 					usuario.get());
 			repo.save(entity);
@@ -133,6 +145,7 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 	/**
 	 * Actualiza un registro del historial identificado por su ID.
 	 * Solo se modifican los campos que vengan con valor en el DTO.
+	 * Los campos sensibles se re-encriptan antes de persistirse.
 	 *
 	 * @param id   ID del registro a actualizar.
 	 * @param data DTO con los nuevos valores.
@@ -169,6 +182,7 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 
 	/**
 	 * Busca un registro del historial por su ID.
+	 * Los campos sensibles se devuelven desencriptados.
 	 *
 	 * @param id ID del registro.
 	 * @return DTO del registro encontrado.
@@ -192,6 +206,7 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 
 	/**
 	 * Obtiene el historial completo de conversiones de un usuario específico.
+	 * Los campos sensibles se devuelven desencriptados.
 	 *
 	 * @param usuarioId ID del usuario.
 	 * @return Lista de DTOs encontrados.
@@ -416,9 +431,6 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 		}
 	}
 
-	// =====================================================================
-	// Métodos privados auxiliares para updateById
-	// =====================================================================
 
 	/**
 	 * Valida que el ID sea válido y que el registro exista.
@@ -465,6 +477,7 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 
 	/**
 	 * Aplica los cambios del DTO a la entidad para los campos opcionales.
+	 * Los campos sensibles se re-encriptan antes de asignarse a la entidad.
 	 *
 	 * @param entity Entidad a modificar.
 	 * @param data   DTO con los nuevos valores.
@@ -484,22 +497,60 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 			entity.setFormatoDestino(data.getFormatoDestino().toLowerCase());
 		}
 		if (data.getNombreArchivoOriginal() != null) {
-			entity.setNombreArchivoOriginal(data.getNombreArchivoOriginal());
+			entity.setNombreArchivoOriginal(encriptarSiNoNulo(data.getNombreArchivoOriginal()));
 		}
 		if (data.getNombreArchivoConvertido() != null) {
 			entity.setNombreArchivoConvertido(data.getNombreArchivoConvertido());
 		}
 		if (data.getRutaArchivoOriginal() != null) {
-			entity.setRutaArchivoOriginal(data.getRutaArchivoOriginal());
+			entity.setRutaArchivoOriginal(encriptarSiNoNulo(data.getRutaArchivoOriginal()));
 		}
 		if (data.getRutaArchivoConvertido() != null) {
-			entity.setRutaArchivoConvertido(data.getRutaArchivoConvertido());
+			entity.setRutaArchivoConvertido(encriptarSiNoNulo(data.getRutaArchivoConvertido()));
 		}
 		if (data.getEstado() != null) {
 			entity.setEstado(data.getEstado());
 		}
 	}
 
+	// Encriptación / desencriptación
+
+
+	/**
+	 * Encripta un valor con AES si no es nulo ni vacío.
+	 * Si el valor es nulo, lo retorna tal cual para no romper campos opcionales.
+	 *
+	 * @param valor texto plano a encriptar.
+	 * @return texto encriptado en Base64, o {@code null} si el valor era nulo.
+	 */
+	private String encriptarSiNoNulo(String valor) {
+		if (valor == null || valor.isBlank()) {
+			return valor;
+		}
+		return AESUtil.encrypt(valor);
+	}
+
+	/**
+	 * Desencripta un valor con AES si no es nulo ni vacío.
+	 * Si el valor es nulo, lo retorna tal cual.
+	 *
+	 * @param valor texto encriptado en Base64.
+	 * @return texto plano original, o {@code null} si el valor era nulo.
+	 */
+	private String desencriptarSiNoNulo(String valor) {
+		if (valor == null || valor.isBlank()) {
+			return valor;
+		}
+		return AESUtil.decrypt(valor);
+	}
+
+	/**
+	 * Mapea una entidad {@link HistorialConversion} a su DTO correspondiente,
+	 * desencriptando los campos sensibles antes de exponerlos.
+	 *
+	 * @param entity Entidad a convertir.
+	 * @return DTO con los datos desencriptados.
+	 */
 	private HistorialConversionDTO mapToDTO(HistorialConversion entity) {
 		HistorialConversionDTO dto = new HistorialConversionDTO();
 		dto.setId(entity.getId());
@@ -507,10 +558,10 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 		dto.setTipoArchivo(entity.getTipoArchivo());
 		dto.setFormatoOrigen(entity.getFormatoOrigen());
 		dto.setFormatoDestino(entity.getFormatoDestino());
-		dto.setNombreArchivoOriginal(entity.getNombreArchivoOriginal());
+		dto.setNombreArchivoOriginal(desencriptarSiNoNulo(entity.getNombreArchivoOriginal()));
 		dto.setNombreArchivoConvertido(entity.getNombreArchivoConvertido());
-		dto.setRutaArchivoOriginal(entity.getRutaArchivoOriginal());
-		dto.setRutaArchivoConvertido(entity.getRutaArchivoConvertido());
+		dto.setRutaArchivoOriginal(desencriptarSiNoNulo(entity.getRutaArchivoOriginal()));
+		dto.setRutaArchivoConvertido(desencriptarSiNoNulo(entity.getRutaArchivoConvertido()));
 		dto.setEstado(entity.getEstado());
 		if (entity.getUsuario() != null) {
 			dto.setUsuarioId(entity.getUsuario().getId());

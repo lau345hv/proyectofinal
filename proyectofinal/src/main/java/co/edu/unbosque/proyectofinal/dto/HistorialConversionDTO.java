@@ -3,11 +3,8 @@ package co.edu.unbosque.proyectofinal.dto;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import co.edu.unbosque.proyectofinal.util.enums.EstadoConversion;
 import co.edu.unbosque.proyectofinal.util.enums.TipoArchivo;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Objeto de transferencia de datos (DTO) que representa el historial
@@ -18,51 +15,30 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * </p>
  *
  * @author Equipo de desarrollo
- * @version 1.0
+ * @version 1.1
  */
-@Schema(description = "Registro de una conversión realizada por un usuario")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HistorialConversionDTO {
 
-	@Schema(accessMode = Schema.AccessMode.READ_ONLY,
-			description = "ID del registro generado automáticamente", example = "1")
 	private Long id;
 
-	@Schema(description = "Fecha y hora de la conversión",
-			example = "2025-05-09T14:30:00")
 	private LocalDateTime fechaConversion;
 
-	@Schema(description = "Tipo de archivo procesado",
-			example = "VIDEO",
-			allowableValues = { "AUDIO", "VIDEO", "IMAGEN" })
 	private TipoArchivo tipoArchivo;
 
-	@Schema(description = "Formato del archivo original", example = "mkv")
 	private String formatoOrigen;
 
-	@Schema(description = "Formato al que se convirtió el archivo", example = "mp4")
 	private String formatoDestino;
 
-	@Schema(description = "Nombre original del archivo subido por el usuario",
-			example = "entrenamiento.mkv")
 	private String nombreArchivoOriginal;
 
-	@Schema(description = "Nombre del archivo resultante",
-			example = "entrenamiento.mp4")
 	private String nombreArchivoConvertido;
 
-	@Schema(description = "Ruta o URL del archivo original")
 	private String rutaArchivoOriginal;
 
-	@Schema(description = "URL de descarga del archivo convertido (generada por la API externa)")
 	private String rutaArchivoConvertido;
 
-	@Schema(description = "Estado actual del proceso de conversión",
-			example = "COMPLETADO",
-			allowableValues = { "PENDIENTE", "EN_PROCESO", "COMPLETADO", "FALLIDO" })
 	private EstadoConversion estado;
 
-	@Schema(description = "ID del usuario propietario de esta conversión", example = "1")
 	private Long usuarioId;
 
 	public HistorialConversionDTO() {

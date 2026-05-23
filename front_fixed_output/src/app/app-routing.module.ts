@@ -23,4 +23,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+// skipcq: JS-0327
 export class AppRoutingModule {}

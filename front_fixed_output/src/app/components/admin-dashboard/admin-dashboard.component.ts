@@ -28,6 +28,11 @@ export class AdminDashboardComponent implements OnInit {
   filtroTipo = '';
   filtroEstado = '';
 
+  // Dialog de confirmación (reemplaza window.confirm — JS-0052)
+  dialogVisible = false;
+  dialogMensaje = '';
+  private dialogCallback: (() => void) | null = null;
+
   constructor(
     private adminService: AdminService,
     private errorHandler: ErrorHandlerService
@@ -104,36 +109,53 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarUsuario(id: number | undefined): void {
     if (!id) return;
-    if (!window.confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) return;
-
-    this.adminService.eliminarUsuario(id).subscribe({
-      next: () => {
-        this.usuarios = this.usuarios.filter(u => u.id !== id);
-        this.cargarResumen();
-      },
-      error: (err) => {
-        this.errorUsuarios = this.errorHandler.extraerMensaje(
-          err, 'No se pudo eliminar el usuario.'
-        );
+    this.mostrarDialogo(
+      '¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.',
+      () => {
+        this.adminService.eliminarUsuario(id).subscribe({
+          next: () => {
+            this.usuarios = this.usuarios.filter(u => u.id !== id);
+            this.cargarResumen();
+          },
+          error: (err) => {
+            this.errorUsuarios = this.errorHandler.extraerMensaje(
+              err, 'No se pudo eliminar el usuario.'
+            );
+          }
+        });
       }
-    });
+    );
   }
 
   eliminarHistorialDeUsuario(usuarioId: number | undefined, nombreUsuario: string): void {
     if (!usuarioId) return;
-    if (!window.confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`)) return;
-
-    this.adminService.eliminarHistorialPorUsuario(usuarioId).subscribe({
-      next: () => {
-        this.conversiones = this.conversiones.filter(c => c.usuarioId !== usuarioId);
-        this.cargarResumen();
-      },
-      error: (err) => {
-        this.errorConversiones = this.errorHandler.extraerMensaje(
-          err, 'No se pudo eliminar el historial del usuario.'
-        );
+    this.mostrarDialogo(
+      `¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`,
+      () => {
+        this.adminService.eliminarHistorialPorUsuario(usuarioId).subscribe({
+          next: () => {
+            this.conversiones = this.conversiones.filter(c => c.usuarioId !== usuarioId);
+            this.cargarResumen();
+          },
+          error: (err) => {
+            this.errorConversiones = this.errorHandler.extraerMensaje(
+              err, 'No se pudo eliminar el historial del usuario.'
+            );
+          }
+        });
       }
-    });
+    );
+  }
+
+  confirmarDialogo(): void {
+    if (this.dialogCallback) this.dialogCallback();
+    this.cerrarDialogo();
+  }
+
+  cerrarDialogo(): void {
+    this.dialogVisible = false;
+    this.dialogMensaje = '';
+    this.dialogCallback = null;
   }
 
   esAdmin(roles: string[] | undefined): boolean {
@@ -142,5 +164,11 @@ export class AdminDashboardComponent implements OnInit {
 
   colorTipo(tipo: string): string {
     return this.COLORES_TIPO[tipo] ?? '#888';
+  }
+
+  private mostrarDialogo(mensaje: string, callback: () => void): void {
+    this.dialogMensaje = mensaje;
+    this.dialogCallback = callback;
+    this.dialogVisible = true;
   }
 }

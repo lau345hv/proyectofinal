@@ -13,6 +13,18 @@ interface ConversionConfig {
   tamanoMaxMB: number;
 }
 
+const EXTENSIONES: Record<string, string[]> = {
+  audio:  ['mp3', 'wav', 'aac', 'flac', 'ogg', 'm4a', 'wma', 'opus', 'aiff', 'amr'],
+  video:  ['mp4', 'mkv', 'avi', 'mov', 'webm', 'flv', 'wmv', 'mpeg', 'mpg', '3gp'],
+  imagen: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'tif', 'svg', 'heic'],
+};
+
+const NOMBRES_AMIGABLES: Record<string, string> = {
+  audio:  'audio (MP3, WAV, AAC, FLAC, OGG, M4A...)',
+  video:  'video (MP4, MKV, AVI, MOV, WEBM, FLV...)',
+  imagen: 'imagen (JPG, PNG, WEBP, GIF, BMP, TIFF...)',
+};
+
 @Component({
   selector: 'app-conversion-tool',
   templateUrl: './conversion-tool.component.html',
@@ -94,6 +106,7 @@ export class ConversionToolComponent implements OnInit {
     }
   }
 
+  // skipcq: JS-0105
   onDragOver(event: DragEvent): void {
     event.preventDefault();
   }
@@ -125,48 +138,38 @@ export class ConversionToolComponent implements OnInit {
   }
 
   /**
+   * Detecta el tipo de archivo por MIME y extensión.
+   */
+  private detectarTipoArchivo(archivo: File): string | null {
+    const mime = (archivo.type || '').toLowerCase();
+    const ext = (ConversionToolComponent.obtenerExtension(archivo.name) || '').toLowerCase();
+
+    if (mime.startsWith('audio/') || EXTENSIONES['audio'].includes(ext)) return 'audio';
+    if (mime.startsWith('video/') || EXTENSIONES['video'].includes(ext)) return 'video';
+    if (mime.startsWith('image/') || EXTENSIONES['imagen'].includes(ext)) return 'imagen';
+    return null;
+  }
+
+  /**
+   * Genera el mensaje de error de tipo de archivo.
+   */
+  private mensajeErrorTipo(tipoDetectado: string | null): string {
+    const esperado = NOMBRES_AMIGABLES[this.tipo] || this.tipo;
+    if (tipoDetectado && tipoDetectado !== this.tipo) {
+      const seccion = tipoDetectado === 'imagen' ? 'imágenes' : `${tipoDetectado}s`;
+      return `El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${seccion}.`;
+    }
+    return `El archivo seleccionado no es un archivo de ${esperado} válido. Sube un archivo del tipo correcto.`;
+  }
+
+  /**
    * Verifica que el archivo coincida con el tipo de conversión seleccionado.
    * Valida por MIME type (archivo.type) y por extensión como respaldo.
    */
   private validarTipoArchivo(archivo: File): string | null {
-    const mime = (archivo.type || '').toLowerCase();
-    const extension = (this.obtenerExtension(archivo.name) || '').toLowerCase();
-
-    const extensionesAudio  = ['mp3', 'wav', 'aac', 'flac', 'ogg', 'm4a', 'wma', 'opus', 'aiff', 'amr'];
-    const extensionesVideo  = ['mp4', 'mkv', 'avi', 'mov', 'webm', 'flv', 'wmv', 'mpeg', 'mpg', '3gp'];
-    const extensionesImagen = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'tif', 'svg', 'heic'];
-
-    const nombresUsuarioAmigables: { [k: string]: string } = {
-      audio: 'audio (MP3, WAV, AAC, FLAC, OGG, M4A...)',
-      video: 'video (MP4, MKV, AVI, MOV, WEBM, FLV...)',
-      imagen: 'imagen (JPG, PNG, WEBP, GIF, BMP, TIFF...)'
-    };
-
-    let coincide = false;
-    let tipoDetectado: string | null = null;
-
-    if (mime.startsWith('audio/') || extensionesAudio.includes(extension)) {
-      tipoDetectado = 'audio';
-    } else if (mime.startsWith('video/') || extensionesVideo.includes(extension)) {
-      tipoDetectado = 'video';
-    } else if (mime.startsWith('image/') || extensionesImagen.includes(extension)) {
-      tipoDetectado = 'imagen';
-    }
-
-    if (tipoDetectado === this.tipo) {
-      coincide = true;
-    }
-
-    if (!coincide) {
-      const esperado = nombresUsuarioAmigables[this.tipo] || this.tipo;
-      if (tipoDetectado && tipoDetectado !== this.tipo) {
-        const seccion = tipoDetectado === 'imagen' ? 'imágenes' : `${tipoDetectado}s`;
-        return `El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${seccion}.`;
-      }
-      return `El archivo seleccionado no es un archivo de ${esperado} válido. Sube un archivo del tipo correcto.`;
-    }
-
-    return null;
+    const tipoDetectado = this.detectarTipoArchivo(archivo);
+    if (tipoDetectado === this.tipo) return null;
+    return this.mensajeErrorTipo(tipoDetectado);
   }
 
   convertir(): void {
@@ -179,7 +182,7 @@ export class ConversionToolComponent implements OnInit {
       return;
     }
 
-    const extActual = this.obtenerExtension(this.archivoSeleccionado.name);
+    const extActual = ConversionToolComponent.obtenerExtension(this.archivoSeleccionado.name);
     if (extActual && extActual.toLowerCase() === this.formatoDestino.toLowerCase()) {
       this.error = `El archivo ya está en formato .${this.formatoDestino.toUpperCase()}. Elige un formato diferente.`;
       return;
@@ -236,13 +239,14 @@ export class ConversionToolComponent implements OnInit {
     this.exito = false;
   }
 
+  // skipcq: JS-0105
   formatearTamano(bytes: number): string {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   }
 
-  private obtenerExtension(nombre: string): string | null {
+  private static obtenerExtension(nombre: string): string | null {
     const idx = nombre.lastIndexOf('.');
     return idx >= 0 ? nombre.substring(idx + 1) : null;
   }

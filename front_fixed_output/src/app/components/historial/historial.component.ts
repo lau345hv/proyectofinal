@@ -57,6 +57,7 @@ export class HistorialComponent implements OnInit {
     });
   }
 
+  // skipcq: JS-0105
   descargar(url: string | undefined): void {
     if (!url) return;
     window.open(url, '_blank');

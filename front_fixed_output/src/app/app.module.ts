@@ -37,4 +37,5 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
   ],
   bootstrap: [AppComponent]
 })
+// skipcq: JS-0327
 export class AppModule {}

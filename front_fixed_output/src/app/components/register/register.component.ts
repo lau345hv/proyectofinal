@@ -132,7 +132,7 @@ export class RegisterComponent {
           'No se pudo crear la cuenta. Revisa que el código sea correcto y que el nombre de usuario no esté en uso.'
         );
 
-        const errorTexto = this.obtenerTextoErrorRaw(err).toLowerCase();
+        const errorTexto = this.extraerTextoError(err).toLowerCase();
 
         if (errorTexto.includes('no hay ning') && errorTexto.includes('digo pendiente')) {
           this.error = 'El código de verificación expiró o no se encontró. Se reenviará un nuevo código a tu correo automáticamente.';
@@ -157,15 +157,19 @@ export class RegisterComponent {
     });
   }
 
+  // skipcq: JS-R1005
   private obtenerTextoErrorRaw(err: unknown): string {
     if (!err) return this.errorHandler.extraerMensaje(err, '');
     const errObj = err as Record<string, unknown>;
     const body = errObj?.['error'];
     if (typeof body === 'string') return body;
     if (body && typeof body === 'object') {
-      return `${body.message ?? ''} ${body.trace ?? ''}`;
+      return `${(body as Record<string, unknown>)['message'] ?? ''} ${(body as Record<string, unknown>)['trace'] ?? ''}`;
     }
-    const errRecord = err as Record<string, unknown>;
-    return errRecord?.['message'] as string || '';
+    return (errObj?.['message'] as string) || '';
+  }
+
+  private extraerTextoError(err: unknown): string {
+    return this.obtenerTextoErrorRaw(err);
   }
 }

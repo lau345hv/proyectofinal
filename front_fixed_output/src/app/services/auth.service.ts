@@ -55,14 +55,14 @@ export class AuthService {
       params: { codigoVerificacion: data.codigoVerificacion }
     }).pipe(
       tap(res => this.persistirSesion(res)),
-      switchMap(res => of(this.toLoginResponse(res)))
+      switchMap(res => of(AuthService.toLoginResponse(res)))
     );
   }
 
   login(nombreUsuario: string, contrasena: string): Observable<LoginResponse> {
     return this.http.post<AuthResponse>(`${AUTH}/login`, { nombreUsuario, contrasena }).pipe(
       tap(res => this.persistirSesion(res)),
-      switchMap(res => of(this.toLoginResponse(res)))
+      switchMap(res => of(AuthService.toLoginResponse(res)))
     );
   }
 
@@ -108,7 +108,6 @@ export class AuthService {
 
   private persistirSesion(res: AuthResponse): void {
     localStorage.setItem(this.JWT_KEY, res.token);
-    // Primero guardamos con datos mínimos para que el interceptor envíe el token
     const minimo: UsuarioDTO & { rol: string } = {
       id: res.id, nombreUsuario: res.nombreUsuario,
       nombre: '', apellido: '', correo: '', telefono: '',
@@ -116,7 +115,6 @@ export class AuthService {
     };
     this.guardarUsuario(minimo);
 
-    // Luego enriquecemos con el perfil completo
     this.http.get<UsuarioDTO>(`${USER}/miPerfil`).subscribe({
       next: perfil => {
         const completo: UsuarioDTO & { rol: string } = { ...perfil, roles: [res.rol], rol: res.rol };
@@ -125,13 +123,12 @@ export class AuthService {
     });
   }
 
-  private toLoginResponse(res: AuthResponse): LoginResponse {
+  private static toLoginResponse(res: AuthResponse): LoginResponse {
     const usuario: UsuarioDTO & { rol: string } = {
       id: res.id, nombreUsuario: res.nombreUsuario,
       nombre: '', apellido: '', correo: '', telefono: '',
       roles: [res.rol], rol: res.rol
     };
-    this.userSubject.getValue();
     return { mensaje: 'ok', usuario };
   }
 

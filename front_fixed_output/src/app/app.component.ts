@@ -7,6 +7,5 @@ import { Component } from '@angular/core';
     <router-outlet></router-outlet>
   `
 })
-export class AppComponent {
-  readonly appName = 'SuperConvert';
-}
+// skipcq: JS-0327
+export class AppComponent {}

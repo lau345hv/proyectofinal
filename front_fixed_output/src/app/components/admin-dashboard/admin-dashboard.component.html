@@ -187,4 +187,15 @@
       No hay conversiones que mostrar con los filtros aplicados.
     </div>
   </div>
+
+  <!-- ======== DIALOG DE CONFIRMACIÓN (reemplaza window.confirm) ======== -->
+  <div class="confirm-overlay" *ngIf="dialogVisible" (click)="cerrarDialogo()">
+    <div class="confirm-box" (click)="$event.stopPropagation()">
+      <p class="confirm-msg">{{ dialogMensaje }}</p>
+      <div class="confirm-actions">
+        <button class="btn-confirm-yes" (click)="confirmarDialogo()">Confirmar</button>
+        <button class="btn-confirm-no" (click)="cerrarDialogo()">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>

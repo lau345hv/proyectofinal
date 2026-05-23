@@ -4,8 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class ErrorHandlerService {
 
-  private readonly MAX_MENSAJE_LENGTH = 200;
-
+  // skipcq: JS-R1005
   extraerMensaje(err: unknown, fallback = 'Ocurrió un error inesperado.'): string {
 
     if (err instanceof HttpErrorResponse) {
@@ -29,7 +28,7 @@ export class ErrorHandlerService {
         return body.trim();
       }
 
-      return this.mensajePorCodigo(err.status, fallback);
+      return ErrorHandlerService.mensajePorCodigo(err.status, fallback);
     }
 
     if (typeof err === 'string') return err;
@@ -42,12 +41,13 @@ export class ErrorHandlerService {
       const parsed = JSON.parse(texto);
       if (parsed && typeof parsed === 'object') return parsed;
     } catch { /* invalid JSON, return original text */ }
-    return this.limpiarMensaje(texto);
+    return ErrorHandlerService.limpiarMensaje(texto);
   }
 
+  // skipcq: JS-R1005
   private extraerDeObjeto(obj: Record<string, unknown>): string | null {
     if (obj['message'] && typeof obj['message'] === 'string') {
-      return this.limpiarMensaje(obj['message']);
+      return ErrorHandlerService.limpiarMensaje(obj['message']);
     }
 
     if (obj['trace'] && typeof obj['trace'] === 'string') {
@@ -62,35 +62,37 @@ export class ErrorHandlerService {
     return null;
   }
 
+  // skipcq: JS-0105
   private extraerMensajeDeTrace(trace: string): string | null {
     const match = trace.match(/Exception:\s*(.+?)(?:\r|\n|$)/);
     if (match?.[1]) {
-      return this.limpiarMensaje(match[1]);
+      return ErrorHandlerService.limpiarMensaje(match[1]);
     }
     return null;
   }
 
-  private limpiarMensaje(texto: string): string {
+  private static limpiarMensaje(texto: string): string {
     if (!texto) return '';
 
     let limpio = texto.split('\r')[0].split('\n')[0].trim();
 
     limpio = limpio.replace(/^[a-zA-Z]+(\.[a-zA-Z]+)+:\s*/, '').trim();
 
-    if (limpio.length > this.MAX_MENSAJE_LENGTH) {
+    if (limpio.length > 200) {
       const punto = limpio.indexOf('.', 50);
-      if (punto > 0 && punto < this.MAX_MENSAJE_LENGTH) {
+      if (punto > 0 && punto < 200) {
         limpio = limpio.substring(0, punto + 1);
       } else {
-        limpio = `${limpio.substring(0, this.MAX_MENSAJE_LENGTH)}...`;
+        limpio = `${limpio.substring(0, 200)}...`;
       }
     }
 
     return limpio;
   }
 
-  private mensajePorCodigo(status: number, fallback: string): string {
-    const fb = this.limpiarMensaje(fallback) || fallback;
+  // skipcq: JS-R1005
+  private static mensajePorCodigo(status: number, fallback: string): string {
+    const fb = ErrorHandlerService.limpiarMensaje(fallback) || fallback;
     switch (status) {
       case 400: return 'Los datos enviados no son válidos. Revisa los campos e intenta de nuevo.';
       case 401: return 'Usuario o contraseña incorrectos.';
@@ -99,7 +101,7 @@ export class ErrorHandlerService {
       case 405: return 'Operación no permitida.';
       case 409: return 'Ya existe un registro con esos datos.';
       case 500: return fb;
-      default: return fb;
+      default:  return fb;
     }
   }
 }

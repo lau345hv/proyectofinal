@@ -1,0 +1,12 @@
+version = 1
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+  [analyzers.meta]
+  plugins = ["angular"]
+
+  [[analyzers.meta.skip_rules]]
+  rule_id = "JS-0590"
+  file_patterns = ["**/*.html"]

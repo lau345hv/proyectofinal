@@ -16,7 +16,7 @@ export class ErrorHandlerService {
       let body = err.error;
 
       if (typeof body === 'string') {
-        body = this.intentarParsearJSON(body);
+        body = ErrorHandlerService.intentarParsearJSON(body);
       }
 
       if (body && typeof body === 'object') {
@@ -36,7 +36,7 @@ export class ErrorHandlerService {
     return fallback;
   }
 
-  private intentarParsearJSON(texto: string): unknown {
+  private static intentarParsearJSON(texto: string): unknown {
     try {
       const parsed = JSON.parse(texto);
       if (parsed && typeof parsed === 'object') return parsed;

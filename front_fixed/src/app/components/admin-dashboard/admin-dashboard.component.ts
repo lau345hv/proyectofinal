@@ -10,6 +10,13 @@ import { UsuarioDTO, HistorialConversionDTO } from '../../models/models';
 })
 export class AdminDashboardComponent implements OnInit {
 
+  readonly ROL_ADMIN = 'ADMIN';
+  readonly COLORES_TIPO: Record<string, string> = {
+    AUDIO:  '#FF6B4A',
+    VIDEO:  '#4361EE',
+    IMAGEN: '#2EC4B6',
+  };
+
   usuarios: UsuarioDTO[] = [];
   conversiones: HistorialConversionDTO[] = [];
   tabActiva: 'usuarios' | 'conversiones' = 'usuarios';
@@ -97,7 +104,8 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarUsuario(id: number | undefined): void {
     if (!id) return;
-    if (!window.confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) return;
+    const confirmado = window.confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.');
+    if (!confirmado) return;
 
     this.adminService.eliminarUsuario(id).subscribe({
       next: () => {
@@ -114,7 +122,8 @@ export class AdminDashboardComponent implements OnInit {
 
   eliminarHistorialDeUsuario(usuarioId: number | undefined, nombreUsuario: string): void {
     if (!usuarioId) return;
-    if (!window.confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`)) return;
+    const confirmarEliminar = window.confirm(`¿Eliminar todo el historial de conversiones de "${nombreUsuario}"? Esta acción no se puede deshacer.`);
+    if (!confirmarEliminar) return;
 
     this.adminService.eliminarHistorialPorUsuario(usuarioId).subscribe({
       next: () => {
@@ -130,15 +139,10 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   esAdmin(roles: string[] | undefined): boolean {
-    return roles?.includes('ADMIN') ?? false;
+    return roles?.includes(this.ROL_ADMIN) ?? false;
   }
 
   colorTipo(tipo: string): string {
-    switch (tipo) {
-      case 'AUDIO':  return '#FF6B4A';
-      case 'VIDEO':  return '#4361EE';
-      case 'IMAGEN': return '#2EC4B6';
-      default:       return '#888';
-    }
+    return this.COLORES_TIPO[tipo] ?? '#888';
   }
 }

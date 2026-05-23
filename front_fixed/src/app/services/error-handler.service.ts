@@ -40,7 +40,7 @@ export class ErrorHandlerService {
       const parsed = JSON.parse(texto);
       if (parsed && typeof parsed === 'object') return parsed;
     } catch { /* invalid JSON, return original text */ }
-    return texto;
+    return this.limpiarMensaje(texto);
   }
 
   private extraerDeObjeto(obj: Record<string, unknown>): string | null {
@@ -88,6 +88,7 @@ export class ErrorHandlerService {
   }
 
   private mensajePorCodigo(status: number, fallback: string): string {
+    const fb = this.limpiarMensaje(fallback) || fallback;
     switch (status) {
       case 400: return 'Los datos enviados no son válidos. Revisa los campos e intenta de nuevo.';
       case 401: return 'Usuario o contraseña incorrectos.';
@@ -95,8 +96,8 @@ export class ErrorHandlerService {
       case 404: return 'Recurso no encontrado en el servidor.';
       case 405: return 'Operación no permitida.';
       case 409: return 'Ya existe un registro con esos datos.';
-      case 500: return fallback;
-      default: return fallback;
+      case 500: return fb;
+      default: return fb;
     }
   }
 }

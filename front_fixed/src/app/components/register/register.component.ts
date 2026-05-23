@@ -158,7 +158,7 @@ export class RegisterComponent {
   }
 
   private obtenerTextoErrorRaw(err: unknown): string {
-    if (!err) return '';
+    if (!err) return this.errorHandler.extraerMensaje(err, '');
     const errObj = err as Record<string, unknown>;
     const body = errObj?.['error'];
     if (typeof body === 'string') return body;

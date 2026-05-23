@@ -25,6 +25,8 @@ export interface LoginResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
+  private readonly JWT_KEY = 'jwt_token';
+  private readonly USER_KEY = 'usuario';
   private userSubject = new BehaviorSubject<UsuarioDTO | null>(this.cargarUsuario());
   currentUser$ = this.userSubject.asObservable();
 
@@ -65,8 +67,8 @@ export class AuthService {
   }
 
   logout(): Observable<string> {
-    localStorage.removeItem('jwt_token');
-    localStorage.removeItem('usuario');
+    localStorage.removeItem(this.JWT_KEY);
+    localStorage.removeItem(this.USER_KEY);
     this.userSubject.next(null);
     return of('ok');
   }
@@ -78,7 +80,7 @@ export class AuthService {
   // ── Estado ────────────────────────────────────────────────────────
 
   isLoggedIn(): boolean {
-    return Boolean(localStorage.getItem('jwt_token')) && Boolean(this.userSubject.value);
+    return Boolean(localStorage.getItem(this.JWT_KEY)) && Boolean(this.userSubject.value);
   }
 
   isAdmin(): boolean {
@@ -93,19 +95,19 @@ export class AuthService {
   }
 
   clearLocal(): void {
-    localStorage.removeItem('jwt_token');
-    localStorage.removeItem('usuario');
+    localStorage.removeItem(this.JWT_KEY);
+    localStorage.removeItem(this.USER_KEY);
     this.userSubject.next(null);
   }
 
   getAuthToken(): string | null {
-    return localStorage.getItem('jwt_token');
+    return localStorage.getItem(this.JWT_KEY);
   }
 
   // ── Helpers privados ──────────────────────────────────────────────
 
   private persistirSesion(res: AuthResponse): void {
-    localStorage.setItem('jwt_token', res.token);
+    localStorage.setItem(this.JWT_KEY, res.token);
     // Primero guardamos con datos mínimos para que el interceptor envíe el token
     const minimo: UsuarioDTO & { rol: string } = {
       id: res.id, nombreUsuario: res.nombreUsuario,
@@ -129,17 +131,18 @@ export class AuthService {
       nombre: '', apellido: '', correo: '', telefono: '',
       roles: [res.rol], rol: res.rol
     };
+    void this.userSubject.getValue();
     return { mensaje: 'ok', usuario };
   }
 
   private guardarUsuario(u: UsuarioDTO): void {
-    localStorage.setItem('usuario', JSON.stringify(u));
+    localStorage.setItem(this.USER_KEY, JSON.stringify(u));
     this.userSubject.next(u);
   }
 
   private cargarUsuario(): UsuarioDTO | null {
     try {
-      const raw = localStorage.getItem('usuario');
+      const raw = localStorage.getItem(this.USER_KEY);
       return raw ? JSON.parse(raw) : null;
     } catch { return null; }
   }

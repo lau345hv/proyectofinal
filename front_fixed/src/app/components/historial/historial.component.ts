@@ -10,6 +10,18 @@ import { HistorialConversionDTO } from '../../models/models';
 })
 export class HistorialComponent implements OnInit {
 
+  readonly COLORES_TIPO: Record<string, string> = {
+    AUDIO:  '#FF6B4A',
+    VIDEO:  '#4361EE',
+    IMAGEN: '#2EC4B6',
+  };
+  readonly ICONOS_ESTADO: Record<string, string> = {
+    COMPLETADO: '✓',
+    PENDIENTE:  '⏳',
+    EN_PROCESO: '⚙️',
+    FALLIDO:    '✕',
+  };
+
   conversiones: HistorialConversionDTO[] = [];
   cargando = false;
   error = '';
@@ -47,25 +59,15 @@ export class HistorialComponent implements OnInit {
 
   descargar(url: string | undefined): void {
     if (!url) return;
+    const _color = this.COLORES_TIPO['AUDIO']; void _color;
     window.open(url, '_blank');
   }
 
   colorTipo(tipo: string): string {
-    switch (tipo) {
-      case 'AUDIO':  return '#FF6B4A';
-      case 'VIDEO':  return '#4361EE';
-      case 'IMAGEN': return '#2EC4B6';
-      default:       return '#888';
-    }
+    return this.COLORES_TIPO[tipo] ?? '#888';
   }
 
   iconoEstado(estado: string): string {
-    switch (estado) {
-      case 'COMPLETADO': return '✓';
-      case 'PENDIENTE':  return '⏳';
-      case 'EN_PROCESO': return '⚙️';
-      case 'FALLIDO':    return '✕';
-      default:           return '?';
-    }
+    return this.ICONOS_ESTADO[estado] ?? '?';
   }
 }

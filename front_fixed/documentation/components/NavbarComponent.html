@@ -1,0 +1,1175 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>convertidor-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">convertidor-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  NavbarComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/navbar/navbar.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-navbar</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./navbar.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./navbar.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#auth" >auth</a>
+                            </li>
+                            <li>
+                                <a href="#menuAbierto" >menuAbierto</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#theme" >theme</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#logout" >logout</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, theme: <a href="../injectables/ThemeService.html" target="_self">ThemeService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/components/navbar/navbar.component.ts:12</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>theme</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logout"></a>
+                    <span class="name">
+                        <span ><b>logout</b></span>
+                        <a href="#logout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>logout()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="20"
+                                    class="link-to-prism">src/app/components/navbar/navbar.component.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auth"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>auth</b></span>
+                        <a href="#auth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/components/navbar/navbar.component.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="menuAbierto"></a>
+                    <span class="name">
+                        <span ><b>menuAbierto</b></span>
+                        <a href="#menuAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/components/navbar/navbar.component.ts:12</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="theme"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>theme</b></span>
+                        <a href="#theme"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/ThemeService.html" target="_self" >ThemeService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/components/navbar/navbar.component.ts:17</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { AuthService } from &#x27;../../services/auth.service&#x27;;
+import { ThemeService } from &#x27;../../services/theme.service&#x27;;
+
+@Component({
+    selector: &#x27;app-navbar&#x27;,
+    templateUrl: &#x27;./navbar.component.html&#x27;,
+    styleUrls: [&#x27;./navbar.component.css&#x27;]
+})
+export class NavbarComponent {
+    menuAbierto &#x3D; false;
+
+    constructor(
+        public auth: AuthService,
+        private router: Router,
+        public theme: ThemeService
+    ) {}
+
+    logout(): void {
+        this.auth.logout().subscribe({
+            next: () &#x3D;&gt; this.router.navigate([&#x27;/&#x27;]),
+            error: () &#x3D;&gt; {
+                this.auth.clearLocal();
+                this.router.navigate([&#x27;/&#x27;]);
+            }
+        });
+    }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;nav class&#x3D;&quot;navbar&quot;&gt;
+    &lt;div class&#x3D;&quot;navbar-brand&quot; routerLink&#x3D;&quot;/&quot;&gt;
+        &lt;div class&#x3D;&quot;brand-icon&quot;&gt;
+            &lt;svg width&#x3D;&quot;28&quot; height&#x3D;&quot;28&quot; viewBox&#x3D;&quot;0 0 28 28&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;path d&#x3D;&quot;M14 2L26 8V20L14 26L2 20V8L14 2Z&quot; fill&#x3D;&quot;url(#grad)&quot; stroke&#x3D;&quot;none&quot;/&gt;
+                &lt;path d&#x3D;&quot;M9 14L12.5 17.5L19 11&quot; stroke&#x3D;&quot;white&quot; stroke-width&#x3D;&quot;2.5&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+                &lt;defs&gt;
+                    &lt;linearGradient id&#x3D;&quot;grad&quot; x1&#x3D;&quot;2&quot; y1&#x3D;&quot;2&quot; x2&#x3D;&quot;26&quot; y2&#x3D;&quot;26&quot; gradientUnits&#x3D;&quot;userSpaceOnUse&quot;&gt;
+                        &lt;stop stop-color&#x3D;&quot;#FF6B4A&quot;/&gt;
+                        &lt;stop offset&#x3D;&quot;1&quot; stop-color&#x3D;&quot;#E63946&quot;/&gt;
+                    &lt;/linearGradient&gt;
+                &lt;/defs&gt;
+            &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;span class&#x3D;&quot;brand-name&quot;&gt;SuperConvert&lt;/span&gt;
+    &lt;/div&gt;
+
+
+    &lt;div class&#x3D;&quot;navbar-menu&quot;&gt;
+        &lt;a class&#x3D;&quot;nav-link&quot; routerLink&#x3D;&quot;/&quot; routerLinkActive&#x3D;&quot;active&quot; [routerLinkActiveOptions]&#x3D;&quot;{exact: true}&quot;&gt;Inicio&lt;/a&gt;
+        &lt;a class&#x3D;&quot;nav-link&quot; routerLink&#x3D;&quot;/convertir/audio&quot; routerLinkActive&#x3D;&quot;active&quot;&gt;Audio&lt;/a&gt;
+        &lt;a class&#x3D;&quot;nav-link&quot; routerLink&#x3D;&quot;/convertir/video&quot; routerLinkActive&#x3D;&quot;active&quot;&gt;Video&lt;/a&gt;
+        &lt;a class&#x3D;&quot;nav-link&quot; routerLink&#x3D;&quot;/convertir/imagen&quot; routerLinkActive&#x3D;&quot;active&quot;&gt;Imagen&lt;/a&gt;
+        &lt;a class&#x3D;&quot;nav-link&quot; routerLink&#x3D;&quot;/historial&quot; routerLinkActive&#x3D;&quot;active&quot; *ngIf&#x3D;&quot;auth.isLoggedIn()&quot;&gt;Historial&lt;/a&gt;
+        &lt;a class&#x3D;&quot;nav-link perfil-link&quot; routerLink&#x3D;&quot;/mi-perfil&quot; routerLinkActive&#x3D;&quot;active&quot; *ngIf&#x3D;&quot;auth.isLoggedIn()&quot;&gt;Mi Perfil&lt;/a&gt;
+        &lt;a class&#x3D;&quot;nav-link admin-link&quot; *ngIf&#x3D;&quot;auth.isAdmin()&quot; routerLink&#x3D;&quot;/admin&quot; routerLinkActive&#x3D;&quot;active&quot;&gt;Admin&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;navbar-auth&quot;&gt;
+        &lt;button class&#x3D;&quot;theme-toggle&quot; (click)&#x3D;&quot;theme.toggle()&quot; [attr.aria-label]&#x3D;&quot;theme.isDark() ? &#x27;Modo claro&#x27; : &#x27;Modo oscuro&#x27;&quot;&gt;
+            &lt;svg *ngIf&#x3D;&quot;!theme.isDark()&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+                &lt;path d&#x3D;&quot;M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z&quot;&gt;&lt;/path&gt;
+            &lt;/svg&gt;
+            &lt;svg *ngIf&#x3D;&quot;theme.isDark()&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;5&quot;&gt;&lt;/circle&gt;
+                &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;1&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;3&quot;&gt;&lt;/line&gt;&lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;21&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;23&quot;&gt;&lt;/line&gt;
+                &lt;line x1&#x3D;&quot;4.22&quot; y1&#x3D;&quot;4.22&quot; x2&#x3D;&quot;5.64&quot; y2&#x3D;&quot;5.64&quot;&gt;&lt;/line&gt;&lt;line x1&#x3D;&quot;18.36&quot; y1&#x3D;&quot;18.36&quot; x2&#x3D;&quot;19.78&quot; y2&#x3D;&quot;19.78&quot;&gt;&lt;/line&gt;
+                &lt;line x1&#x3D;&quot;1&quot; y1&#x3D;&quot;12&quot; x2&#x3D;&quot;3&quot; y2&#x3D;&quot;12&quot;&gt;&lt;/line&gt;&lt;line x1&#x3D;&quot;21&quot; y1&#x3D;&quot;12&quot; x2&#x3D;&quot;23&quot; y2&#x3D;&quot;12&quot;&gt;&lt;/line&gt;
+                &lt;line x1&#x3D;&quot;4.22&quot; y1&#x3D;&quot;19.78&quot; x2&#x3D;&quot;5.64&quot; y2&#x3D;&quot;18.36&quot;&gt;&lt;/line&gt;&lt;line x1&#x3D;&quot;18.36&quot; y1&#x3D;&quot;5.64&quot; x2&#x3D;&quot;19.78&quot; y2&#x3D;&quot;4.22&quot;&gt;&lt;/line&gt;
+            &lt;/svg&gt;
+        &lt;/button&gt;
+        &lt;ng-container *ngIf&#x3D;&quot;!auth.isLoggedIn(); else loggedIn&quot;&gt;
+            &lt;a class&#x3D;&quot;btn-login&quot; routerLink&#x3D;&quot;/login&quot;&gt;Acceder&lt;/a&gt;
+            &lt;a class&#x3D;&quot;btn-register&quot; routerLink&#x3D;&quot;/register&quot;&gt;Registro&lt;/a&gt;
+        &lt;/ng-container&gt;
+        &lt;ng-template #loggedIn&gt;
+            &lt;span class&#x3D;&quot;user-name&quot;&gt;{{ auth.getCurrentUser()?.nombre }}&lt;/span&gt;
+            &lt;button class&#x3D;&quot;btn-logout&quot; (click)&#x3D;&quot;logout()&quot;&gt;Salir&lt;/button&gt;
+        &lt;/ng-template&gt;
+
+
+        &lt;button class&#x3D;&quot;hamburger&quot; (click)&#x3D;&quot;menuAbierto &#x3D; !menuAbierto&quot; [class.abierto]&#x3D;&quot;menuAbierto&quot; aria-label&#x3D;&quot;Menú&quot;&gt;
+            &lt;span&gt;&lt;/span&gt;
+            &lt;span&gt;&lt;/span&gt;
+            &lt;span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+
+&lt;div class&#x3D;&quot;sidebar-overlay&quot; [class.visible]&#x3D;&quot;menuAbierto&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;&lt;/div&gt;
+
+
+&lt;div class&#x3D;&quot;sidebar&quot; [class.abierto]&#x3D;&quot;menuAbierto&quot;&gt;
+    &lt;div class&#x3D;&quot;sidebar-header&quot;&gt;
+        &lt;div class&#x3D;&quot;sidebar-brand&quot;&gt;
+            &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 28 28&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;path d&#x3D;&quot;M14 2L26 8V20L14 26L2 20V8L14 2Z&quot; fill&#x3D;&quot;url(#grad2)&quot; stroke&#x3D;&quot;none&quot;/&gt;
+                &lt;path d&#x3D;&quot;M9 14L12.5 17.5L19 11&quot; stroke&#x3D;&quot;white&quot; stroke-width&#x3D;&quot;2.5&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+                &lt;defs&gt;
+                    &lt;linearGradient id&#x3D;&quot;grad2&quot; x1&#x3D;&quot;2&quot; y1&#x3D;&quot;2&quot; x2&#x3D;&quot;26&quot; y2&#x3D;&quot;26&quot; gradientUnits&#x3D;&quot;userSpaceOnUse&quot;&gt;
+                        &lt;stop stop-color&#x3D;&quot;#FF6B4A&quot;/&gt;
+                        &lt;stop offset&#x3D;&quot;1&quot; stop-color&#x3D;&quot;#E63946&quot;/&gt;
+                    &lt;/linearGradient&gt;
+                &lt;/defs&gt;
+            &lt;/svg&gt;
+            &lt;span&gt;SuperConvert&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;button class&#x3D;&quot;sidebar-close&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot; aria-label&#x3D;&quot;Cerrar menú&quot;&gt;
+            &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2.5&quot; stroke-linecap&#x3D;&quot;round&quot;&gt;
+                &lt;line x1&#x3D;&quot;18&quot; y1&#x3D;&quot;6&quot; x2&#x3D;&quot;6&quot; y2&#x3D;&quot;18&quot;/&gt;&lt;line x1&#x3D;&quot;6&quot; y1&#x3D;&quot;6&quot; x2&#x3D;&quot;18&quot; y2&#x3D;&quot;18&quot;/&gt;
+            &lt;/svg&gt;
+        &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;sidebar-links&quot;&gt;
+        &lt;a class&#x3D;&quot;sidebar-link&quot; routerLink&#x3D;&quot;/&quot; routerLinkActive&#x3D;&quot;active&quot; [routerLinkActiveOptions]&#x3D;&quot;{exact: true}&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;
+            &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z&quot;/&gt;&lt;polyline points&#x3D;&quot;9 22 9 12 15 12 15 22&quot;/&gt;&lt;/svg&gt;
+            Inicio
+        &lt;/a&gt;
+        &lt;a class&#x3D;&quot;sidebar-link&quot; routerLink&#x3D;&quot;/convertir/audio&quot; routerLinkActive&#x3D;&quot;active&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;
+            &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M9 18V5l12-2v13&quot;/&gt;&lt;circle cx&#x3D;&quot;6&quot; cy&#x3D;&quot;18&quot; r&#x3D;&quot;3&quot;/&gt;&lt;circle cx&#x3D;&quot;18&quot; cy&#x3D;&quot;16&quot; r&#x3D;&quot;3&quot;/&gt;&lt;/svg&gt;
+            Audio
+        &lt;/a&gt;
+        &lt;a class&#x3D;&quot;sidebar-link&quot; routerLink&#x3D;&quot;/convertir/video&quot; routerLinkActive&#x3D;&quot;active&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;
+            &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;polygon points&#x3D;&quot;23 7 16 12 23 17 23 7&quot;/&gt;&lt;rect x&#x3D;&quot;1&quot; y&#x3D;&quot;5&quot; width&#x3D;&quot;15&quot; height&#x3D;&quot;14&quot; rx&#x3D;&quot;2&quot; ry&#x3D;&quot;2&quot;/&gt;&lt;/svg&gt;
+            Video
+        &lt;/a&gt;
+        &lt;a class&#x3D;&quot;sidebar-link&quot; routerLink&#x3D;&quot;/convertir/imagen&quot; routerLinkActive&#x3D;&quot;active&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;
+            &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;rect x&#x3D;&quot;3&quot; y&#x3D;&quot;3&quot; width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; rx&#x3D;&quot;2&quot;/&gt;&lt;circle cx&#x3D;&quot;8.5&quot; cy&#x3D;&quot;8.5&quot; r&#x3D;&quot;1.5&quot;/&gt;&lt;polyline points&#x3D;&quot;21 15 16 10 5 21&quot;/&gt;&lt;/svg&gt;
+            Imagen
+        &lt;/a&gt;
+        &lt;a class&#x3D;&quot;sidebar-link&quot; routerLink&#x3D;&quot;/historial&quot; routerLinkActive&#x3D;&quot;active&quot; *ngIf&#x3D;&quot;auth.isLoggedIn()&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;
+            &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot;/&gt;&lt;polyline points&#x3D;&quot;12 6 12 12 16 14&quot;/&gt;&lt;/svg&gt;
+            Historial
+        &lt;/a&gt;
+        &lt;a class&#x3D;&quot;sidebar-link&quot; routerLink&#x3D;&quot;/mi-perfil&quot; routerLinkActive&#x3D;&quot;active&quot; *ngIf&#x3D;&quot;auth.isLoggedIn()&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;
+            &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2&quot;/&gt;&lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;7&quot; r&#x3D;&quot;4&quot;/&gt;&lt;/svg&gt;
+            Mi Perfil
+        &lt;/a&gt;
+        &lt;a class&#x3D;&quot;sidebar-link sidebar-link-admin&quot; routerLink&#x3D;&quot;/admin&quot; routerLinkActive&#x3D;&quot;active&quot; *ngIf&#x3D;&quot;auth.isAdmin()&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;
+            &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z&quot;/&gt;&lt;/svg&gt;
+            Admin
+        &lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;sidebar-footer&quot;&gt;
+        &lt;ng-container *ngIf&#x3D;&quot;!auth.isLoggedIn(); else sidebarLoggedIn&quot;&gt;
+            &lt;a class&#x3D;&quot;sidebar-btn-login&quot; routerLink&#x3D;&quot;/login&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;Acceder&lt;/a&gt;
+            &lt;a class&#x3D;&quot;sidebar-btn-register&quot; routerLink&#x3D;&quot;/register&quot; (click)&#x3D;&quot;menuAbierto &#x3D; false&quot;&gt;Registrarse&lt;/a&gt;
+        &lt;/ng-container&gt;
+        &lt;ng-template #sidebarLoggedIn&gt;
+            &lt;div class&#x3D;&quot;sidebar-user&quot;&gt;
+                &lt;svg width&#x3D;&quot;16&quot; height&#x3D;&quot;16&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&lt;path d&#x3D;&quot;M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2&quot;/&gt;&lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;7&quot; r&#x3D;&quot;4&quot;/&gt;&lt;/svg&gt;
+                {{ auth.getCurrentUser()?.nombre }}
+            &lt;/div&gt;
+            &lt;button class&#x3D;&quot;sidebar-btn-logout&quot; (click)&#x3D;&quot;logout(); menuAbierto &#x3D; false&quot;&gt;Cerrar sesión&lt;/button&gt;
+        &lt;/ng-template&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./navbar.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: var(--shadow-sm);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.brand-name {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.nav-link {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.nav-link:hover, .nav-link.active {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.admin-link {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.navbar-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-name {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.btn-login {
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background: var(--bg-hover);
+}
+
+.btn-register {
+    padding: 7px 18px;
+    border-radius: 20px;
+    background: var(--accent);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-on-accent);
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-register:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-accent);
+}
+
+.btn-logout {
+    padding: 7px 18px;
+    border-radius: 20px;
+    background: transparent;
+    border: 1.5px solid var(--border-primary);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-primary);
+    background: var(--bg-tertiary);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+    transform: rotate(20deg);
+}
+
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    background: transparent;
+    border: 1.5px solid var(--border-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text-secondary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.hamburger:hover {
+    border-color: var(--accent);
+}
+
+.hamburger:hover span {
+    background: var(--accent);
+}
+
+
+.hamburger.abierto span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.hamburger.abierto span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+.hamburger.abierto span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.visible {
+    opacity: 1;
+}
+
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-secondary);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    z-index: 400;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none;
+    flex-direction: column;
+}
+
+.sidebar.abierto {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border-secondary);
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--bg-hover);
+    border-radius: 8px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sidebar-close:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.sidebar-links {
+    flex: 1;
+    padding: 1rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.sidebar-link-admin {
+    color: var(--accent);
+    background: var(--accent-light);
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    padding: 1rem 0.75rem 1.5rem;
+    border-top: 1px solid var(--border-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 14px;
+}
+
+.sidebar-btn-login {
+    display: block;
+    padding: 12px;
+    text-align: center;
+    border-radius: 12px;
+    border: 1.5px solid var(--border-primary);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.sidebar-btn-login:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.sidebar-btn-register {
+    display: block;
+    padding: 12px;
+    text-align: center;
+    border-radius: 12px;
+    background: var(--accent);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-on-accent);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.sidebar-btn-register:hover {
+    background: var(--accent-hover);
+}
+
+.sidebar-btn-logout {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background: transparent;
+    border: 1.5px solid var(--border-primary);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sidebar-btn-logout:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 1rem;
+        height: 56px;
+    }
+
+    .brand-name {
+        font-size: 1rem;
+    }
+
+
+    .navbar-menu {
+        display: none;
+    }
+
+    .user-name,
+    .btn-login,
+    .btn-register,
+    .btn-logout {
+        display: none;
+    }
+
+    .theme-toggle {
+        width: 32px;
+        height: 32px;
+    }
+
+
+    .hamburger {
+        display: flex;
+    }
+
+
+    .sidebar-overlay {
+        display: block;
+        pointer-events: none;
+    }
+
+    .sidebar-overlay.visible {
+        pointer-events: all;
+    }
+
+    .sidebar {
+        display: flex;
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><nav class="navbar">    <div class="navbar-brand" routerLink="/">        <div class="brand-icon">            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">                <path d="M14 2L26 8V20L14 26L2 20V8L14 2Z" fill="url(#grad)" stroke="none"/>                <path d="M9 14L12.5 17.5L19 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>                <defs>                    <linearGradient id="grad" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">                        <stop stop-color="#FF6B4A"/>                        <stop offset="1" stop-color="#E63946"/>                    </linearGradient>                </defs>            </svg>        </div>        <span class="brand-name">SuperConvert</span>    </div>    <div class="navbar-menu">        <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>        <a class="nav-link" routerLink="/convertir/audio" routerLinkActive="active">Audio</a>        <a class="nav-link" routerLink="/convertir/video" routerLinkActive="active">Video</a>        <a class="nav-link" routerLink="/convertir/imagen" routerLinkActive="active">Imagen</a>        <a class="nav-link" routerLink="/historial" routerLinkActive="active" *ngIf="auth.isLoggedIn()">Historial</a>        <a class="nav-link perfil-link" routerLink="/mi-perfil" routerLinkActive="active" *ngIf="auth.isLoggedIn()">Mi Perfil</a>        <a class="nav-link admin-link" *ngIf="auth.isAdmin()" routerLink="/admin" routerLinkActive="active">Admin</a>    </div>    <div class="navbar-auth">        <button class="theme-toggle" (click)="theme.toggle()" [attr.aria-label]="theme.isDark() ? \'Modo claro\' : \'Modo oscuro\'">            <svg *ngIf="!theme.isDark()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>            </svg>            <svg *ngIf="theme.isDark()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">                <circle cx="12" cy="12" r="5"></circle>                <line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>                <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>            </svg>        </button>        <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">            <a class="btn-login" routerLink="/login">Acceder</a>            <a class="btn-register" routerLink="/register">Registro</a>        </ng-container>        <ng-template #loggedIn>            <span class="user-name">{{ auth.getCurrentUser()?.nombre }}</span>            <button class="btn-logout" (click)="logout()">Salir</button>        </ng-template>        <button class="hamburger" (click)="menuAbierto = !menuAbierto" [class.abierto]="menuAbierto" aria-label="Menú">            <span></span>            <span></span>            <span></span>        </button>    </div></nav><div class="sidebar-overlay" [class.visible]="menuAbierto" (click)="menuAbierto = false"></div><div class="sidebar" [class.abierto]="menuAbierto">    <div class="sidebar-header">        <div class="sidebar-brand">            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">                <path d="M14 2L26 8V20L14 26L2 20V8L14 2Z" fill="url(#grad2)" stroke="none"/>                <path d="M9 14L12.5 17.5L19 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>                <defs>                    <linearGradient id="grad2" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">                        <stop stop-color="#FF6B4A"/>                        <stop offset="1" stop-color="#E63946"/>                    </linearGradient>                </defs>            </svg>            <span>SuperConvert</span>        </div>        <button class="sidebar-close" (click)="menuAbierto = false" aria-label="Cerrar menú">            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>            </svg>        </button>    </div>    <div class="sidebar-links">        <a class="sidebar-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="menuAbierto = false">            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>            Inicio        </a>        <a class="sidebar-link" routerLink="/convertir/audio" routerLinkActive="active" (click)="menuAbierto = false">            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>            Audio        </a>        <a class="sidebar-link" routerLink="/convertir/video" routerLinkActive="active" (click)="menuAbierto = false">            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>            Video        </a>        <a class="sidebar-link" routerLink="/convertir/imagen" routerLinkActive="active" (click)="menuAbierto = false">            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>            Imagen        </a>        <a class="sidebar-link" routerLink="/historial" routerLinkActive="active" *ngIf="auth.isLoggedIn()" (click)="menuAbierto = false">            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>            Historial        </a>        <a class="sidebar-link" routerLink="/mi-perfil" routerLinkActive="active" *ngIf="auth.isLoggedIn()" (click)="menuAbierto = false">            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>            Mi Perfil        </a>        <a class="sidebar-link sidebar-link-admin" routerLink="/admin" routerLinkActive="active" *ngIf="auth.isAdmin()" (click)="menuAbierto = false">            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>            Admin        </a>    </div>    <div class="sidebar-footer">        <ng-container *ngIf="!auth.isLoggedIn(); else sidebarLoggedIn">            <a class="sidebar-btn-login" routerLink="/login" (click)="menuAbierto = false">Acceder</a>            <a class="sidebar-btn-register" routerLink="/register" (click)="menuAbierto = false">Registrarse</a>        </ng-container>        <ng-template #sidebarLoggedIn>            <div class="sidebar-user">                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>                {{ auth.getCurrentUser()?.nombre }}            </div>            <button class="sidebar-btn-logout" (click)="logout(); menuAbierto = false">Cerrar sesión</button>        </ng-template>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AdminDashboardComponent', 'selector': 'app-admin-dashboard'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ConversionToolComponent', 'selector': 'app-conversion-tool'},{'name': 'HistorialComponent', 'selector': 'app-historial'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MiPerfilComponent', 'selector': 'app-mi-perfil'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'NavbarComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'NavbarComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

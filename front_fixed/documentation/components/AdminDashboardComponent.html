@@ -1,0 +1,4178 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>convertidor-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">convertidor-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AdminDashboardComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/admin-dashboard/admin-dashboard.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente del panel de administración.</p>
+<p>Organiza la información en tres pestañas:</p>
+<ul>
+<li><strong>Usuarios:</strong> lista, edición y eliminación de cuentas.</li>
+<li><strong>Conversiones:</strong> historial global con filtros por tipo y estado.</li>
+<li><strong>Auditoría:</strong> registro de acciones con filtros por tipo de acción y rol.</li>
+</ul>
+<p>La pestaña inicial puede determinarse mediante el dato de ruta <code>tabInicial</code>
+(valor <code>&#39;auditoria&#39;</code> para abrir directamente en auditoría).</p>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-admin-dashboard</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./admin-dashboard.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./admin-dashboard.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#auditoria" >auditoria</a>
+                            </li>
+                            <li>
+                                <a href="#cargandoAuditoria" >cargandoAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#cargandoConversiones" >cargandoConversiones</a>
+                            </li>
+                            <li>
+                                <a href="#cargandoUsuarios" >cargandoUsuarios</a>
+                            </li>
+                            <li>
+                                <a href="#conversiones" >conversiones</a>
+                            </li>
+                            <li>
+                                <a href="#errorAuditoria" >errorAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#errorConversiones" >errorConversiones</a>
+                            </li>
+                            <li>
+                                <a href="#errorEdicion" >errorEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#errorUsuarios" >errorUsuarios</a>
+                            </li>
+                            <li>
+                                <a href="#exitoEdicion" >exitoEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#filtroAccion" >filtroAccion</a>
+                            </li>
+                            <li>
+                                <a href="#filtroEstado" >filtroEstado</a>
+                            </li>
+                            <li>
+                                <a href="#filtroRolAuditoria" >filtroRolAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#filtroTipo" >filtroTipo</a>
+                            </li>
+                            <li>
+                                <a href="#guardandoEdicion" >guardandoEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarModalEdicion" >mostrarModalEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#resumen" >resumen</a>
+                            </li>
+                            <li>
+                                <a href="#tabActiva" >tabActiva</a>
+                            </li>
+                            <li>
+                                <a href="#totalRegistrosAuditoria" >totalRegistrosAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#usuarioEditando" >usuarioEditando</a>
+                            </li>
+                            <li>
+                                <a href="#usuarios" >usuarios</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirModalEdicion" >abrirModalEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#activarTab" >activarTab</a>
+                            </li>
+                            <li>
+                                <a href="#cambiarFiltroAccion" >cambiarFiltroAccion</a>
+                            </li>
+                            <li>
+                                <a href="#cambiarFiltroEstado" >cambiarFiltroEstado</a>
+                            </li>
+                            <li>
+                                <a href="#cambiarFiltroRolAuditoria" >cambiarFiltroRolAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#cambiarFiltroTipo" >cambiarFiltroTipo</a>
+                            </li>
+                            <li>
+                                <a href="#cargarAuditoria" >cargarAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#cargarConversiones" >cargarConversiones</a>
+                            </li>
+                            <li>
+                                <a href="#cargarResumen" >cargarResumen</a>
+                            </li>
+                            <li>
+                                <a href="#cargarUsuarios" >cargarUsuarios</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModalEdicion" >cerrarModalEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#colorAccion" >colorAccion</a>
+                            </li>
+                            <li>
+                                <a href="#colorTipo" >colorTipo</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarHistorialDeUsuario" >eliminarHistorialDeUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarUsuario" >eliminarUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#esAdmin" >esAdmin</a>
+                            </li>
+                            <li>
+                                <a href="#guardarEdicion" >guardarEdicion</a>
+                            </li>
+                            <li>
+                                <a href="#limpiarFiltros" >limpiarFiltros</a>
+                            </li>
+                            <li>
+                                <a href="#limpiarFiltrosAuditoria" >limpiarFiltrosAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#urlDescarga" >urlDescarga</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(adminService: <a href="../injectables/AdminService.html" target="_self">AdminService</a>, errorHandler: <a href="../injectables/ErrorHandlerService.html" target="_self">ErrorHandlerService</a>, route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:84</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>adminService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AdminService.html" target="_self" >AdminService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio HTTP del panel de administración.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>errorHandler</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ErrorHandlerService.html" target="_self" >ErrorHandlerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio centralizado de manejo de errores HTTP.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Ruta activa para leer el dato <code>tabInicial</code>.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirModalEdicion"></a>
+                    <span class="name">
+                        <span ><b>abrirModalEdicion</b></span>
+                        <a href="#abrirModalEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirModalEdicion(usuario: <a href="../interfaces/UsuarioDTO.html" target="_self">UsuarioDTO</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="178"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:178</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Abre el modal de edición con una copia del usuario seleccionado.
+La contraseña se inicializa vacía para que solo se actualice si el
+administrador ingresa un nuevo valor.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usuario</td>
+                                            <td>
+                                                            <code><a href="../interfaces/UsuarioDTO.html" target="_self" >UsuarioDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Usuario cuyos datos se cargarán en el modal.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activarTab"></a>
+                    <span class="name">
+                        <span ><b>activarTab</b></span>
+                        <a href="#activarTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>activarTab(tab: "usuarios" | "conversiones" | "auditoria")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="392"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:392</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Activa la pestaña indicada. Si se activa <code>&#39;auditoria&#39;</code> por primera vez
+y la lista está vacía, inicia la carga de registros.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tab</td>
+                                            <td>
+                                                        <code>&quot;usuarios&quot; | &quot;conversiones&quot; | &quot;auditoria&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Pestaña a activar: <code>&#39;usuarios&#39;</code>, <code>&#39;conversiones&#39;</code> o <code>&#39;auditoria&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarFiltroAccion"></a>
+                    <span class="name">
+                        <span ><b>cambiarFiltroAccion</b></span>
+                        <a href="#cambiarFiltroAccion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarFiltroAccion(accion: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="359"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:359</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Activa o desactiva el filtro de auditoría por tipo de acción (toggle).
+Limpia el filtro por rol y recarga la auditoría.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>accion</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Tipo de acción a filtrar (ej. <code>&#39;LOGIN&#39;</code>, <code>&#39;CONVERSION&#39;</code>).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarFiltroEstado"></a>
+                    <span class="name">
+                        <span ><b>cambiarFiltroEstado</b></span>
+                        <a href="#cambiarFiltroEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarFiltroEstado(estado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="272"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Activa o desactiva el filtro por estado de conversión (toggle).
+Si el estado ya estaba activo lo limpia; en caso contrario lo aplica
+y limpia el filtro por tipo. Recarga las conversiones.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>estado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Estado a filtrar: <code>&#39;PENDIENTE&#39;</code>, <code>&#39;EN_PROCESO&#39;</code>, <code>&#39;COMPLETADO&#39;</code> o <code>&#39;FALLIDO&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarFiltroRolAuditoria"></a>
+                    <span class="name">
+                        <span ><b>cambiarFiltroRolAuditoria</b></span>
+                        <a href="#cambiarFiltroRolAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarFiltroRolAuditoria(rol: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="371"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:371</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Activa o desactiva el filtro de auditoría por rol del usuario (toggle).
+Limpia el filtro por acción y recarga la auditoría.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rol</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Rol a filtrar: <code>&#39;USUARIO&#39;</code> o <code>&#39;ADMIN&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarFiltroTipo"></a>
+                    <span class="name">
+                        <span ><b>cambiarFiltroTipo</b></span>
+                        <a href="#cambiarFiltroTipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarFiltroTipo(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="259"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:259</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Activa o desactiva el filtro por tipo de archivo (toggle).
+Si el tipo ya estaba activo lo limpia; en caso contrario lo aplica
+y limpia el filtro por estado. Recarga las conversiones.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Tipo de archivo a filtrar: <code>&#39;AUDIO&#39;</code>, <code>&#39;VIDEO&#39;</code> o <code>&#39;IMAGEN&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarAuditoria"></a>
+                    <span class="name">
+                        <span ><b>cargarAuditoria</b></span>
+                        <a href="#cargarAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarAuditoria()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="328"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:328</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga los registros de auditoría aplicando el filtro activo de acción o rol.
+Si no hay ningún filtro activo, carga todos los registros.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarConversiones"></a>
+                    <span class="name">
+                        <span ><b>cargarConversiones</b></span>
+                        <a href="#cargarConversiones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarConversiones()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="228"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:228</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga las conversiones aplicando el filtro activo de tipo o estado.
+Si no hay ningún filtro activo, carga todas las conversiones.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarResumen"></a>
+                    <span class="name">
+                        <span ><b>cargarResumen</b></span>
+                        <a href="#cargarResumen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarResumen()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="119"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:119</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga las estadísticas generales del sistema desde el backend
+y las asigna a <code>resumen</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarUsuarios"></a>
+                    <span class="name">
+                        <span ><b>cargarUsuarios</b></span>
+                        <a href="#cargarUsuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarUsuarios()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="130"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:130</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga la lista completa de usuarios registrados.
+Actualiza <code>usuarios</code>, <code>cargandoUsuarios</code> y <code>errorUsuarios</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModalEdicion"></a>
+                    <span class="name">
+                        <span ><b>cerrarModalEdicion</b></span>
+                        <a href="#cerrarModalEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModalEdicion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="188"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:188</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cierra el modal de edición y limpia el estado relacionado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="colorAccion"></a>
+                    <span class="name">
+                        <span ><b>colorAccion</b></span>
+                        <a href="#colorAccion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>colorAccion(accion: string | undefined)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="442"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:442</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna la clase CSS de color asociada al tipo de acción de un registro
+de auditoría.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">     o cadena vacía si la acción no es reconocida.</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>accion</td>
+                                            <td>
+                                                        <code>string | undefined</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Tipo de acción del registro de auditoría.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Nombre de clase CSS para colorear el badge de acción,
+o cadena vacía si la acción no es reconocida.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="colorTipo"></a>
+                    <span class="name">
+                        <span ><b>colorTipo</b></span>
+                        <a href="#colorTipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>colorTipo(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="425"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:425</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna el color de acento CSS asociado al tipo de archivo de una conversión.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Categoría del archivo: <code>&#39;AUDIO&#39;</code>, <code>&#39;VIDEO&#39;</code> o <code>&#39;IMAGEN&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Color en formato hexadecimal, o <code>&#39;#888&#39;</code> si el tipo no es reconocido.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarHistorialDeUsuario"></a>
+                    <span class="name">
+                        <span ><b>eliminarHistorialDeUsuario</b></span>
+                        <a href="#eliminarHistorialDeUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarHistorialDeUsuario(usuarioId: number | undefined, nombreUsuario: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="296"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:296</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina todo el historial de conversiones de un usuario específico.
+Primero obtiene la lista de conversiones del usuario, luego elimina
+cada una individualmente y al terminar recarga el resumen.
+No hace nada si <code>usuarioId</code> es <code>undefined</code>.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usuarioId</td>
+                                            <td>
+                                                        <code>number | undefined</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>ID del usuario cuyo historial se eliminará.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>nombreUsuario</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nombre del usuario para mostrar en el diálogo de confirmación.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarUsuario"></a>
+                    <span class="name">
+                        <span ><b>eliminarUsuario</b></span>
+                        <a href="#eliminarUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarUsuario(id: number | undefined)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina el usuario con el ID indicado tras solicitar confirmación.
+No hace nada si <code>id</code> es <code>undefined</code>. Tras la eliminación recarga
+el resumen y actualiza la lista local.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                        <code>number | undefined</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del usuario a eliminar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esAdmin"></a>
+                    <span class="name">
+                        <span ><b>esAdmin</b></span>
+                        <a href="#esAdmin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esAdmin(u: <a href="../interfaces/UsuarioDTO.html" target="_self">UsuarioDTO</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="415"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:415</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Indica si un usuario tiene rol de administrador.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>u</td>
+                                            <td>
+                                                            <code><a href="../interfaces/UsuarioDTO.html" target="_self" >UsuarioDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Usuario a verificar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si el usuario es ADMIN, <code>false</code> en caso contrario.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardarEdicion"></a>
+                    <span class="name">
+                        <span ><b>guardarEdicion</b></span>
+                        <a href="#guardarEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardarEdicion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Envía al backend los datos editados del usuario en el modal.
+No hace nada si no hay usuario en edición o si carece de <code>id</code>.
+Tras una edición exitosa recarga la lista de usuarios y cierra
+el modal después de 1 200 ms.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="limpiarFiltros"></a>
+                    <span class="name">
+                        <span ><b>limpiarFiltros</b></span>
+                        <a href="#limpiarFiltros"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>limpiarFiltros()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="281"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina todos los filtros activos de conversiones y recarga la lista completa.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="limpiarFiltrosAuditoria"></a>
+                    <span class="name">
+                        <span ><b>limpiarFiltrosAuditoria</b></span>
+                        <a href="#limpiarFiltrosAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>limpiarFiltrosAuditoria()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="380"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:380</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina todos los filtros de auditoría y recarga la lista completa.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicializa el componente determinando la pestaña activa e iniciando
+la carga del resumen, usuarios y conversiones. Si la pestaña inicial
+es <code>&#39;auditoria&#39;</code>, también carga los registros de auditoría.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="urlDescarga"></a>
+                    <span class="name">
+                        <span ><b>urlDescarga</b></span>
+                        <a href="#urlDescarga"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>urlDescarga(conv: <a href="../interfaces/HistorialConversionDTO.html" target="_self">HistorialConversionDTO</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="405"
+                                    class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:405</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna la URL de descarga del archivo convertido de una conversión.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>conv</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistorialConversionDTO.html" target="_self" >HistorialConversionDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Registro de conversión.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | undefined</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>URL de descarga, o <code>undefined</code> si no está disponible.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auditoria"></a>
+                    <span class="name">
+                        <span ><b>auditoria</b></span>
+                        <a href="#auditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/AuditoriaDTO.html" target="_self" >AuditoriaDTO[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista de registros de auditoría actualmente mostrada.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargandoAuditoria"></a>
+                    <span class="name">
+                        <span ><b>cargandoAuditoria</b></span>
+                        <a href="#cargandoAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si la carga de auditoría está en curso.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargandoConversiones"></a>
+                    <span class="name">
+                        <span ><b>cargandoConversiones</b></span>
+                        <a href="#cargandoConversiones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si la carga de conversiones está en curso.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargandoUsuarios"></a>
+                    <span class="name">
+                        <span ><b>cargandoUsuarios</b></span>
+                        <a href="#cargandoUsuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si la carga de usuarios está en curso.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="conversiones"></a>
+                    <span class="name">
+                        <span ><b>conversiones</b></span>
+                        <a href="#conversiones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/HistorialConversionDTO.html" target="_self" >HistorialConversionDTO[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista de conversiones actualmente mostrada (puede estar filtrada).</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorAuditoria"></a>
+                    <span class="name">
+                        <span ><b>errorAuditoria</b></span>
+                        <a href="#errorAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de error al cargar la auditoría.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorConversiones"></a>
+                    <span class="name">
+                        <span ><b>errorConversiones</b></span>
+                        <a href="#errorConversiones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de error al cargar conversiones.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorEdicion"></a>
+                    <span class="name">
+                        <span ><b>errorEdicion</b></span>
+                        <a href="#errorEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:82</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de error dentro del modal de edición.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="errorUsuarios"></a>
+                    <span class="name">
+                        <span ><b>errorUsuarios</b></span>
+                        <a href="#errorUsuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de error al cargar o modificar usuarios.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exitoEdicion"></a>
+                    <span class="name">
+                        <span ><b>exitoEdicion</b></span>
+                        <a href="#exitoEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:84</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de éxito dentro del modal de edición.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtroAccion"></a>
+                    <span class="name">
+                        <span ><b>filtroAccion</b></span>
+                        <a href="#filtroAccion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Filtro activo por tipo de acción (ej. <code>&#39;LOGIN&#39;</code>, <code>&#39;CONVERSION&#39;</code>) o <code>&#39;&#39;</code>.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtroEstado"></a>
+                    <span class="name">
+                        <span ><b>filtroEstado</b></span>
+                        <a href="#filtroEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Filtro activo por estado de conversión o <code>&#39;&#39;</code> si no hay filtro.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtroRolAuditoria"></a>
+                    <span class="name">
+                        <span ><b>filtroRolAuditoria</b></span>
+                        <a href="#filtroRolAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Filtro activo por rol del usuario (<code>&#39;USUARIO&#39;</code>, <code>&#39;ADMIN&#39;</code>) o <code>&#39;&#39;</code>.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtroTipo"></a>
+                    <span class="name">
+                        <span ><b>filtroTipo</b></span>
+                        <a href="#filtroTipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Filtro activo por tipo de archivo (<code>&#39;AUDIO&#39;</code>, <code>&#39;VIDEO&#39;</code>, <code>&#39;IMAGEN&#39;</code> o <code>&#39;&#39;</code>).</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardandoEdicion"></a>
+                    <span class="name">
+                        <span ><b>guardandoEdicion</b></span>
+                        <a href="#guardandoEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si el guardado de la edición está en curso.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarModalEdicion"></a>
+                    <span class="name">
+                        <span ><b>mostrarModalEdicion</b></span>
+                        <a href="#mostrarModalEdicion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:76</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controla la visibilidad del modal de edición de usuario.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resumen"></a>
+                    <span class="name">
+                        <span ><b>resumen</b></span>
+                        <a href="#resumen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ResumenAdmin.html" target="_self" >ResumenAdmin | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Estadísticas generales del sistema cargadas desde el backend.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tabActiva"></a>
+                    <span class="name">
+                        <span ><b>tabActiva</b></span>
+                        <a href="#tabActiva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;usuarios&quot; | &quot;conversiones&quot; | &quot;auditoria&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;usuarios&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Pestaña activa en el panel.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="totalRegistrosAuditoria"></a>
+                    <span class="name">
+                        <span ><b>totalRegistrosAuditoria</b></span>
+                        <a href="#totalRegistrosAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Total de registros de auditoría en la lista actual.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuarioEditando"></a>
+                    <span class="name">
+                        <span ><b>usuarioEditando</b></span>
+                        <a href="#usuarioEditando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/UsuarioDTO.html" target="_self" >UsuarioDTO | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Copia del usuario que se está editando en el modal, o <code>null</code> si no hay ninguno.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuarios"></a>
+                    <span class="name">
+                        <span ><b>usuarios</b></span>
+                        <a href="#usuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/UsuarioDTO.html" target="_self" >UsuarioDTO[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/components/admin-dashboard/admin-dashboard.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista de usuarios registrados en el sistema.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { AdminService } from &#x27;../../services/admin.service&#x27;;
+import { ErrorHandlerService } from &#x27;../../services/error-handler.service&#x27;;
+import { UsuarioDTO } from &#x27;../../models/usuario-dto&#x27;;
+import { HistorialConversionDTO } from &#x27;../../models/historial-conversion-dto&#x27;;
+import { ResumenAdmin } from &#x27;../../models/resumen-admin&#x27;;
+import { AuditoriaDTO } from &#x27;../../models/auditoria-dto&#x27;;
+import { ActivatedRoute } from &#x27;@angular/router&#x27;;
+
+/**
+ * Componente del panel de administración.
+ *
+ * Organiza la información en tres pestañas:
+ * - **Usuarios:** lista, edición y eliminación de cuentas.
+ * - **Conversiones:** historial global con filtros por tipo y estado.
+ * - **Auditoría:** registro de acciones con filtros por tipo de acción y rol.
+ *
+ * La pestaña inicial puede determinarse mediante el dato de ruta &#x60;tabInicial&#x60;
+ * (valor &#x60;&#x27;auditoria&#x27;&#x60; para abrir directamente en auditoría).
+ */
+@Component({
+    selector: &#x27;app-admin-dashboard&#x27;,
+    templateUrl: &#x27;./admin-dashboard.component.html&#x27;,
+    styleUrls: [&#x27;./admin-dashboard.component.css&#x27;]
+})
+export class AdminDashboardComponent implements OnInit {
+
+    /** Pestaña activa en el panel. */
+    tabActiva: &#x27;usuarios&#x27; | &#x27;conversiones&#x27; | &#x27;auditoria&#x27; &#x3D; &#x27;usuarios&#x27;;
+
+
+
+    /** Lista de usuarios registrados en el sistema. */
+    usuarios: UsuarioDTO[] &#x3D; [];
+    /** Indica si la carga de usuarios está en curso. */
+    cargandoUsuarios &#x3D; false;
+    /** Mensaje de error al cargar o modificar usuarios. */
+    errorUsuarios &#x3D; &#x27;&#x27;;
+
+
+
+    /** Lista de conversiones actualmente mostrada (puede estar filtrada). */
+    conversiones: HistorialConversionDTO[] &#x3D; [];
+    /** Indica si la carga de conversiones está en curso. */
+    cargandoConversiones &#x3D; false;
+    /** Mensaje de error al cargar conversiones. */
+    errorConversiones &#x3D; &#x27;&#x27;;
+    /** Filtro activo por tipo de archivo (&#x60;&#x27;AUDIO&#x27;&#x60;, &#x60;&#x27;VIDEO&#x27;&#x60;, &#x60;&#x27;IMAGEN&#x27;&#x60; o &#x60;&#x27;&#x27;&#x60;). */
+    filtroTipo &#x3D; &#x27;&#x27;;
+    /** Filtro activo por estado de conversión o &#x60;&#x27;&#x27;&#x60; si no hay filtro. */
+    filtroEstado &#x3D; &#x27;&#x27;;
+
+
+
+    /** Estadísticas generales del sistema cargadas desde el backend. */
+    resumen: ResumenAdmin | null &#x3D; null;
+
+
+
+    /** Lista de registros de auditoría actualmente mostrada. */
+    auditoria: AuditoriaDTO[] &#x3D; [];
+    /** Indica si la carga de auditoría está en curso. */
+    cargandoAuditoria &#x3D; false;
+    /** Mensaje de error al cargar la auditoría. */
+    errorAuditoria &#x3D; &#x27;&#x27;;
+    /** Filtro activo por tipo de acción (ej. &#x60;&#x27;LOGIN&#x27;&#x60;, &#x60;&#x27;CONVERSION&#x27;&#x60;) o &#x60;&#x27;&#x27;&#x60;. */
+    filtroAccion &#x3D; &#x27;&#x27;;
+    /** Filtro activo por rol del usuario (&#x60;&#x27;USUARIO&#x27;&#x60;, &#x60;&#x27;ADMIN&#x27;&#x60;) o &#x60;&#x27;&#x27;&#x60;. */
+    filtroRolAuditoria &#x3D; &#x27;&#x27;;
+    /** Total de registros de auditoría en la lista actual. */
+    totalRegistrosAuditoria &#x3D; 0;
+
+
+
+    /** Controla la visibilidad del modal de edición de usuario. */
+    mostrarModalEdicion &#x3D; false;
+    /** Copia del usuario que se está editando en el modal, o &#x60;null&#x60; si no hay ninguno. */
+    usuarioEditando: UsuarioDTO | null &#x3D; null;
+    /** Indica si el guardado de la edición está en curso. */
+    guardandoEdicion &#x3D; false;
+    /** Mensaje de error dentro del modal de edición. */
+    errorEdicion &#x3D; &#x27;&#x27;;
+    /** Mensaje de éxito dentro del modal de edición. */
+    exitoEdicion &#x3D; &#x27;&#x27;;
+
+    /**
+     * @param adminService Servicio HTTP del panel de administración.
+     * @param errorHandler Servicio centralizado de manejo de errores HTTP.
+     * @param route        Ruta activa para leer el dato &#x60;tabInicial&#x60;.
+     */
+    constructor(
+        private adminService: AdminService,
+        private errorHandler: ErrorHandlerService,
+        private route: ActivatedRoute
+    ) {}
+
+    /**
+     * Inicializa el componente determinando la pestaña activa e iniciando
+     * la carga del resumen, usuarios y conversiones. Si la pestaña inicial
+     * es &#x60;&#x27;auditoria&#x27;&#x60;, también carga los registros de auditoría.
+     */
+    ngOnInit(): void {
+        const tabInicial &#x3D; this.route.snapshot.data[&#x27;tabInicial&#x27;];
+        if (tabInicial &#x3D;&#x3D;&#x3D; &#x27;auditoria&#x27;) {
+            this.tabActiva &#x3D; &#x27;auditoria&#x27;;
+        }
+        this.cargarResumen();
+        this.cargarUsuarios();
+        this.cargarConversiones();
+        if (this.tabActiva &#x3D;&#x3D;&#x3D; &#x27;auditoria&#x27;) {
+            this.cargarAuditoria();
+        }
+    }
+
+    /**
+     * Carga las estadísticas generales del sistema desde el backend
+     * y las asigna a &#x60;resumen&#x60;.
+     */
+    cargarResumen(): void {
+        this.adminService.resumen().subscribe({
+            next: (data) &#x3D;&gt; { this.resumen &#x3D; data; },
+            error: () &#x3D;&gt; {}
+        });
+    }
+
+    /**
+     * Carga la lista completa de usuarios registrados.
+     * Actualiza &#x60;usuarios&#x60;, &#x60;cargandoUsuarios&#x60; y &#x60;errorUsuarios&#x60;.
+     */
+    cargarUsuarios(): void {
+        this.cargandoUsuarios &#x3D; true;
+        this.errorUsuarios &#x3D; &#x27;&#x27;;
+        this.adminService.listarUsuarios().subscribe({
+            next: (data) &#x3D;&gt; {
+                this.usuarios &#x3D; data || [];
+                this.cargandoUsuarios &#x3D; false;
+            },
+            error: (err) &#x3D;&gt; {
+                this.cargandoUsuarios &#x3D; false;
+                this.errorUsuarios &#x3D; this.errorHandler.extraerMensaje(
+                    err, &#x27;No se pudo cargar la lista de usuarios.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Elimina el usuario con el ID indicado tras solicitar confirmación.
+     * No hace nada si &#x60;id&#x60; es &#x60;undefined&#x60;. Tras la eliminación recarga
+     * el resumen y actualiza la lista local.
+     *
+     * @param id Identificador del usuario a eliminar.
+     */
+    eliminarUsuario(id: number | undefined): void {
+        if (!id) return;
+        if (!confirm(&#x27;¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.&#x27;)) return;
+
+        this.adminService.eliminarUsuario(id).subscribe({
+            next: () &#x3D;&gt; {
+                this.usuarios &#x3D; this.usuarios.filter(u &#x3D;&gt; u.id !&#x3D;&#x3D; id);
+                this.cargarResumen();
+            },
+            error: (err) &#x3D;&gt; {
+                this.errorUsuarios &#x3D; this.errorHandler.extraerMensaje(
+                    err, &#x27;No se pudo eliminar el usuario.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Abre el modal de edición con una copia del usuario seleccionado.
+     * La contraseña se inicializa vacía para que solo se actualice si el
+     * administrador ingresa un nuevo valor.
+     *
+     * @param usuario Usuario cuyos datos se cargarán en el modal.
+     */
+    abrirModalEdicion(usuario: UsuarioDTO): void {
+        this.usuarioEditando &#x3D; { ...usuario, contrasena: &#x27;&#x27; };
+        this.mostrarModalEdicion &#x3D; true;
+        this.errorEdicion &#x3D; &#x27;&#x27;;
+        this.exitoEdicion &#x3D; &#x27;&#x27;;
+    }
+
+    /**
+     * Cierra el modal de edición y limpia el estado relacionado.
+     */
+    cerrarModalEdicion(): void {
+        this.mostrarModalEdicion &#x3D; false;
+        this.usuarioEditando &#x3D; null;
+        this.errorEdicion &#x3D; &#x27;&#x27;;
+        this.exitoEdicion &#x3D; &#x27;&#x27;;
+    }
+
+    /**
+     * Envía al backend los datos editados del usuario en el modal.
+     * No hace nada si no hay usuario en edición o si carece de &#x60;id&#x60;.
+     * Tras una edición exitosa recarga la lista de usuarios y cierra
+     * el modal después de 1 200 ms.
+     */
+    guardarEdicion(): void {
+        if (!this.usuarioEditando || !this.usuarioEditando.id) return;
+
+        this.guardandoEdicion &#x3D; true;
+        this.errorEdicion &#x3D; &#x27;&#x27;;
+        this.exitoEdicion &#x3D; &#x27;&#x27;;
+
+        this.adminService.editarUsuario(this.usuarioEditando.id, this.usuarioEditando).subscribe({
+            next: () &#x3D;&gt; {
+                this.guardandoEdicion &#x3D; false;
+                this.exitoEdicion &#x3D; &#x27;Usuario actualizado correctamente.&#x27;;
+                this.cargarUsuarios();
+                setTimeout(() &#x3D;&gt; this.cerrarModalEdicion(), 1200);
+            },
+            error: (err) &#x3D;&gt; {
+                this.guardandoEdicion &#x3D; false;
+                this.errorEdicion &#x3D; this.errorHandler.extraerMensaje(
+                    err, &#x27;No se pudo actualizar el usuario.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Carga las conversiones aplicando el filtro activo de tipo o estado.
+     * Si no hay ningún filtro activo, carga todas las conversiones.
+     */
+    cargarConversiones(): void {
+        this.cargandoConversiones &#x3D; true;
+        this.errorConversiones &#x3D; &#x27;&#x27;;
+
+        const obs &#x3D; this.filtroTipo
+            ? this.adminService.conversionesPorTipo(this.filtroTipo)
+            : this.filtroEstado
+                ? this.adminService.conversionesPorEstado(this.filtroEstado)
+                : this.adminService.listarConversiones();
+
+        obs.subscribe({
+            next: (data: HistorialConversionDTO[]) &#x3D;&gt; {
+                this.conversiones &#x3D; data || [];
+                this.cargandoConversiones &#x3D; false;
+            },
+            error: (err: unknown) &#x3D;&gt; {
+                this.cargandoConversiones &#x3D; false;
+                this.errorConversiones &#x3D; this.errorHandler.extraerMensaje(
+                    err, &#x27;No se pudo cargar el historial de conversiones.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Activa o desactiva el filtro por tipo de archivo (toggle).
+     * Si el tipo ya estaba activo lo limpia; en caso contrario lo aplica
+     * y limpia el filtro por estado. Recarga las conversiones.
+     *
+     * @param tipo Tipo de archivo a filtrar: &#x60;&#x27;AUDIO&#x27;&#x60;, &#x60;&#x27;VIDEO&#x27;&#x60; o &#x60;&#x27;IMAGEN&#x27;&#x60;.
+     */
+    cambiarFiltroTipo(tipo: string): void {
+        this.filtroTipo &#x3D; this.filtroTipo &#x3D;&#x3D;&#x3D; tipo ? &#x27;&#x27; : tipo;
+        this.filtroEstado &#x3D; &#x27;&#x27;;
+        this.cargarConversiones();
+    }
+
+    /**
+     * Activa o desactiva el filtro por estado de conversión (toggle).
+     * Si el estado ya estaba activo lo limpia; en caso contrario lo aplica
+     * y limpia el filtro por tipo. Recarga las conversiones.
+     *
+     * @param estado Estado a filtrar: &#x60;&#x27;PENDIENTE&#x27;&#x60;, &#x60;&#x27;EN_PROCESO&#x27;&#x60;, &#x60;&#x27;COMPLETADO&#x27;&#x60; o &#x60;&#x27;FALLIDO&#x27;&#x60;.
+     */
+    cambiarFiltroEstado(estado: string): void {
+        this.filtroEstado &#x3D; this.filtroEstado &#x3D;&#x3D;&#x3D; estado ? &#x27;&#x27; : estado;
+        this.filtroTipo &#x3D; &#x27;&#x27;;
+        this.cargarConversiones();
+    }
+
+    /**
+     * Elimina todos los filtros activos de conversiones y recarga la lista completa.
+     */
+    limpiarFiltros(): void {
+        this.filtroTipo &#x3D; &#x27;&#x27;;
+        this.filtroEstado &#x3D; &#x27;&#x27;;
+        this.cargarConversiones();
+    }
+
+    /**
+     * Elimina todo el historial de conversiones de un usuario específico.
+     * Primero obtiene la lista de conversiones del usuario, luego elimina
+     * cada una individualmente y al terminar recarga el resumen.
+     * No hace nada si &#x60;usuarioId&#x60; es &#x60;undefined&#x60;.
+     *
+     * @param usuarioId    ID del usuario cuyo historial se eliminará.
+     * @param nombreUsuario Nombre del usuario para mostrar en el diálogo de confirmación.
+     */
+    eliminarHistorialDeUsuario(usuarioId: number | undefined, nombreUsuario: string): void {
+        if (!usuarioId) return;
+        if (!confirm(&#x60;¿Eliminar todo el historial de conversiones de &quot;${nombreUsuario}&quot;? Esta acción no se puede deshacer.&#x60;)) return;
+
+        this.adminService.conversionesPorUsuario(usuarioId).subscribe({
+            next: (lista) &#x3D;&gt; {
+                const ids &#x3D; lista.map(c &#x3D;&gt; c.id!).filter(Boolean);
+                if (ids.length &#x3D;&#x3D;&#x3D; 0) return;
+                let completadas &#x3D; 0;
+                for (const id of ids) {
+                    this.adminService.eliminarConversion(id).subscribe({
+                        next: () &#x3D;&gt; {
+                            completadas++;
+                            this.conversiones &#x3D; this.conversiones.filter(c &#x3D;&gt; c.id !&#x3D;&#x3D; id);
+                            if (completadas &#x3D;&#x3D;&#x3D; ids.length) this.cargarResumen();
+                        },
+                        error: () &#x3D;&gt; { completadas++; }
+                    });
+                }
+            },
+            error: (err) &#x3D;&gt; {
+                this.errorConversiones &#x3D; this.errorHandler.extraerMensaje(
+                    err, &#x27;No se pudo cargar el historial del usuario.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Carga los registros de auditoría aplicando el filtro activo de acción o rol.
+     * Si no hay ningún filtro activo, carga todos los registros.
+     */
+    cargarAuditoria(): void {
+        this.cargandoAuditoria &#x3D; true;
+        this.errorAuditoria &#x3D; &#x27;&#x27;;
+
+        const obs &#x3D; this.filtroAccion
+            ? this.adminService.auditoriaPorTipoAccion(this.filtroAccion)
+            : this.filtroRolAuditoria
+                ? this.adminService.auditoriaPorRol(this.filtroRolAuditoria)
+                : this.adminService.listarAuditoria();
+
+        obs.subscribe({
+            next: (data) &#x3D;&gt; {
+                this.auditoria &#x3D; data || [];
+                this.totalRegistrosAuditoria &#x3D; this.auditoria.length;
+                this.cargandoAuditoria &#x3D; false;
+            },
+            error: (err) &#x3D;&gt; {
+                this.cargandoAuditoria &#x3D; false;
+                this.errorAuditoria &#x3D; this.errorHandler.extraerMensaje(
+                    err, &#x27;No se pudo cargar el registro de auditoría.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Activa o desactiva el filtro de auditoría por tipo de acción (toggle).
+     * Limpia el filtro por rol y recarga la auditoría.
+     *
+     * @param accion Tipo de acción a filtrar (ej. &#x60;&#x27;LOGIN&#x27;&#x60;, &#x60;&#x27;CONVERSION&#x27;&#x60;).
+     */
+    cambiarFiltroAccion(accion: string): void {
+        this.filtroAccion &#x3D; this.filtroAccion &#x3D;&#x3D;&#x3D; accion ? &#x27;&#x27; : accion;
+        this.filtroRolAuditoria &#x3D; &#x27;&#x27;;
+        this.cargarAuditoria();
+    }
+
+    /**
+     * Activa o desactiva el filtro de auditoría por rol del usuario (toggle).
+     * Limpia el filtro por acción y recarga la auditoría.
+     *
+     * @param rol Rol a filtrar: &#x60;&#x27;USUARIO&#x27;&#x60; o &#x60;&#x27;ADMIN&#x27;&#x60;.
+     */
+    cambiarFiltroRolAuditoria(rol: string): void {
+        this.filtroRolAuditoria &#x3D; this.filtroRolAuditoria &#x3D;&#x3D;&#x3D; rol ? &#x27;&#x27; : rol;
+        this.filtroAccion &#x3D; &#x27;&#x27;;
+        this.cargarAuditoria();
+    }
+
+    /**
+     * Elimina todos los filtros de auditoría y recarga la lista completa.
+     */
+    limpiarFiltrosAuditoria(): void {
+        this.filtroAccion &#x3D; &#x27;&#x27;;
+        this.filtroRolAuditoria &#x3D; &#x27;&#x27;;
+        this.cargarAuditoria();
+    }
+
+    /**
+     * Activa la pestaña indicada. Si se activa &#x60;&#x27;auditoria&#x27;&#x60; por primera vez
+     * y la lista está vacía, inicia la carga de registros.
+     *
+     * @param tab Pestaña a activar: &#x60;&#x27;usuarios&#x27;&#x60;, &#x60;&#x27;conversiones&#x27;&#x60; o &#x60;&#x27;auditoria&#x27;&#x60;.
+     */
+    activarTab(tab: &#x27;usuarios&#x27; | &#x27;conversiones&#x27; | &#x27;auditoria&#x27;): void {
+        this.tabActiva &#x3D; tab;
+        if (tab &#x3D;&#x3D;&#x3D; &#x27;auditoria&#x27; &amp;&amp; this.auditoria.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; !this.cargandoAuditoria) {
+            this.cargarAuditoria();
+        }
+    }
+
+    /**
+     * Retorna la URL de descarga del archivo convertido de una conversión.
+     *
+     * @param conv Registro de conversión.
+     * @returns URL de descarga, o &#x60;undefined&#x60; si no está disponible.
+     */
+    urlDescarga(conv: HistorialConversionDTO): string | undefined {
+        return conv.rutaArchivoConvertido;
+    }
+
+    /**
+     * Indica si un usuario tiene rol de administrador.
+     *
+     * @param u Usuario a verificar.
+     * @returns &#x60;true&#x60; si el usuario es ADMIN, &#x60;false&#x60; en caso contrario.
+     */
+    esAdmin(u: UsuarioDTO): boolean {
+        return u.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27; || u.roles?.includes(&#x27;ADMIN&#x27;) || false;
+    }
+
+    /**
+     * Retorna el color de acento CSS asociado al tipo de archivo de una conversión.
+     *
+     * @param tipo Categoría del archivo: &#x60;&#x27;AUDIO&#x27;&#x60;, &#x60;&#x27;VIDEO&#x27;&#x60; o &#x60;&#x27;IMAGEN&#x27;&#x60;.
+     * @returns Color en formato hexadecimal, o &#x60;&#x27;#888&#x27;&#x60; si el tipo no es reconocido.
+     */
+    colorTipo(tipo: string): string {
+        switch (tipo) {
+            case &#x27;AUDIO&#x27;:  return &#x27;#FF6B4A&#x27;;
+            case &#x27;VIDEO&#x27;:  return &#x27;#4361EE&#x27;;
+            case &#x27;IMAGEN&#x27;: return &#x27;#2EC4B6&#x27;;
+            default:       return &#x27;#888&#x27;;
+        }
+    }
+
+    /**
+     * Retorna la clase CSS de color asociada al tipo de acción de un registro
+     * de auditoría.
+     *
+     * @param accion Tipo de acción del registro de auditoría.
+     * @returns Nombre de clase CSS para colorear el badge de acción,
+     *          o cadena vacía si la acción no es reconocida.
+     */
+    colorAccion(accion: string | undefined): string {
+        switch (accion) {
+            case &#x27;LOGIN&#x27;:      return &#x27;a-login&#x27;;
+            case &#x27;LOGOUT&#x27;:     return &#x27;a-logout&#x27;;
+            case &#x27;CONVERSION&#x27;: return &#x27;a-conversion&#x27;;
+            case &#x27;CREATE&#x27;:     return &#x27;a-create&#x27;;
+            case &#x27;UPDATE&#x27;:     return &#x27;a-update&#x27;;
+            case &#x27;DELETE&#x27;:     return &#x27;a-delete&#x27;;
+            case &#x27;READ&#x27;:       return &#x27;a-read&#x27;;
+            default:           return &#x27;&#x27;;
+        }
+    }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;admin-page&quot;&gt;
+
+    &lt;div class&#x3D;&quot;admin-header&quot;&gt;
+        &lt;div class&#x3D;&quot;admin-header-icon&quot;&gt;
+            &lt;svg width&#x3D;&quot;28&quot; height&#x3D;&quot;28&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;path d&#x3D;&quot;M12 15a3 3 0 100-6 3 3 0 000 6z&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-accent&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                &lt;path d&#x3D;&quot;M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-accent&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+            &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+            &lt;h1&gt;Panel de Administración&lt;/h1&gt;
+            &lt;p&gt;Gestión de usuarios, conversiones y auditoría&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;stats-row&quot;&gt;
+        &lt;div class&#x3D;&quot;stat-card&quot;&gt;
+            &lt;p class&#x3D;&quot;stat-val&quot;&gt;{{ usuarios.length }}&lt;/p&gt;
+            &lt;p class&#x3D;&quot;stat-lbl&quot;&gt;Usuarios registrados&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;stat-card&quot;&gt;
+            &lt;p class&#x3D;&quot;stat-val&quot;&gt;{{ conversiones.length }}&lt;/p&gt;
+            &lt;p class&#x3D;&quot;stat-lbl&quot;&gt;Conversiones&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;stat-card&quot;&gt;
+            &lt;p class&#x3D;&quot;stat-val&quot;&gt;3&lt;/p&gt;
+            &lt;p class&#x3D;&quot;stat-lbl&quot;&gt;Tipos de conversión&lt;/p&gt;
+        &lt;/div&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;tabs&quot;&gt;
+        &lt;button class&#x3D;&quot;tab&quot; [class.active]&#x3D;&quot;tabActiva &#x3D;&#x3D;&#x3D; &#x27;usuarios&#x27;&quot; (click)&#x3D;&quot;activarTab(&#x27;usuarios&#x27;)&quot;&gt;
+            Usuarios
+        &lt;/button&gt;
+        &lt;button class&#x3D;&quot;tab&quot; [class.active]&#x3D;&quot;tabActiva &#x3D;&#x3D;&#x3D; &#x27;conversiones&#x27;&quot; (click)&#x3D;&quot;activarTab(&#x27;conversiones&#x27;)&quot;&gt;
+            Conversiones
+        &lt;/button&gt;
+        &lt;button class&#x3D;&quot;tab tab-auditoria&quot; [class.active]&#x3D;&quot;tabActiva &#x3D;&#x3D;&#x3D; &#x27;auditoria&#x27;&quot; (click)&#x3D;&quot;activarTab(&#x27;auditoria&#x27;)&quot;&gt;
+            &lt;svg width&#x3D;&quot;14&quot; height&#x3D;&quot;14&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2.5&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; style&#x3D;&quot;margin-right:5px;vertical-align:middle&quot;&gt;
+                &lt;path d&#x3D;&quot;M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z&quot;/&gt;&lt;polyline points&#x3D;&quot;14 2 14 8 20 8&quot;/&gt;&lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;13&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;13&quot;/&gt;&lt;line x1&#x3D;&quot;16&quot; y1&#x3D;&quot;17&quot; x2&#x3D;&quot;8&quot; y2&#x3D;&quot;17&quot;/&gt;&lt;polyline points&#x3D;&quot;10 9 9 9 8 9&quot;/&gt;
+            &lt;/svg&gt;
+            Auditoría
+        &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;table-card&quot; *ngIf&#x3D;&quot;tabActiva &#x3D;&#x3D;&#x3D; &#x27;usuarios&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;table-header&quot;&gt;
+            &lt;h3&gt;Usuarios registrados&lt;/h3&gt;
+            &lt;button class&#x3D;&quot;btn-refresh&quot; (click)&#x3D;&quot;cargarUsuarios()&quot;&gt;↺ Actualizar&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;msg-box msg-error&quot; *ngIf&#x3D;&quot;errorUsuarios&quot;&gt;
+            &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+                &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+            &lt;/svg&gt;
+            &lt;span&gt;{{ errorUsuarios }}&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;loading&quot; *ngIf&#x3D;&quot;cargandoUsuarios&quot;&gt;
+            &lt;div class&#x3D;&quot;spinner-dark&quot;&gt;&lt;/div&gt; Cargando usuarios...
+        &lt;/div&gt;
+
+        &lt;table *ngIf&#x3D;&quot;!cargandoUsuarios &amp;&amp; !errorUsuarios &amp;&amp; usuarios.length &gt; 0&quot;&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;ID&lt;/th&gt;
+                &lt;th&gt;Nombre&lt;/th&gt;
+                &lt;th&gt;Usuario&lt;/th&gt;
+                &lt;th&gt;Correo&lt;/th&gt;
+                &lt;th&gt;Teléfono&lt;/th&gt;
+                &lt;th&gt;Rol&lt;/th&gt;
+                &lt;th&gt;Acciones&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+            &lt;tr *ngFor&#x3D;&quot;let u of usuarios&quot;&gt;
+                &lt;td class&#x3D;&quot;id-col&quot;&gt;{{ u.id }}&lt;/td&gt;
+                &lt;td&gt;&lt;strong&gt;{{ u.nombre }} {{ u.apellido }}&lt;/strong&gt;&lt;/td&gt;
+                &lt;td&gt;{{ u.nombreUsuario }}&lt;/td&gt;
+                &lt;td&gt;{{ u.correo }}&lt;/td&gt;
+                &lt;td&gt;{{ u.telefono }}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span class&#x3D;&quot;badge&quot;
+                          [class.badge-admin]&#x3D;&quot;esAdmin(u)&quot;
+                          [class.badge-cliente]&#x3D;&quot;!esAdmin(u)&quot;&gt;
+                        {{ esAdmin(u) ? &#x27;ADMIN&#x27; : &#x27;USUARIO&#x27; }}
+                    &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;div class&#x3D;&quot;acciones-row&quot;&gt;
+                        &lt;button
+                                class&#x3D;&quot;btn-editar&quot;
+                                *ngIf&#x3D;&quot;u.nombreUsuario !&#x3D;&#x3D; &#x27;admin&#x27;&quot;
+                                (click)&#x3D;&quot;abrirModalEdicion(u)&quot;
+                                title&#x3D;&quot;Editar usuario&quot;&gt;
+                            Editar
+                        &lt;/button&gt;
+                        &lt;button
+                                class&#x3D;&quot;btn-eliminar&quot;
+                                *ngIf&#x3D;&quot;u.nombreUsuario !&#x3D;&#x3D; &#x27;admin&#x27;&quot;
+                                (click)&#x3D;&quot;eliminarUsuario(u.id)&quot;&gt;
+                            Eliminar
+                        &lt;/button&gt;
+                        &lt;button
+                                class&#x3D;&quot;btn-historial&quot;
+                                *ngIf&#x3D;&quot;!esAdmin(u)&quot;
+                                (click)&#x3D;&quot;eliminarHistorialDeUsuario(u.id, u.nombreUsuario)&quot;&gt;
+                            Limpiar historial
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;div class&#x3D;&quot;empty&quot; *ngIf&#x3D;&quot;!cargandoUsuarios &amp;&amp; !errorUsuarios &amp;&amp; usuarios.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            No hay usuarios registrados aún.
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;table-card&quot; *ngIf&#x3D;&quot;tabActiva &#x3D;&#x3D;&#x3D; &#x27;conversiones&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;table-header&quot;&gt;
+            &lt;h3&gt;Historial de conversiones&lt;/h3&gt;
+            &lt;button class&#x3D;&quot;btn-refresh&quot; (click)&#x3D;&quot;cargarConversiones()&quot;&gt;↺ Actualizar&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;filters-row&quot;&gt;
+            &lt;span class&#x3D;&quot;filter-label&quot;&gt;Tipo:&lt;/span&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroTipo &#x3D;&#x3D;&#x3D; &#x27;AUDIO&#x27;&quot;  (click)&#x3D;&quot;cambiarFiltroTipo(&#x27;AUDIO&#x27;)&quot;&gt;Audio&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroTipo &#x3D;&#x3D;&#x3D; &#x27;VIDEO&#x27;&quot;  (click)&#x3D;&quot;cambiarFiltroTipo(&#x27;VIDEO&#x27;)&quot;&gt;Video&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroTipo &#x3D;&#x3D;&#x3D; &#x27;IMAGEN&#x27;&quot; (click)&#x3D;&quot;cambiarFiltroTipo(&#x27;IMAGEN&#x27;)&quot;&gt;Imagen&lt;/button&gt;
+            &lt;span class&#x3D;&quot;filter-label&quot; style&#x3D;&quot;margin-left:1rem&quot;&gt;Estado:&lt;/span&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroEstado &#x3D;&#x3D;&#x3D; &#x27;COMPLETADO&#x27;&quot; (click)&#x3D;&quot;cambiarFiltroEstado(&#x27;COMPLETADO&#x27;)&quot;&gt;Completado&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroEstado &#x3D;&#x3D;&#x3D; &#x27;FALLIDO&#x27;&quot;    (click)&#x3D;&quot;cambiarFiltroEstado(&#x27;FALLIDO&#x27;)&quot;&gt;Fallido&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip clear-chip&quot; *ngIf&#x3D;&quot;filtroTipo || filtroEstado&quot; (click)&#x3D;&quot;limpiarFiltros()&quot;&gt;✕ Limpiar&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;msg-box msg-error&quot; *ngIf&#x3D;&quot;errorConversiones&quot;&gt;
+            &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+                &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+            &lt;/svg&gt;
+            &lt;span&gt;{{ errorConversiones }}&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;loading&quot; *ngIf&#x3D;&quot;cargandoConversiones&quot;&gt;
+            &lt;div class&#x3D;&quot;spinner-dark&quot;&gt;&lt;/div&gt; Cargando conversiones...
+        &lt;/div&gt;
+
+        &lt;table *ngIf&#x3D;&quot;!cargandoConversiones &amp;&amp; !errorConversiones &amp;&amp; conversiones.length &gt; 0&quot;&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;ID&lt;/th&gt;
+                &lt;th&gt;Usuario&lt;/th&gt;
+                &lt;th&gt;Archivo&lt;/th&gt;
+                &lt;th&gt;Tipo&lt;/th&gt;
+                &lt;th&gt;Origen → Destino&lt;/th&gt;
+                &lt;th&gt;Estado&lt;/th&gt;
+                &lt;th&gt;Fecha&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+            &lt;tr *ngFor&#x3D;&quot;let c of conversiones&quot;&gt;
+                &lt;td class&#x3D;&quot;id-col&quot;&gt;{{ c.id }}&lt;/td&gt;
+                &lt;td&gt;{{ (&#x27;ID &#x27; + c.usuarioId) }}&lt;/td&gt;
+                &lt;td class&#x3D;&quot;archivo-cell&quot; [title]&#x3D;&quot;c.nombreArchivoOriginal&quot;&gt;{{ c.nombreArchivoOriginal }}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span class&#x3D;&quot;tipo-badge&quot;
+                          [style.background]&#x3D;&quot;colorTipo(c.tipoArchivo) + &#x27;15&#x27;&quot;
+                          [style.color]&#x3D;&quot;colorTipo(c.tipoArchivo)&quot;&gt;
+                        {{ c.tipoArchivo }}
+                    &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span class&#x3D;&quot;formato-pair&quot;&gt;
+                        &lt;span class&#x3D;&quot;formato-pequeno&quot;&gt;{{ c.formatoOrigen.toUpperCase() }}&lt;/span&gt;
+                        &lt;span class&#x3D;&quot;flecha-pequena&quot;&gt;→&lt;/span&gt;
+                        &lt;span class&#x3D;&quot;formato-pequeno formato-destino-mini&quot;&gt;{{ c.formatoDestino.toUpperCase() }}&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span class&#x3D;&quot;estado-badge&quot;
+                          [class.e-completado]&#x3D;&quot;c.estado &#x3D;&#x3D;&#x3D; &#x27;COMPLETADO&#x27;&quot;
+                          [class.e-fallido]&#x3D;&quot;c.estado &#x3D;&#x3D;&#x3D; &#x27;FALLIDO&#x27;&quot;
+                          [class.e-proceso]&#x3D;&quot;c.estado &#x3D;&#x3D;&#x3D; &#x27;EN_PROCESO&#x27; || c.estado &#x3D;&#x3D;&#x3D; &#x27;PENDIENTE&#x27;&quot;&gt;
+                        {{ c.estado }}
+                    &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td&gt;{{ c.fechaConversion | date:&#x27;dd/MM/yy HH:mm&#x27; }}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;div class&#x3D;&quot;empty&quot; *ngIf&#x3D;&quot;!cargandoConversiones &amp;&amp; !errorConversiones &amp;&amp; conversiones.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            No hay conversiones que mostrar con los filtros aplicados.
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;table-card&quot; *ngIf&#x3D;&quot;tabActiva &#x3D;&#x3D;&#x3D; &#x27;auditoria&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;table-header&quot;&gt;
+            &lt;h3&gt;Registro de auditoría&lt;/h3&gt;
+            &lt;button class&#x3D;&quot;btn-refresh&quot; (click)&#x3D;&quot;cargarAuditoria()&quot;&gt;↺ Actualizar&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Filtros de auditoría --&gt;
+        &lt;div class&#x3D;&quot;filters-row&quot;&gt;
+            &lt;span class&#x3D;&quot;filter-label&quot;&gt;Acción:&lt;/span&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroAccion &#x3D;&#x3D;&#x3D; &#x27;LOGIN&#x27;&quot;      (click)&#x3D;&quot;cambiarFiltroAccion(&#x27;LOGIN&#x27;)&quot;&gt;Login&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroAccion &#x3D;&#x3D;&#x3D; &#x27;LOGOUT&#x27;&quot;     (click)&#x3D;&quot;cambiarFiltroAccion(&#x27;LOGOUT&#x27;)&quot;&gt;Logout&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroAccion &#x3D;&#x3D;&#x3D; &#x27;CONVERSION&#x27;&quot; (click)&#x3D;&quot;cambiarFiltroAccion(&#x27;CONVERSION&#x27;)&quot;&gt;Conversión&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroAccion &#x3D;&#x3D;&#x3D; &#x27;CREATE&#x27;&quot;     (click)&#x3D;&quot;cambiarFiltroAccion(&#x27;CREATE&#x27;)&quot;&gt;Crear&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroAccion &#x3D;&#x3D;&#x3D; &#x27;UPDATE&#x27;&quot;     (click)&#x3D;&quot;cambiarFiltroAccion(&#x27;UPDATE&#x27;)&quot;&gt;Actualizar&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroAccion &#x3D;&#x3D;&#x3D; &#x27;DELETE&#x27;&quot;     (click)&#x3D;&quot;cambiarFiltroAccion(&#x27;DELETE&#x27;)&quot;&gt;Eliminar&lt;/button&gt;
+            &lt;span class&#x3D;&quot;filter-label&quot; style&#x3D;&quot;margin-left:1rem&quot;&gt;Rol:&lt;/span&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroRolAuditoria &#x3D;&#x3D;&#x3D; &#x27;USUARIO&#x27;&quot; (click)&#x3D;&quot;cambiarFiltroRolAuditoria(&#x27;USUARIO&#x27;)&quot;&gt;Usuario&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip&quot; [class.active]&#x3D;&quot;filtroRolAuditoria &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27;&quot;   (click)&#x3D;&quot;cambiarFiltroRolAuditoria(&#x27;ADMIN&#x27;)&quot;&gt;Admin&lt;/button&gt;
+            &lt;button class&#x3D;&quot;filter-chip clear-chip&quot; *ngIf&#x3D;&quot;filtroAccion || filtroRolAuditoria&quot; (click)&#x3D;&quot;limpiarFiltrosAuditoria()&quot;&gt;✕ Limpiar&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;msg-box msg-error&quot; *ngIf&#x3D;&quot;errorAuditoria&quot;&gt;
+            &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+                &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+            &lt;/svg&gt;
+            &lt;span&gt;{{ errorAuditoria }}&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;loading&quot; *ngIf&#x3D;&quot;cargandoAuditoria&quot;&gt;
+            &lt;div class&#x3D;&quot;spinner-dark&quot;&gt;&lt;/div&gt; Cargando registros de auditoría...
+        &lt;/div&gt;
+
+        &lt;table *ngIf&#x3D;&quot;!cargandoAuditoria &amp;&amp; !errorAuditoria &amp;&amp; auditoria.length &gt; 0&quot;&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;ID&lt;/th&gt;
+                &lt;th&gt;Usuario&lt;/th&gt;
+                &lt;th&gt;Rol&lt;/th&gt;
+                &lt;th&gt;Acción&lt;/th&gt;
+                &lt;th&gt;Descripción&lt;/th&gt;
+                &lt;th&gt;Fecha&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+            &lt;tr *ngFor&#x3D;&quot;let a of auditoria&quot;&gt;
+                &lt;td class&#x3D;&quot;id-col&quot;&gt;{{ a.id }}&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span class&#x3D;&quot;usuario-cell&quot;&gt;
+                        &lt;strong&gt;{{ a.nombreUsuario }}&lt;/strong&gt;
+                        &lt;span class&#x3D;&quot;id-sub&quot;&gt;#{{ a.usuarioId }}&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span class&#x3D;&quot;badge&quot;
+                          [class.badge-admin]&#x3D;&quot;a.rolUsuario &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27;&quot;
+                          [class.badge-cliente]&#x3D;&quot;a.rolUsuario !&#x3D;&#x3D; &#x27;ADMIN&#x27;&quot;&gt;
+                        {{ a.rolUsuario }}
+                    &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;span class&#x3D;&quot;accion-badge&quot; [ngClass]&#x3D;&quot;colorAccion(a.tipoAccion)&quot;&gt;
+                        {{ a.tipoAccion }}
+                    &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;descripcion-cell&quot;&gt;
+                    &lt;span class&#x3D;&quot;desc-texto&quot; [class.desc-completa]&#x3D;&quot;a.expandida&quot;&gt;
+                        {{ a.descripcion }}
+                    &lt;/span&gt;
+                    &lt;button *ngIf&#x3D;&quot;a.descripcion &amp;&amp; a.descripcion.length &gt; 45&quot;
+                            class&#x3D;&quot;btn-expandir&quot;
+                            (click)&#x3D;&quot;a.expandida &#x3D; !a.expandida&quot;&gt;
+                        {{ a.expandida ? &#x27;Ver menos ▲&#x27; : &#x27;Ver más ▼&#x27; }}
+                    &lt;/button&gt;
+                &lt;/td&gt;
+                &lt;td&gt;{{ a.fecha | date:&#x27;dd/MM/yy HH:mm&#x27; }}&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;div class&#x3D;&quot;empty&quot; *ngIf&#x3D;&quot;!cargandoAuditoria &amp;&amp; !errorAuditoria &amp;&amp; auditoria.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            No hay registros de auditoría para mostrar.
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;audit-footer&quot; *ngIf&#x3D;&quot;auditoria.length &gt; 0&quot;&gt;
+            Mostrando {{ auditoria.length }} registro(s)
+            &lt;span *ngIf&#x3D;&quot;filtroAccion&quot;&gt; · Filtro: {{ filtroAccion }}&lt;/span&gt;
+            &lt;span *ngIf&#x3D;&quot;filtroRolAuditoria&quot;&gt; · Rol: {{ filtroRolAuditoria }}&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;modal-overlay&quot; *ngIf&#x3D;&quot;mostrarModalEdicion&quot; (click)&#x3D;&quot;cerrarModalEdicion()&quot;&gt;
+    &lt;div class&#x3D;&quot;modal-card&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+        &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+            &lt;h2&gt;Editar usuario&lt;/h2&gt;
+            &lt;button class&#x3D;&quot;modal-close&quot; (click)&#x3D;&quot;cerrarModalEdicion()&quot; aria-label&#x3D;&quot;Cerrar&quot;&gt;✕&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;usuarioEditando&quot;&gt;
+
+            &lt;div class&#x3D;&quot;msg-box msg-error&quot; *ngIf&#x3D;&quot;errorEdicion&quot;&gt;
+                &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                    &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                    &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+                    &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;{{ errorEdicion }}&lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;msg-box msg-success&quot; *ngIf&#x3D;&quot;exitoEdicion&quot;&gt;
+                &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                    &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                    &lt;path d&#x3D;&quot;M9 12l2 2 4-4&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+                &lt;/svg&gt;
+                &lt;span&gt;{{ exitoEdicion }}&lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;modal-form-grid&quot;&gt;
+
+                &lt;div class&#x3D;&quot;modal-field&quot;&gt;
+                    &lt;label&gt;Nombre&lt;/label&gt;
+                    &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;usuarioEditando.nombre&quot; class&#x3D;&quot;modal-input&quot; placeholder&#x3D;&quot;Nombre&quot;&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;modal-field&quot;&gt;
+                    &lt;label&gt;Apellido&lt;/label&gt;
+                    &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;usuarioEditando.apellido&quot; class&#x3D;&quot;modal-input&quot; placeholder&#x3D;&quot;Apellido&quot;&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;modal-field&quot;&gt;
+                    &lt;label&gt;Usuario&lt;/label&gt;
+                    &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;usuarioEditando.nombreUsuario&quot; class&#x3D;&quot;modal-input&quot; placeholder&#x3D;&quot;nombreUsuario&quot;&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;modal-field&quot;&gt;
+                    &lt;label&gt;Correo&lt;/label&gt;
+                    &lt;input type&#x3D;&quot;email&quot; [(ngModel)]&#x3D;&quot;usuarioEditando.correo&quot; class&#x3D;&quot;modal-input&quot; placeholder&#x3D;&quot;correo@ejemplo.com&quot;&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;modal-field&quot;&gt;
+                    &lt;label&gt;Teléfono&lt;/label&gt;
+                    &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;usuarioEditando.telefono&quot; class&#x3D;&quot;modal-input&quot; placeholder&#x3D;&quot;3XXXXXXXXX&quot;&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;modal-field&quot;&gt;
+                    &lt;label&gt;Rol&lt;/label&gt;
+                    &lt;select [(ngModel)]&#x3D;&quot;usuarioEditando.rol&quot; class&#x3D;&quot;modal-input modal-select&quot;&gt;
+                        &lt;option value&#x3D;&quot;USUARIO&quot;&gt;USUARIO&lt;/option&gt;
+                        &lt;option value&#x3D;&quot;ADMIN&quot;&gt;ADMIN&lt;/option&gt;
+                    &lt;/select&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;modal-field modal-field-full&quot;&gt;
+                    &lt;label&gt;Nueva contraseña &lt;span class&#x3D;&quot;hint-inline&quot;&gt;(dejar vacío para no cambiar)&lt;/span&gt;&lt;/label&gt;
+                    &lt;input type&#x3D;&quot;password&quot; [(ngModel)]&#x3D;&quot;usuarioEditando.contrasena&quot; class&#x3D;&quot;modal-input&quot; placeholder&#x3D;&quot;••••••••&quot;&gt;
+                &lt;/div&gt;
+
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;modal-actions&quot;&gt;
+                &lt;button class&#x3D;&quot;btn-cancelar-modal&quot; (click)&#x3D;&quot;cerrarModalEdicion()&quot; [disabled]&#x3D;&quot;guardandoEdicion&quot;&gt;
+                    Cancelar
+                &lt;/button&gt;
+                &lt;button class&#x3D;&quot;btn-guardar-modal&quot; (click)&#x3D;&quot;guardarEdicion()&quot; [disabled]&#x3D;&quot;guardandoEdicion&quot;&gt;
+                    &lt;span *ngIf&#x3D;&quot;!guardandoEdicion&quot;&gt;Guardar cambios&lt;/span&gt;
+                    &lt;span *ngIf&#x3D;&quot;guardandoEdicion&quot;&gt;
+                        &lt;span class&#x3D;&quot;spinner-inline&quot;&gt;&lt;/span&gt; Guardando...
+                    &lt;/span&gt;
+                &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./admin-dashboard.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">
+.admin-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 2rem 80px;
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.admin-header-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--accent-light);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-header h1 {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    letter-spacing: -0.5px;
+}
+
+.admin-header p {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border-radius: 14px;
+    padding: 1.5rem;
+    border: 1.5px solid var(--bg-hover);
+    text-align: center;
+}
+
+.stat-val {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0 0 4px;
+    letter-spacing: -1px;
+}
+
+.stat-lbl {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tab {
+    padding: 10px 22px;
+    border: 1.5px solid var(--border-secondary);
+    border-radius: 20px;
+    background: var(--bg-secondary);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-on-accent);
+}
+
+.tab:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.tab-auditoria:not(.active) {
+    border-color: var(--info, #4361EE);
+    color: var(--info, #4361EE);
+    opacity: 0.7;
+}
+
+.tab-auditoria:hover:not(.active),
+.tab-auditoria.active {
+    opacity: 1;
+}
+
+.table-card {
+    background: var(--bg-secondary);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border-radius: 16px;
+    padding: 1.75rem;
+    border: 1.5px solid var(--bg-hover);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.table-header h3 {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.btn-refresh {
+    padding: 8px 16px;
+    border: 1.5px solid var(--border-primary);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-refresh:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.filters-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 1rem;
+    background: var(--bg-primary);
+    transition: background 0.3s ease;
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+}
+
+.filter-label {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    margin-right: 4px;
+}
+
+.filter-chip {
+    padding: 5px 12px;
+    border: 1.5px solid var(--border-secondary);
+    border-radius: 16px;
+    background: var(--bg-secondary);
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+.filter-chip.active { background: var(--accent); border-color: var(--accent); color: var(--text-on-accent); }
+.clear-chip { background: var(--accent-light); color: var(--accent); border-color: var(--accent-light); margin-left: auto; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 12px 12px;
+    text-align: left;
+    border-bottom: 1.5px solid var(--bg-hover);
+}
+
+td {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg-primary); }
+
+.id-col { color: var(--text-muted); font-size: 0.82rem; }
+
+.archivo-cell {
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.descripcion-cell {
+    max-width: 260px;
+}
+
+.desc-texto {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.85rem;
+}
+
+.desc-texto.desc-completa {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+
+.btn-expandir {
+    background: none;
+    border: none;
+    color: var(--accent, #e63946);
+    font-size: 0.72rem;
+    cursor: pointer;
+    padding: 2px 0;
+    margin-top: 2px;
+    display: block;
+    opacity: 0.85;
+}
+.btn-expandir:hover { opacity: 1; text-decoration: underline; }
+
+.endpoint-cell {
+    max-width: 160px;
+    font-family: &#x27;Fira Code&#x27;, monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.endpoint-texto {
+    word-break: break-all;
+}
+
+.endpoint-vacio {
+    color: var(--text-muted);
+    opacity: 0.4;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.badge-admin  { background: var(--accent-light); color: var(--accent); }
+.badge-cliente { background: var(--bg-tertiary); color: var(--info); }
+
+.tipo-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.formato-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.formato-pequeno {
+    padding: 3px 8px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.formato-destino-mini { background: var(--text-primary); color: var(--text-on-accent); }
+.flecha-pequena { color: var(--border-primary); font-size: 0.85rem; }
+
+.estado-badge {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.e-completado { background: var(--bg-success-light); color: var(--success); }
+.e-fallido    { background: var(--bg-error-light);   color: var(--error);   }
+.e-proceso    { background: var(--bg-warning-light);  color: var(--warning); }
+
+
+.accion-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.a-login      { background: rgba(67, 97, 238, 0.12); color: #4361EE; }
+.a-logout     { background: rgba(136, 136, 136, 0.12); color: #888; }
+.a-conversion { background: rgba(46, 196, 182, 0.12); color: #2EC4B6; }
+.a-create     { background: rgba(0, 184, 148, 0.12);  color: #00b894; }
+.a-update     { background: rgba(253, 203, 110, 0.15); color: #e6a800; }
+.a-delete     { background: rgba(214, 48, 49, 0.12);  color: #d63031; }
+.a-read       { background: rgba(149, 165, 166, 0.12); color: #95a5a6; }
+
+.usuario-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.id-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.audit-footer {
+    margin-top: 1rem;
+    text-align: right;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.acciones-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.btn-editar {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1.5px solid rgba(67, 97, 238, 0.4);
+    border-radius: 8px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--info, #4361EE);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-editar:hover {
+    background: rgba(67, 97, 238, 0.1);
+    border-color: var(--info, #4361EE);
+}
+
+.btn-eliminar {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1.5px solid var(--accent-light);
+    border-radius: 8px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-eliminar:hover {
+    background: var(--accent);
+    color: var(--text-on-accent);
+    border-color: var(--accent);
+}
+
+.btn-historial {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1.5px solid var(--border-primary);
+    border-radius: 8px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-historial:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--text-tertiary);
+}
+
+.loading, .empty {
+    text-align: center;
+    padding: 3rem;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.msg-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    border-left: 4px solid;
+    font-weight: 500;
+}
+.msg-box svg { flex-shrink: 0; margin-top: 1px; }
+.msg-box span { flex: 1; word-break: break-word; }
+.msg-error   { background: var(--bg-error-light);   color: var(--error-dark);   border-color: var(--error); }
+.msg-success { background: var(--bg-success-light);  color: var(--success);      border-color: var(--success); }
+
+.spinner-dark {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2.5px solid var(--border-primary);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.spinner-inline {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeOverlay 0.2s ease;
+}
+
+@keyframes fadeOverlay {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal-card {
+    background: var(--bg-secondary);
+    border: 1.5px solid var(--bg-hover);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+    animation: slideModal 0.25s ease;
+}
+
+@keyframes slideModal {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.modal-close {
+    width: 32px; height: 32px;
+    border: none;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.modal-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.modal-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.modal-field-full {
+    grid-column: 1 / -1;
+}
+
+.modal-field label {
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.hint-inline {
+    font-weight: 400;
+    text-transform: none;
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    letter-spacing: 0;
+}
+
+.modal-input {
+    padding: 10px 14px;
+    background: var(--bg-primary);
+    border: 1.5px solid var(--border-secondary);
+    border-radius: 10px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.modal-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns&#x3D;&#x27;http://www.w3.org/2000/svg&#x27; width&#x3D;&#x27;12&#x27; height&#x3D;&#x27;12&#x27; viewBox&#x3D;&#x27;0 0 24 24&#x27; fill&#x3D;&#x27;none&#x27; stroke&#x3D;&#x27;%23888&#x27; stroke-width&#x3D;&#x27;2&#x27;%3E%3Cpolyline points&#x3D;&#x27;6 9 12 15 18 9&#x27;/%3E%3C/svg%3E&quot;);
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-cancelar-modal {
+    padding: 10px 22px;
+    background: transparent;
+    border: 1.5px solid var(--border-primary);
+    border-radius: 10px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancelar-modal:hover:not(:disabled) {
+    border-color: var(--text-tertiary);
+    color: var(--text-primary);
+}
+
+.btn-guardar-modal {
+    padding: 10px 24px;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    font-family: &#x27;Sora&#x27;, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-on-accent);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-guardar-modal:hover:not(:disabled) {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.btn-guardar-modal:disabled,
+.btn-cancelar-modal:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .modal-form-grid { grid-template-columns: 1fr; }
+    .modal-card { margin: 1rem; padding: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+    .stats-row { grid-template-columns: 1fr; }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="admin-page">    <div class="admin-header">        <div class="admin-header-icon">            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" class="icon-accent" stroke-width="2"/>                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" class="icon-accent" stroke-width="2"/>            </svg>        </div>        <div>            <h1>Panel de Administración</h1>            <p>Gestión de usuarios, conversiones y auditoría</p>        </div>    </div>    <div class="stats-row">        <div class="stat-card">            <p class="stat-val">{{ usuarios.length }}</p>            <p class="stat-lbl">Usuarios registrados</p>        </div>        <div class="stat-card">            <p class="stat-val">{{ conversiones.length }}</p>            <p class="stat-lbl">Conversiones</p>        </div>        <div class="stat-card">            <p class="stat-val">3</p>            <p class="stat-lbl">Tipos de conversión</p>        </div>    </div>    <div class="tabs">        <button class="tab" [class.active]="tabActiva === \'usuarios\'" (click)="activarTab(\'usuarios\')">            Usuarios        </button>        <button class="tab" [class.active]="tabActiva === \'conversiones\'" (click)="activarTab(\'conversiones\')">            Conversiones        </button>        <button class="tab tab-auditoria" [class.active]="tabActiva === \'auditoria\'" (click)="activarTab(\'auditoria\')">            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:middle">                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>            </svg>            Auditoría        </button>    </div>    <div class="table-card" *ngIf="tabActiva === \'usuarios\'">        <div class="table-header">            <h3>Usuarios registrados</h3>            <button class="btn-refresh" (click)="cargarUsuarios()">↺ Actualizar</button>        </div>        <div class="msg-box msg-error" *ngIf="errorUsuarios">            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">                <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>                <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>            </svg>            <span>{{ errorUsuarios }}</span>        </div>        <div class="loading" *ngIf="cargandoUsuarios">            <div class="spinner-dark"></div> Cargando usuarios...        </div>        <table *ngIf="!cargandoUsuarios && !errorUsuarios && usuarios.length > 0">            <thead>            <tr>                <th>ID</th>                <th>Nombre</th>                <th>Usuario</th>                <th>Correo</th>                <th>Teléfono</th>                <th>Rol</th>                <th>Acciones</th>            </tr>            </thead>            <tbody>            <tr *ngFor="let u of usuarios">                <td class="id-col">{{ u.id }}</td>                <td><strong>{{ u.nombre }} {{ u.apellido }}</strong></td>                <td>{{ u.nombreUsuario }}</td>                <td>{{ u.correo }}</td>                <td>{{ u.telefono }}</td>                <td>                    <span class="badge"                          [class.badge-admin]="esAdmin(u)"                          [class.badge-cliente]="!esAdmin(u)">                        {{ esAdmin(u) ? \'ADMIN\' : \'USUARIO\' }}                    </span>                </td>                <td>                    <div class="acciones-row">                        <button                                class="btn-editar"                                *ngIf="u.nombreUsuario !== \'admin\'"                                (click)="abrirModalEdicion(u)"                                title="Editar usuario">                            Editar                        </button>                        <button                                class="btn-eliminar"                                *ngIf="u.nombreUsuario !== \'admin\'"                                (click)="eliminarUsuario(u.id)">                            Eliminar                        </button>                        <button                                class="btn-historial"                                *ngIf="!esAdmin(u)"                                (click)="eliminarHistorialDeUsuario(u.id, u.nombreUsuario)">                            Limpiar historial                        </button>                    </div>                </td>            </tr>            </tbody>        </table>        <div class="empty" *ngIf="!cargandoUsuarios && !errorUsuarios && usuarios.length === 0">            No hay usuarios registrados aún.        </div>    </div>    <div class="table-card" *ngIf="tabActiva === \'conversiones\'">        <div class="table-header">            <h3>Historial de conversiones</h3>            <button class="btn-refresh" (click)="cargarConversiones()">↺ Actualizar</button>        </div>        <div class="filters-row">            <span class="filter-label">Tipo:</span>            <button class="filter-chip" [class.active]="filtroTipo === \'AUDIO\'"  (click)="cambiarFiltroTipo(\'AUDIO\')">Audio</button>            <button class="filter-chip" [class.active]="filtroTipo === \'VIDEO\'"  (click)="cambiarFiltroTipo(\'VIDEO\')">Video</button>            <button class="filter-chip" [class.active]="filtroTipo === \'IMAGEN\'" (click)="cambiarFiltroTipo(\'IMAGEN\')">Imagen</button>            <span class="filter-label" style="margin-left:1rem">Estado:</span>            <button class="filter-chip" [class.active]="filtroEstado === \'COMPLETADO\'" (click)="cambiarFiltroEstado(\'COMPLETADO\')">Completado</button>            <button class="filter-chip" [class.active]="filtroEstado === \'FALLIDO\'"    (click)="cambiarFiltroEstado(\'FALLIDO\')">Fallido</button>            <button class="filter-chip clear-chip" *ngIf="filtroTipo || filtroEstado" (click)="limpiarFiltros()">✕ Limpiar</button>        </div>        <div class="msg-box msg-error" *ngIf="errorConversiones">            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">                <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>                <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>            </svg>            <span>{{ errorConversiones }}</span>        </div>        <div class="loading" *ngIf="cargandoConversiones">            <div class="spinner-dark"></div> Cargando conversiones...        </div>        <table *ngIf="!cargandoConversiones && !errorConversiones && conversiones.length > 0">            <thead>            <tr>                <th>ID</th>                <th>Usuario</th>                <th>Archivo</th>                <th>Tipo</th>                <th>Origen → Destino</th>                <th>Estado</th>                <th>Fecha</th>            </tr>            </thead>            <tbody>            <tr *ngFor="let c of conversiones">                <td class="id-col">{{ c.id }}</td>                <td>{{ (\'ID \' + c.usuarioId) }}</td>                <td class="archivo-cell" [title]="c.nombreArchivoOriginal">{{ c.nombreArchivoOriginal }}</td>                <td>                    <span class="tipo-badge"                          [style.background]="colorTipo(c.tipoArchivo) + \'15\'"                          [style.color]="colorTipo(c.tipoArchivo)">                        {{ c.tipoArchivo }}                    </span>                </td>                <td>                    <span class="formato-pair">                        <span class="formato-pequeno">{{ c.formatoOrigen.toUpperCase() }}</span>                        <span class="flecha-pequena">→</span>                        <span class="formato-pequeno formato-destino-mini">{{ c.formatoDestino.toUpperCase() }}</span>                    </span>                </td>                <td>                    <span class="estado-badge"                          [class.e-completado]="c.estado === \'COMPLETADO\'"                          [class.e-fallido]="c.estado === \'FALLIDO\'"                          [class.e-proceso]="c.estado === \'EN_PROCESO\' || c.estado === \'PENDIENTE\'">                        {{ c.estado }}                    </span>                </td>                <td>{{ c.fechaConversion | date:\'dd/MM/yy HH:mm\' }}</td>            </tr>            </tbody>        </table>        <div class="empty" *ngIf="!cargandoConversiones && !errorConversiones && conversiones.length === 0">            No hay conversiones que mostrar con los filtros aplicados.        </div>    </div>    <div class="table-card" *ngIf="tabActiva === \'auditoria\'">        <div class="table-header">            <h3>Registro de auditoría</h3>            <button class="btn-refresh" (click)="cargarAuditoria()">↺ Actualizar</button>        </div>        <!-- Filtros de auditoría -->        <div class="filters-row">            <span class="filter-label">Acción:</span>            <button class="filter-chip" [class.active]="filtroAccion === \'LOGIN\'"      (click)="cambiarFiltroAccion(\'LOGIN\')">Login</button>            <button class="filter-chip" [class.active]="filtroAccion === \'LOGOUT\'"     (click)="cambiarFiltroAccion(\'LOGOUT\')">Logout</button>            <button class="filter-chip" [class.active]="filtroAccion === \'CONVERSION\'" (click)="cambiarFiltroAccion(\'CONVERSION\')">Conversión</button>            <button class="filter-chip" [class.active]="filtroAccion === \'CREATE\'"     (click)="cambiarFiltroAccion(\'CREATE\')">Crear</button>            <button class="filter-chip" [class.active]="filtroAccion === \'UPDATE\'"     (click)="cambiarFiltroAccion(\'UPDATE\')">Actualizar</button>            <button class="filter-chip" [class.active]="filtroAccion === \'DELETE\'"     (click)="cambiarFiltroAccion(\'DELETE\')">Eliminar</button>            <span class="filter-label" style="margin-left:1rem">Rol:</span>            <button class="filter-chip" [class.active]="filtroRolAuditoria === \'USUARIO\'" (click)="cambiarFiltroRolAuditoria(\'USUARIO\')">Usuario</button>            <button class="filter-chip" [class.active]="filtroRolAuditoria === \'ADMIN\'"   (click)="cambiarFiltroRolAuditoria(\'ADMIN\')">Admin</button>            <button class="filter-chip clear-chip" *ngIf="filtroAccion || filtroRolAuditoria" (click)="limpiarFiltrosAuditoria()">✕ Limpiar</button>        </div>        <div class="msg-box msg-error" *ngIf="errorAuditoria">            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">                <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>                <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>            </svg>            <span>{{ errorAuditoria }}</span>        </div>        <div class="loading" *ngIf="cargandoAuditoria">            <div class="spinner-dark"></div> Cargando registros de auditoría...        </div>        <table *ngIf="!cargandoAuditoria && !errorAuditoria && auditoria.length > 0">            <thead>            <tr>                <th>ID</th>                <th>Usuario</th>                <th>Rol</th>                <th>Acción</th>                <th>Descripción</th>                <th>Fecha</th>            </tr>            </thead>            <tbody>            <tr *ngFor="let a of auditoria">                <td class="id-col">{{ a.id }}</td>                <td>                    <span class="usuario-cell">                        <strong>{{ a.nombreUsuario }}</strong>                        <span class="id-sub">#{{ a.usuarioId }}</span>                    </span>                </td>                <td>                    <span class="badge"                          [class.badge-admin]="a.rolUsuario === \'ADMIN\'"                          [class.badge-cliente]="a.rolUsuario !== \'ADMIN\'">                        {{ a.rolUsuario }}                    </span>                </td>                <td>                    <span class="accion-badge" [ngClass]="colorAccion(a.tipoAccion)">                        {{ a.tipoAccion }}                    </span>                </td>                <td class="descripcion-cell">                    <span class="desc-texto" [class.desc-completa]="a.expandida">                        {{ a.descripcion }}                    </span>                    <button *ngIf="a.descripcion && a.descripcion.length > 45"                            class="btn-expandir"                            (click)="a.expandida = !a.expandida">                        {{ a.expandida ? \'Ver menos ▲\' : \'Ver más ▼\' }}                    </button>                </td>                <td>{{ a.fecha | date:\'dd/MM/yy HH:mm\' }}</td>            </tr>            </tbody>        </table>        <div class="empty" *ngIf="!cargandoAuditoria && !errorAuditoria && auditoria.length === 0">            No hay registros de auditoría para mostrar.        </div>        <div class="audit-footer" *ngIf="auditoria.length > 0">            Mostrando {{ auditoria.length }} registro(s)            <span *ngIf="filtroAccion"> · Filtro: {{ filtroAccion }}</span>            <span *ngIf="filtroRolAuditoria"> · Rol: {{ filtroRolAuditoria }}</span>        </div>    </div></div><div class="modal-overlay" *ngIf="mostrarModalEdicion" (click)="cerrarModalEdicion()">    <div class="modal-card" (click)="$event.stopPropagation()">        <div class="modal-header">            <h2>Editar usuario</h2>            <button class="modal-close" (click)="cerrarModalEdicion()" aria-label="Cerrar">✕</button>        </div>        <div *ngIf="usuarioEditando">            <div class="msg-box msg-error" *ngIf="errorEdicion">                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>                    <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>                    <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>                </svg>                <span>{{ errorEdicion }}</span>            </div>            <div class="msg-box msg-success" *ngIf="exitoEdicion">                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>                </svg>                <span>{{ exitoEdicion }}</span>            </div>            <div class="modal-form-grid">                <div class="modal-field">                    <label>Nombre</label>                    <input type="text" [(ngModel)]="usuarioEditando.nombre" class="modal-input" placeholder="Nombre">                </div>                <div class="modal-field">                    <label>Apellido</label>                    <input type="text" [(ngModel)]="usuarioEditando.apellido" class="modal-input" placeholder="Apellido">                </div>                <div class="modal-field">                    <label>Usuario</label>                    <input type="text" [(ngModel)]="usuarioEditando.nombreUsuario" class="modal-input" placeholder="nombreUsuario">                </div>                <div class="modal-field">                    <label>Correo</label>                    <input type="email" [(ngModel)]="usuarioEditando.correo" class="modal-input" placeholder="correo@ejemplo.com">                </div>                <div class="modal-field">                    <label>Teléfono</label>                    <input type="text" [(ngModel)]="usuarioEditando.telefono" class="modal-input" placeholder="3XXXXXXXXX">                </div>                <div class="modal-field">                    <label>Rol</label>                    <select [(ngModel)]="usuarioEditando.rol" class="modal-input modal-select">                        <option value="USUARIO">USUARIO</option>                        <option value="ADMIN">ADMIN</option>                    </select>                </div>                <div class="modal-field modal-field-full">                    <label>Nueva contraseña <span class="hint-inline">(dejar vacío para no cambiar)</span></label>                    <input type="password" [(ngModel)]="usuarioEditando.contrasena" class="modal-input" placeholder="••••••••">                </div>            </div>            <div class="modal-actions">                <button class="btn-cancelar-modal" (click)="cerrarModalEdicion()" [disabled]="guardandoEdicion">                    Cancelar                </button>                <button class="btn-guardar-modal" (click)="guardarEdicion()" [disabled]="guardandoEdicion">                    <span *ngIf="!guardandoEdicion">Guardar cambios</span>                    <span *ngIf="guardandoEdicion">                        <span class="spinner-inline"></span> Guardando...                    </span>                </button>            </div>        </div>    </div></div></div>'
+    var COMPONENTS = [{'name': 'AdminDashboardComponent', 'selector': 'app-admin-dashboard'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ConversionToolComponent', 'selector': 'app-conversion-tool'},{'name': 'HistorialComponent', 'selector': 'app-historial'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MiPerfilComponent', 'selector': 'app-mi-perfil'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'AdminDashboardComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminDashboardComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

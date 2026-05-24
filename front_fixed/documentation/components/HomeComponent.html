@@ -1,0 +1,1176 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>convertidor-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">convertidor-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  HomeComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/home/home.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente de página de inicio.</p>
+<p>Muestra las tres herramientas de conversión disponibles (audio, video
+e imagen) como tarjetas interactivas. Al hacer clic en una tarjeta,
+si el usuario no tiene sesión activa lo redirige al login; en caso
+contrario navega a la herramienta de conversión correspondiente.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-home</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./home.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./home.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#auth" >auth</a>
+                            </li>
+                            <li>
+                                <a href="#herramientas" >herramientas</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#irAConvertir" >irAConvertir</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/components/home/home.component.ts:72</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Router de Angular para la navegación entre vistas.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio de autenticación (público para el template).</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="irAConvertir"></a>
+                    <span class="name">
+                        <span ><b>irAConvertir</b></span>
+                        <a href="#irAConvertir"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>irAConvertir(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/app/components/home/home.component.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navega a la herramienta de conversión indicada.</p>
+<p>Si el usuario no tiene sesión activa lo redirige a <code>/login</code> primero.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del tipo de conversión: <code>&#39;audio&#39;</code>, <code>&#39;video&#39;</code> o <code>&#39;imagen&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auth"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>auth</b></span>
+                        <a href="#auth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/components/home/home.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description">Servicio de autenticación (público para el template).</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="herramientas"></a>
+                    <span class="name">
+                        <span ><b>herramientas</b></span>
+                        <a href="#herramientas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/HerramientaConversion.html" target="_self" >HerramientaConversion[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+        {
+            id: &#x27;audio&#x27;,
+            titulo: &#x27;Convertir Audio&#x27;,
+            descripcion: &#x27;Convierte tus archivos de audio entre los formatos más populares con alta calidad.&#x27;,
+            tipo: &#x27;audio&#x27;,
+            formatos: [&#x27;MP3&#x27;, &#x27;WAV&#x27;, &#x27;AAC&#x27;, &#x27;FLAC&#x27;, &#x27;OGG&#x27;, &#x27;M4A&#x27;],
+            color: &#x27;#FF6B4A&#x27;,
+            icono: &#x27;audio&#x27;
+        },
+        {
+            id: &#x27;video&#x27;,
+            titulo: &#x27;Convertir Video&#x27;,
+            descripcion: &#x27;Transforma tus videos a cualquier formato compatible con todos tus dispositivos.&#x27;,
+            tipo: &#x27;video&#x27;,
+            formatos: [&#x27;MP4&#x27;, &#x27;MKV&#x27;, &#x27;AVI&#x27;, &#x27;MOV&#x27;, &#x27;WEBM&#x27;, &#x27;FLV&#x27;],
+            color: &#x27;#4361EE&#x27;,
+            icono: &#x27;video&#x27;
+        },
+        {
+            id: &#x27;imagen&#x27;,
+            titulo: &#x27;Convertir Imagen&#x27;,
+            descripcion: &#x27;Cambia el formato de tus imágenes manteniendo la mejor calidad posible.&#x27;,
+            tipo: &#x27;imagen&#x27;,
+            formatos: [&#x27;JPG&#x27;, &#x27;PNG&#x27;, &#x27;WEBP&#x27;, &#x27;GIF&#x27;, &#x27;BMP&#x27;, &#x27;TIFF&#x27;],
+            color: &#x27;#2EC4B6&#x27;,
+            icono: &#x27;imagen&#x27;
+        }
+    ]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/components/home/home.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Lista de herramientas de conversión disponibles en la plataforma.
+Cada elemento define la configuración visual y funcional de una tarjeta.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { AuthService } from &#x27;../../services/auth.service&#x27;;
+
+/**
+ * Configuración de una herramienta de conversión mostrada en la página de inicio.
+ */
+interface HerramientaConversion {
+    /** Identificador único de la herramienta (usado como parámetro de ruta). */
+    id: string;
+    /** Título legible de la herramienta. */
+    titulo: string;
+    /** Descripción breve de la funcionalidad. */
+    descripcion: string;
+    /** Tipo de archivo que maneja la herramienta. */
+    tipo: &#x27;audio&#x27; | &#x27;video&#x27; | &#x27;imagen&#x27;;
+    /** Lista de formatos soportados para mostrar en la tarjeta. */
+    formatos: string[];
+    /** Color de acento de la tarjeta en formato CSS. */
+    color: string;
+    /** Nombre del ícono asociado a la herramienta. */
+    icono: string;
+}
+
+/**
+ * Componente de página de inicio.
+ *
+ * Muestra las tres herramientas de conversión disponibles (audio, video
+ * e imagen) como tarjetas interactivas. Al hacer clic en una tarjeta,
+ * si el usuario no tiene sesión activa lo redirige al login; en caso
+ * contrario navega a la herramienta de conversión correspondiente.
+ */
+@Component({
+    selector: &#x27;app-home&#x27;,
+    templateUrl: &#x27;./home.component.html&#x27;,
+    styleUrls: [&#x27;./home.component.css&#x27;]
+})
+export class HomeComponent {
+
+    /**
+     * Lista de herramientas de conversión disponibles en la plataforma.
+     * Cada elemento define la configuración visual y funcional de una tarjeta.
+     */
+    herramientas: HerramientaConversion[] &#x3D; [
+        {
+            id: &#x27;audio&#x27;,
+            titulo: &#x27;Convertir Audio&#x27;,
+            descripcion: &#x27;Convierte tus archivos de audio entre los formatos más populares con alta calidad.&#x27;,
+            tipo: &#x27;audio&#x27;,
+            formatos: [&#x27;MP3&#x27;, &#x27;WAV&#x27;, &#x27;AAC&#x27;, &#x27;FLAC&#x27;, &#x27;OGG&#x27;, &#x27;M4A&#x27;],
+            color: &#x27;#FF6B4A&#x27;,
+            icono: &#x27;audio&#x27;
+        },
+        {
+            id: &#x27;video&#x27;,
+            titulo: &#x27;Convertir Video&#x27;,
+            descripcion: &#x27;Transforma tus videos a cualquier formato compatible con todos tus dispositivos.&#x27;,
+            tipo: &#x27;video&#x27;,
+            formatos: [&#x27;MP4&#x27;, &#x27;MKV&#x27;, &#x27;AVI&#x27;, &#x27;MOV&#x27;, &#x27;WEBM&#x27;, &#x27;FLV&#x27;],
+            color: &#x27;#4361EE&#x27;,
+            icono: &#x27;video&#x27;
+        },
+        {
+            id: &#x27;imagen&#x27;,
+            titulo: &#x27;Convertir Imagen&#x27;,
+            descripcion: &#x27;Cambia el formato de tus imágenes manteniendo la mejor calidad posible.&#x27;,
+            tipo: &#x27;imagen&#x27;,
+            formatos: [&#x27;JPG&#x27;, &#x27;PNG&#x27;, &#x27;WEBP&#x27;, &#x27;GIF&#x27;, &#x27;BMP&#x27;, &#x27;TIFF&#x27;],
+            color: &#x27;#2EC4B6&#x27;,
+            icono: &#x27;imagen&#x27;
+        }
+    ];
+
+    /**
+     * @param router Router de Angular para la navegación entre vistas.
+     * @param auth   Servicio de autenticación (público para el template).
+     */
+    constructor(private router: Router, public auth: AuthService) {}
+
+    /**
+     * Navega a la herramienta de conversión indicada.
+     *
+     * Si el usuario no tiene sesión activa lo redirige a &#x60;/login&#x60; primero.
+     *
+     * @param tipo Identificador del tipo de conversión: &#x60;&#x27;audio&#x27;&#x60;, &#x60;&#x27;video&#x27;&#x60; o &#x60;&#x27;imagen&#x27;&#x60;.
+     */
+    irAConvertir(tipo: string): void {
+        if (!this.auth.isLoggedIn()) {
+            this.router.navigate([&#x27;/login&#x27;]);
+            return;
+        }
+        this.router.navigate([&#x27;/convertir&#x27;, tipo]);
+    }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;home-container&quot;&gt;
+
+  &lt;section class&#x3D;&quot;hero&quot;&gt;
+    &lt;div class&#x3D;&quot;hero-content&quot;&gt;
+      &lt;div class&#x3D;&quot;hero-badge&quot;&gt;Herramientas gratuitas de conversión&lt;/div&gt;
+      &lt;h1 class&#x3D;&quot;hero-title&quot;&gt;
+        Convierte tus archivos&lt;br&gt;
+        &lt;span class&#x3D;&quot;hero-highlight&quot;&gt;al instante&lt;/span&gt;
+      &lt;/h1&gt;
+      &lt;p class&#x3D;&quot;hero-subtitle&quot;&gt;
+        Audio, video e imágenes en los formatos más populares.&lt;br&gt;
+        Rápido, seguro y sin instalaciones.
+      &lt;/p&gt;
+      &lt;div class&#x3D;&quot;hero-actions&quot;&gt;
+        &lt;button class&#x3D;&quot;btn-primary&quot; (click)&#x3D;&quot;irAConvertir(&#x27;audio&#x27;)&quot;&gt;Comenzar ahora&lt;/button&gt;
+        &lt;a class&#x3D;&quot;btn-secondary&quot; routerLink&#x3D;&quot;/register&quot; *ngIf&#x3D;&quot;!auth.isLoggedIn()&quot;&gt;Crear cuenta gratis&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;hero-visual&quot;&gt;
+      &lt;div class&#x3D;&quot;floating-card card-1&quot;&gt;
+        &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;path d&#x3D;&quot;M9 19V6l12-3v13&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-accent&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;6&quot; cy&#x3D;&quot;19&quot; r&#x3D;&quot;3&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-accent&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;18&quot; cy&#x3D;&quot;16&quot; r&#x3D;&quot;3&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-accent&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;MP3 → WAV&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;floating-card card-2&quot;&gt;
+        &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;polygon points&#x3D;&quot;23 7 16 12 23 17 23 7&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-info&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+          &lt;rect x&#x3D;&quot;1&quot; y&#x3D;&quot;5&quot; width&#x3D;&quot;15&quot; height&#x3D;&quot;14&quot; rx&#x3D;&quot;2&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-info&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;MP4 → AVI&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;floating-card card-3&quot;&gt;
+        &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;rect x&#x3D;&quot;3&quot; y&#x3D;&quot;3&quot; width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; rx&#x3D;&quot;2&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-info&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;8.5&quot; cy&#x3D;&quot;8.5&quot; r&#x3D;&quot;1.5&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-info&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;path d&#x3D;&quot;M21 15L16 10L5 21&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-info&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;PNG → WEBP&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section class&#x3D;&quot;tools-section&quot;&gt;
+    &lt;div class&#x3D;&quot;section-header&quot;&gt;
+      &lt;h2&gt;Herramientas de conversión&lt;/h2&gt;
+      &lt;p&gt;Selecciona el tipo de archivo que necesitas convertir&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;tools-grid&quot;&gt;
+      &lt;div
+        class&#x3D;&quot;tool-card&quot;
+        *ngFor&#x3D;&quot;let herramienta of herramientas&quot;
+        (click)&#x3D;&quot;irAConvertir(herramienta.tipo)&quot;
+        [style.--card-color]&#x3D;&quot;herramienta.color&quot;&gt;
+
+        &lt;div class&#x3D;&quot;tool-icon-wrapper&quot;&gt;
+          &lt;div class&#x3D;&quot;tool-icon&quot; [style.background]&#x3D;&quot;herramienta.color + &#x27;18&#x27;&quot;&gt;
+            &lt;ng-container [ngSwitch]&#x3D;&quot;herramienta.icono&quot;&gt;
+              &lt;svg *ngSwitchCase&#x3D;&quot;&#x27;audio&#x27;&quot; width&#x3D;&quot;32&quot; height&#x3D;&quot;32&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;path d&#x3D;&quot;M9 19V6l12-3v13&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+                &lt;circle cx&#x3D;&quot;6&quot; cy&#x3D;&quot;19&quot; r&#x3D;&quot;3&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                &lt;circle cx&#x3D;&quot;18&quot; cy&#x3D;&quot;16&quot; r&#x3D;&quot;3&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+              &lt;/svg&gt;
+              &lt;svg *ngSwitchCase&#x3D;&quot;&#x27;video&#x27;&quot; width&#x3D;&quot;32&quot; height&#x3D;&quot;32&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;polygon points&#x3D;&quot;23 7 16 12 23 17 23 7&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+                &lt;rect x&#x3D;&quot;1&quot; y&#x3D;&quot;5&quot; width&#x3D;&quot;15&quot; height&#x3D;&quot;14&quot; rx&#x3D;&quot;2&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+              &lt;/svg&gt;
+              &lt;svg *ngSwitchCase&#x3D;&quot;&#x27;imagen&#x27;&quot; width&#x3D;&quot;32&quot; height&#x3D;&quot;32&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;rect x&#x3D;&quot;3&quot; y&#x3D;&quot;3&quot; width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; rx&#x3D;&quot;2&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                &lt;circle cx&#x3D;&quot;8.5&quot; cy&#x3D;&quot;8.5&quot; r&#x3D;&quot;1.5&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+                &lt;path d&#x3D;&quot;M21 15L16 10L5 21&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;/ng-container&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;tool-info&quot;&gt;
+          &lt;h3 class&#x3D;&quot;tool-title&quot;&gt;{{ herramienta.titulo }}&lt;/h3&gt;
+          &lt;p class&#x3D;&quot;tool-desc&quot;&gt;{{ herramienta.descripcion }}&lt;/p&gt;
+          &lt;div class&#x3D;&quot;tool-formats&quot;&gt;
+            &lt;span class&#x3D;&quot;format-badge&quot; *ngFor&#x3D;&quot;let f of herramienta.formatos&quot;&gt;{{ f }}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;tool-arrow&quot;&gt;
+          &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+            &lt;path d&#x3D;&quot;M5 12h14M12 5l7 7-7 7&quot; [attr.stroke]&#x3D;&quot;herramienta.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;section class&#x3D;&quot;features-section&quot;&gt;
+    &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+      &lt;h4&gt;Rápido&lt;/h4&gt;
+      &lt;p&gt;Conversiones en segundos gracias a CloudConvert&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+      &lt;h4&gt;Seguro&lt;/h4&gt;
+      &lt;p&gt;Tus archivos se procesan de forma privada&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+      &lt;h4&gt;Alta calidad&lt;/h4&gt;
+      &lt;p&gt;Sin pérdida de calidad en la conversión&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;feature-item&quot;&gt;
+      &lt;h4&gt;Sin instalación&lt;/h4&gt;
+      &lt;p&gt;Funciona directo en tu navegador&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./home.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.home-container {
+  background: var(--bg-primary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  min-height: 100vh;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 2rem 60px;
+  gap: 3rem;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 560px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 20px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.2px;
+}
+
+.hero-title {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem;
+  letter-spacing: -1.5px;
+}
+
+.hero-highlight {
+  color: var(--accent);
+  position: relative;
+}
+
+.hero-subtitle {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0 0 2rem;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-primary {
+  padding: 13px 28px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border: none;
+  border-radius: 25px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(230,57,70,0.35);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(230,57,70,0.4);
+}
+
+.btn-secondary {
+  padding: 13px 28px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--border-primary);
+  border-radius: 25px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.hero-visual {
+  flex: 1;
+  position: relative;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  padding: 14px 22px;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  animation: float 3s ease-in-out infinite;
+}
+
+.card-1 { top: 20px; left: 0; animation-delay: 0s; }
+.card-2 { top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 0.8s; }
+.card-3 { bottom: 20px; right: 0; animation-delay: 1.6s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.card-2 {
+  animation: float2 3s ease-in-out infinite;
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-10px); }
+}
+
+.tools-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 60px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-header h2 {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.8px;
+  margin: 0 0 0.5rem;
+}
+
+.section-header p {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  color: var(--text-tertiary);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.tool-card {
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border-radius: 18px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1.5px solid var(--bg-hover);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card::before {
+  content: &#x27;&#x27;;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--card-color, var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+  border-color: transparent;
+}
+
+.tool-card:hover::before { opacity: 1; }
+
+.tool-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-title {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem;
+}
+
+.tool-desc {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+  margin: 0 0 0.75rem;
+}
+
+.tool-formats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.format-badge {
+  padding: 3px 9px;
+  background: var(--bg-tertiary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border-radius: 6px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.tool-arrow {
+  align-self: flex-end;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.tool-card:hover .tool-arrow {
+  background: var(--card-color, var(--accent));
+}
+
+.tool-card:hover .tool-arrow svg path {
+  stroke: white;
+}
+
+.features-section {
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--bg-hover);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.feature-item {
+  padding: 2rem 2rem;
+  text-align: center;
+  border-right: 1px solid var(--bg-hover);
+}
+
+.feature-item:last-child { border-right: none; }
+
+.feature-item h4 {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.2px;
+}
+
+.feature-item p {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .hero { flex-direction: column; padding: 40px 1.5rem; }
+  .hero-visual { display: none; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .features-section { grid-template-columns: repeat(2, 1fr); }
+  .hero-title { font-size: 2.2rem; }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="home-container">  <section class="hero">    <div class="hero-content">      <div class="hero-badge">Herramientas gratuitas de conversión</div>      <h1 class="hero-title">        Convierte tus archivos<br>        <span class="hero-highlight">al instante</span>      </h1>      <p class="hero-subtitle">        Audio, video e imágenes en los formatos más populares.<br>        Rápido, seguro y sin instalaciones.      </p>      <div class="hero-actions">        <button class="btn-primary" (click)="irAConvertir(\'audio\')">Comenzar ahora</button>        <a class="btn-secondary" routerLink="/register" *ngIf="!auth.isLoggedIn()">Crear cuenta gratis</a>      </div>    </div>    <div class="hero-visual">      <div class="floating-card card-1">        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">          <path d="M9 19V6l12-3v13" stroke="currentColor" class="icon-accent" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          <circle cx="6" cy="19" r="3" stroke="currentColor" class="icon-accent" stroke-width="2"/>          <circle cx="18" cy="16" r="3" stroke="currentColor" class="icon-accent" stroke-width="2"/>        </svg>        <span>MP3 → WAV</span>      </div>      <div class="floating-card card-2">        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">          <polygon points="23 7 16 12 23 17 23 7" stroke="currentColor" class="icon-info" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" class="icon-info" stroke-width="2"/>        </svg>        <span>MP4 → AVI</span>      </div>      <div class="floating-card card-3">        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">          <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" class="icon-info" stroke-width="2"/>          <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" class="icon-info" stroke-width="2"/>          <path d="M21 15L16 10L5 21" stroke="currentColor" class="icon-info" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>        </svg>        <span>PNG → WEBP</span>      </div>    </div>  </section>  <section class="tools-section">    <div class="section-header">      <h2>Herramientas de conversión</h2>      <p>Selecciona el tipo de archivo que necesitas convertir</p>    </div>    <div class="tools-grid">      <div        class="tool-card"        *ngFor="let herramienta of herramientas"        (click)="irAConvertir(herramienta.tipo)"        [style.--card-color]="herramienta.color">        <div class="tool-icon-wrapper">          <div class="tool-icon" [style.background]="herramienta.color + \'18\'">            <ng-container [ngSwitch]="herramienta.icono">              <svg *ngSwitchCase="\'audio\'" width="32" height="32" viewBox="0 0 24 24" fill="none">                <path d="M9 19V6l12-3v13" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>                <circle cx="6" cy="19" r="3" [attr.stroke]="herramienta.color" stroke-width="2"/>                <circle cx="18" cy="16" r="3" [attr.stroke]="herramienta.color" stroke-width="2"/>              </svg>              <svg *ngSwitchCase="\'video\'" width="32" height="32" viewBox="0 0 24 24" fill="none">                <polygon points="23 7 16 12 23 17 23 7" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>                <rect x="1" y="5" width="15" height="14" rx="2" [attr.stroke]="herramienta.color" stroke-width="2"/>              </svg>              <svg *ngSwitchCase="\'imagen\'" width="32" height="32" viewBox="0 0 24 24" fill="none">                <rect x="3" y="3" width="18" height="18" rx="2" [attr.stroke]="herramienta.color" stroke-width="2"/>                <circle cx="8.5" cy="8.5" r="1.5" [attr.stroke]="herramienta.color" stroke-width="2"/>                <path d="M21 15L16 10L5 21" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>              </svg>            </ng-container>          </div>        </div>        <div class="tool-info">          <h3 class="tool-title">{{ herramienta.titulo }}</h3>          <p class="tool-desc">{{ herramienta.descripcion }}</p>          <div class="tool-formats">            <span class="format-badge" *ngFor="let f of herramienta.formatos">{{ f }}</span>          </div>        </div>        <div class="tool-arrow">          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">            <path d="M5 12h14M12 5l7 7-7 7" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          </svg>        </div>      </div>    </div>  </section>  <section class="features-section">    <div class="feature-item">      <h4>Rápido</h4>      <p>Conversiones en segundos gracias a CloudConvert</p>    </div>    <div class="feature-item">      <h4>Seguro</h4>      <p>Tus archivos se procesan de forma privada</p>    </div>    <div class="feature-item">      <h4>Alta calidad</h4>      <p>Sin pérdida de calidad en la conversión</p>    </div>    <div class="feature-item">      <h4>Sin instalación</h4>      <p>Funciona directo en tu navegador</p>    </div>  </section></div></div>'
+    var COMPONENTS = [{'name': 'AdminDashboardComponent', 'selector': 'app-admin-dashboard'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ConversionToolComponent', 'selector': 'app-conversion-tool'},{'name': 'HistorialComponent', 'selector': 'app-historial'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MiPerfilComponent', 'selector': 'app-mi-perfil'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'HomeComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'HomeComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

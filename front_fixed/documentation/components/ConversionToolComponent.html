@@ -1,0 +1,2526 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>convertidor-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">convertidor-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ConversionToolComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/conversion-tool/conversion-tool.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente genérico de conversión de archivos.</p>
+<p>Se activa mediante el parámetro de ruta <code>tipo</code> (valores: <code>audio</code>, <code>video</code>,
+<code>imagen</code>). Si el tipo no está reconocido redirige a <code>/</code>. Soporta selección
+de archivo por clic y por arrastrar y soltar (drag &amp; drop).</p>
+<p>El flujo de conversión es:</p>
+<ol>
+<li>El usuario selecciona o arrastra un archivo.</li>
+<li>El componente valida el tipo MIME / extensión y el tamaño.</li>
+<li>El usuario elige el formato de salida.</li>
+<li>Al pulsar &quot;Convertir&quot; se llama a <code>ConversionService.convertir()</code>.</li>
+<li>Ante éxito se muestra el enlace de descarga; ante error se muestra
+el mensaje correspondiente.</li>
+</ol>
+
+    </p>
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-conversion-tool</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./conversion-tool.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./conversion-tool.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#archivoSeleccionado" >archivoSeleccionado</a>
+                            </li>
+                            <li>
+                                <a href="#configs" >configs</a>
+                            </li>
+                            <li>
+                                <a href="#convirtiendo" >convirtiendo</a>
+                            </li>
+                            <li>
+                                <a href="#error" >error</a>
+                            </li>
+                            <li>
+                                <a href="#exito" >exito</a>
+                            </li>
+                            <li>
+                                <a href="#formatoDestino" >formatoDestino</a>
+                            </li>
+                            <li>
+                                <a href="#nombreArchivo" >nombreArchivo</a>
+                            </li>
+                            <li>
+                                <a href="#tipo" >tipo</a>
+                            </li>
+                            <li>
+                                <a href="#urlDescarga" >urlDescarga</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#convertir" >convertir</a>
+                            </li>
+                            <li>
+                                <a href="#descargar" >descargar</a>
+                            </li>
+                            <li>
+                                <a href="#formatearTamano" >formatearTamano</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#obtenerExtension" >obtenerExtension</a>
+                            </li>
+                            <li>
+                                <a href="#onDragOver" >onDragOver</a>
+                            </li>
+                            <li>
+                                <a href="#onDrop" >onDrop</a>
+                            </li>
+                            <li>
+                                <a href="#onFileChange" >onFileChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#procesarArchivo" >procesarArchivo</a>
+                            </li>
+                            <li>
+                                <a href="#resetear" >resetear</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#validarTipoArchivo" >validarTipoArchivo</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#config" >config</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(route: <a href="https://angular.io/api/router/ActivatedRoute" target="_blank">ActivatedRoute</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, conversionService: <a href="../injectables/ConversionService.html" target="_self">ConversionService</a>, errorHandler: <a href="../injectables/ErrorHandlerService.html" target="_self">ErrorHandlerService</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:108</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>route</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/ActivatedRoute" target="_blank" >ActivatedRoute</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Ruta activa para leer el parámetro <code>tipo</code>.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Router de Angular para redirigir si el tipo es inválido.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>conversionService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ConversionService.html" target="_self" >ConversionService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio HTTP de conversión de archivos.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>errorHandler</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ErrorHandlerService.html" target="_self" >ErrorHandlerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio centralizado de manejo de errores HTTP.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio de autenticación para limpiar sesión en 401.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="convertir"></a>
+                    <span class="name">
+                        <span ><b>convertir</b></span>
+                        <a href="#convertir"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>convertir()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="269"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:269</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicia la conversión del archivo seleccionado al formato de destino elegido.</p>
+<p>Validaciones previas:</p>
+<ul>
+<li>Debe haber un archivo seleccionado.</li>
+<li>Debe haberse elegido un formato de destino.</li>
+<li>El formato de destino no puede ser igual al formato de origen.</li>
+</ul>
+<p>Ante un error 401 limpia la sesión local y redirige al login tras 1 500 ms.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="descargar"></a>
+                    <span class="name">
+                        <span ><b>descargar</b></span>
+                        <a href="#descargar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>descargar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="325"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:325</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Abre en una nueva pestaña la URL de descarga del archivo convertido.
+No hace nada si <code>urlDescarga</code> es <code>null</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatearTamano"></a>
+                    <span class="name">
+                        <span ><b>formatearTamano</b></span>
+                        <a href="#formatearTamano"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatearTamano(bytes: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="350"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:350</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Formatea un tamaño en bytes a una cadena legible con unidad.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>bytes</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Tamaño del archivo en bytes.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Cadena con el tamaño formateado: <code>&#39;500 B&#39;</code>, <code>&#39;2.0 KB&#39;</code> o <code>&#39;3.0 MB&#39;</code>.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:129</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Lee el parámetro de ruta <code>tipo</code> y redirige a <code>/</code> si no es reconocido.
+Resetea el estado del componente cada vez que el parámetro cambia.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="obtenerExtension"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>obtenerExtension</b></span>
+                        <a href="#obtenerExtension"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>obtenerExtension(nombre: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="362"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:362</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Extrae la extensión de un nombre de archivo.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>nombre</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nombre del archivo (ej. <code>&#39;video.mp4&#39;</code>).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Extensión sin el punto (ej. <code>&#39;mp4&#39;</code>), o <code>null</code> si no tiene extensión.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDragOver"></a>
+                    <span class="name">
+                        <span ><b>onDragOver</b></span>
+                        <a href="#onDragOver"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDragOver(event: DragEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cancela el comportamiento por defecto del navegador durante el arrastre
+para permitir el evento <code>drop</code>.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>DragEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Evento de arrastre sobre la zona de drop.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDrop"></a>
+                    <span class="name">
+                        <span ><b>onDrop</b></span>
+                        <a href="#onDrop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDrop(event: DragEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="160"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:160</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Manejador del evento <code>drop</code> de drag &amp; drop.
+Cancela el comportamiento por defecto del navegador y procesa el
+primer archivo soltado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>DragEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Evento de arrastre con los archivos soltados.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFileChange"></a>
+                    <span class="name">
+                        <span ><b>onFileChange</b></span>
+                        <a href="#onFileChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFileChange(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="146"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:146</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Manejador del evento <code>change</code> del input de tipo file.
+Extrae el primer archivo seleccionado y lo procesa.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Evento <code>change</code> del elemento <code>&lt;input type=&quot;file&quot;&gt;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="procesarArchivo"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>procesarArchivo</b></span>
+                        <a href="#procesarArchivo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>procesarArchivo(archivo: File)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:185</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Valida el tipo MIME, la extensión y el tamaño del archivo seleccionado.
+Si pasa todas las validaciones, lo asigna a <code>archivoSeleccionado</code>.
+En caso contrario asigna un mensaje a <code>error</code> y no guarda el archivo.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>archivo</td>
+                                            <td>
+                                                        <code>File</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Archivo a procesar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetear"></a>
+                    <span class="name">
+                        <span ><b>resetear</b></span>
+                        <a href="#resetear"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resetear()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="334"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:334</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Restablece todos los campos del estado del componente a sus valores
+iniciales, dejándolo listo para una nueva conversión.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validarTipoArchivo"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>validarTipoArchivo</b></span>
+                        <a href="#validarTipoArchivo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validarTipoArchivo(archivo: File)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="219"
+                                    class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:219</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica que el tipo MIME o la extensión del archivo correspondan
+al tipo de conversión activo.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">     de error descriptivo si no lo es.</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>archivo</td>
+                                            <td>
+                                                        <code>File</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Archivo a validar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>null</code> si el archivo es válido, o un string con el mensaje
+de error descriptivo si no lo es.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="archivoSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>archivoSeleccionado</b></span>
+                        <a href="#archivoSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>File | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Archivo seleccionado por el usuario, o <code>null</code> si no se ha seleccionado ninguno.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="configs"></a>
+                    <span class="name">
+                        <span ><b>configs</b></span>
+                        <a href="#configs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+        audio: {
+            titulo: &#x27;Convertir Audio&#x27;,
+            aceptar: &#x27;audio/*&#x27;,
+            tipoBackend: &#x27;AUDIO&#x27;,
+            formatos: [&#x27;mp3&#x27;, &#x27;wav&#x27;, &#x27;aac&#x27;, &#x27;flac&#x27;, &#x27;ogg&#x27;, &#x27;m4a&#x27;],
+            color: &#x27;#FF6B4A&#x27;,
+            tamanoMaxMB: 100
+        },
+        video: {
+            titulo: &#x27;Convertir Video&#x27;,
+            aceptar: &#x27;video/*&#x27;,
+            tipoBackend: &#x27;VIDEO&#x27;,
+            formatos: [&#x27;mp4&#x27;, &#x27;mkv&#x27;, &#x27;avi&#x27;, &#x27;mov&#x27;, &#x27;webm&#x27;, &#x27;flv&#x27;],
+            color: &#x27;#4361EE&#x27;,
+            tamanoMaxMB: 500
+        },
+        imagen: {
+            titulo: &#x27;Convertir Imagen&#x27;,
+            aceptar: &#x27;image/*&#x27;,
+            tipoBackend: &#x27;IMAGEN&#x27;,
+            formatos: [&#x27;jpg&#x27;, &#x27;png&#x27;, &#x27;webp&#x27;, &#x27;gif&#x27;, &#x27;bmp&#x27;, &#x27;tiff&#x27;],
+            color: &#x27;#2EC4B6&#x27;,
+            tamanoMaxMB: 50
+        }
+    }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mapa de configuraciones por tipo de archivo.
+Las claves coinciden con los posibles valores del parámetro de ruta <code>tipo</code>.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="convirtiendo"></a>
+                    <span class="name">
+                        <span ><b>convirtiendo</b></span>
+                        <a href="#convirtiendo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si la conversión está en curso.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="error"></a>
+                    <span class="name">
+                        <span ><b>error</b></span>
+                        <a href="#error"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de error a mostrar al usuario.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exito"></a>
+                    <span class="name">
+                        <span ><b>exito</b></span>
+                        <a href="#exito"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si la conversión finalizó con éxito.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatoDestino"></a>
+                    <span class="name">
+                        <span ><b>formatoDestino</b></span>
+                        <a href="#formatoDestino"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:54</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Extensión del formato de salida elegida por el usuario.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nombreArchivo"></a>
+                    <span class="name">
+                        <span ><b>nombreArchivo</b></span>
+                        <a href="#nombreArchivo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Nombre sugerido para el archivo descargado (base + extensión de destino).</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipo"></a>
+                    <span class="name">
+                        <span ><b>tipo</b></span>
+                        <a href="#tipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:48</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Tipo de conversión activo, leído desde el parámetro de ruta <code>tipo</code>.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="urlDescarga"></a>
+                    <span class="name">
+                        <span ><b>urlDescarga</b></span>
+                        <a href="#urlDescarga"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>URL de descarga del archivo convertido, o <code>null</code> si aún no está disponible.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="config"></a>
+                        <span class="name"><b>config</b><a href="#config"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>config()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/components/conversion-tool/conversion-tool.component.ts:106</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Retorna la configuración activa según el tipo de ruta actual.
+Si el tipo no existe, devuelve la configuración de audio como fallback.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../interfaces/ConversionConfig.html" target="_self" >ConversionConfig</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { ConversionService } from &#x27;../../services/conversion.service&#x27;;
+import { ErrorHandlerService } from &#x27;../../services/error-handler.service&#x27;;
+import { AuthService } from &#x27;../../services/auth.service&#x27;;
+
+/**
+ * Configuración de una herramienta de conversión específica por tipo de archivo.
+ */
+interface ConversionConfig {
+    /** Título legible mostrado en la interfaz. */
+    titulo: string;
+    /** Valor del atributo &#x60;accept&#x60; del input file (ej. &#x60;&#x27;audio/*&#x27;&#x60;). */
+    aceptar: string;
+    /** Identificador del tipo que espera el backend: &#x60;&#x27;AUDIO&#x27;&#x60;, &#x60;&#x27;VIDEO&#x27;&#x60; o &#x60;&#x27;IMAGEN&#x27;&#x60;. */
+    tipoBackend: &#x27;AUDIO&#x27; | &#x27;VIDEO&#x27; | &#x27;IMAGEN&#x27;;
+    /** Lista de extensiones de salida disponibles para el usuario. */
+    formatos: string[];
+    /** Color de acento de la herramienta en formato CSS. */
+    color: string;
+    /** Tamaño máximo permitido del archivo en megabytes. */
+    tamanoMaxMB: number;
+}
+
+/**
+ * Componente genérico de conversión de archivos.
+ *
+ * Se activa mediante el parámetro de ruta &#x60;tipo&#x60; (valores: &#x60;audio&#x60;, &#x60;video&#x60;,
+ * &#x60;imagen&#x60;). Si el tipo no está reconocido redirige a &#x60;/&#x60;. Soporta selección
+ * de archivo por clic y por arrastrar y soltar (drag &amp; drop).
+ *
+ * El flujo de conversión es:
+ * 1. El usuario selecciona o arrastra un archivo.
+ * 2. El componente valida el tipo MIME / extensión y el tamaño.
+ * 3. El usuario elige el formato de salida.
+ * 4. Al pulsar &quot;Convertir&quot; se llama a &#x60;ConversionService.convertir()&#x60;.
+ * 5. Ante éxito se muestra el enlace de descarga; ante error se muestra
+ *    el mensaje correspondiente.
+ */
+@Component({
+    selector: &#x27;app-conversion-tool&#x27;,
+    templateUrl: &#x27;./conversion-tool.component.html&#x27;,
+    styleUrls: [&#x27;./conversion-tool.component.css&#x27;]
+})
+export class ConversionToolComponent implements OnInit {
+
+    /** Tipo de conversión activo, leído desde el parámetro de ruta &#x60;tipo&#x60;. */
+    tipo: string &#x3D; &#x27;&#x27;;
+
+    /** Archivo seleccionado por el usuario, o &#x60;null&#x60; si no se ha seleccionado ninguno. */
+    archivoSeleccionado: File | null &#x3D; null;
+
+    /** Extensión del formato de salida elegida por el usuario. */
+    formatoDestino: string &#x3D; &#x27;&#x27;;
+
+    /** Indica si la conversión está en curso. */
+    convirtiendo: boolean &#x3D; false;
+
+    /** URL de descarga del archivo convertido, o &#x60;null&#x60; si aún no está disponible. */
+    urlDescarga: string | null &#x3D; null;
+
+    /** Nombre sugerido para el archivo descargado (base + extensión de destino). */
+    nombreArchivo: string &#x3D; &#x27;&#x27;;
+
+    /** Mensaje de error a mostrar al usuario. */
+    error: string &#x3D; &#x27;&#x27;;
+
+    /** Indica si la conversión finalizó con éxito. */
+    exito: boolean &#x3D; false;
+
+    /**
+     * Mapa de configuraciones por tipo de archivo.
+     * Las claves coinciden con los posibles valores del parámetro de ruta &#x60;tipo&#x60;.
+     */
+    configs: { [key: string]: ConversionConfig } &#x3D; {
+        audio: {
+            titulo: &#x27;Convertir Audio&#x27;,
+            aceptar: &#x27;audio/*&#x27;,
+            tipoBackend: &#x27;AUDIO&#x27;,
+            formatos: [&#x27;mp3&#x27;, &#x27;wav&#x27;, &#x27;aac&#x27;, &#x27;flac&#x27;, &#x27;ogg&#x27;, &#x27;m4a&#x27;],
+            color: &#x27;#FF6B4A&#x27;,
+            tamanoMaxMB: 100
+        },
+        video: {
+            titulo: &#x27;Convertir Video&#x27;,
+            aceptar: &#x27;video/*&#x27;,
+            tipoBackend: &#x27;VIDEO&#x27;,
+            formatos: [&#x27;mp4&#x27;, &#x27;mkv&#x27;, &#x27;avi&#x27;, &#x27;mov&#x27;, &#x27;webm&#x27;, &#x27;flv&#x27;],
+            color: &#x27;#4361EE&#x27;,
+            tamanoMaxMB: 500
+        },
+        imagen: {
+            titulo: &#x27;Convertir Imagen&#x27;,
+            aceptar: &#x27;image/*&#x27;,
+            tipoBackend: &#x27;IMAGEN&#x27;,
+            formatos: [&#x27;jpg&#x27;, &#x27;png&#x27;, &#x27;webp&#x27;, &#x27;gif&#x27;, &#x27;bmp&#x27;, &#x27;tiff&#x27;],
+            color: &#x27;#2EC4B6&#x27;,
+            tamanoMaxMB: 50
+        }
+    };
+
+    /**
+     * Retorna la configuración activa según el tipo de ruta actual.
+     * Si el tipo no existe, devuelve la configuración de audio como fallback.
+     */
+    get config(): ConversionConfig {
+        return this.configs[this.tipo] || this.configs[&#x27;audio&#x27;];
+    }
+
+    /**
+     * @param route             Ruta activa para leer el parámetro &#x60;tipo&#x60;.
+     * @param router            Router de Angular para redirigir si el tipo es inválido.
+     * @param conversionService Servicio HTTP de conversión de archivos.
+     * @param errorHandler      Servicio centralizado de manejo de errores HTTP.
+     * @param auth              Servicio de autenticación para limpiar sesión en 401.
+     */
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private conversionService: ConversionService,
+        private errorHandler: ErrorHandlerService,
+        private auth: AuthService
+    ) {}
+
+    /**
+     * Lee el parámetro de ruta &#x60;tipo&#x60; y redirige a &#x60;/&#x60; si no es reconocido.
+     * Resetea el estado del componente cada vez que el parámetro cambia.
+     */
+    ngOnInit(): void {
+        this.route.params.subscribe(params &#x3D;&gt; {
+            this.tipo &#x3D; params[&#x27;tipo&#x27;];
+            if (!this.configs[this.tipo]) {
+                this.router.navigate([&#x27;/&#x27;]);
+                return;
+            }
+            this.resetear();
+        });
+    }
+
+    /**
+     * Manejador del evento &#x60;change&#x60; del input de tipo file.
+     * Extrae el primer archivo seleccionado y lo procesa.
+     *
+     * @param event Evento &#x60;change&#x60; del elemento &#x60;&lt;input type&#x3D;&quot;file&quot;&gt;&#x60;.
+     */
+    onFileChange(event: Event): void {
+        const input &#x3D; event.target as HTMLInputElement;
+        if (input.files &amp;&amp; input.files.length &gt; 0) {
+            this.procesarArchivo(input.files[0]);
+        }
+    }
+
+    /**
+     * Manejador del evento &#x60;drop&#x60; de drag &amp; drop.
+     * Cancela el comportamiento por defecto del navegador y procesa el
+     * primer archivo soltado.
+     *
+     * @param event Evento de arrastre con los archivos soltados.
+     */
+    onDrop(event: DragEvent): void {
+        event.preventDefault();
+        const files &#x3D; event.dataTransfer?.files;
+        if (files &amp;&amp; files.length &gt; 0) {
+            this.procesarArchivo(files[0]);
+        }
+    }
+
+    /**
+     * Cancela el comportamiento por defecto del navegador durante el arrastre
+     * para permitir el evento &#x60;drop&#x60;.
+     *
+     * @param event Evento de arrastre sobre la zona de drop.
+     */
+    onDragOver(event: DragEvent): void {
+        event.preventDefault();
+    }
+
+    /**
+     * Valida el tipo MIME, la extensión y el tamaño del archivo seleccionado.
+     * Si pasa todas las validaciones, lo asigna a &#x60;archivoSeleccionado&#x60;.
+     * En caso contrario asigna un mensaje a &#x60;error&#x60; y no guarda el archivo.
+     *
+     * @param archivo Archivo a procesar.
+     */
+    private procesarArchivo(archivo: File): void {
+        this.error &#x3D; &#x27;&#x27;;
+        this.exito &#x3D; false;
+        this.urlDescarga &#x3D; null;
+
+        const errorTipo &#x3D; this.validarTipoArchivo(archivo);
+        if (errorTipo) {
+            this.error &#x3D; errorTipo;
+            this.archivoSeleccionado &#x3D; null;
+            return;
+        }
+
+        const tamanoMB &#x3D; archivo.size / (1024 * 1024);
+        if (tamanoMB &gt; this.config.tamanoMaxMB) {
+            this.error &#x3D; &#x60;El archivo es muy grande (${tamanoMB.toFixed(1)} MB). Tamaño máximo: ${this.config.tamanoMaxMB} MB.&#x60;;
+            return;
+        }
+
+        if (archivo.size &#x3D;&#x3D;&#x3D; 0) {
+            this.error &#x3D; &#x27;El archivo está vacío. Selecciona otro.&#x27;;
+            return;
+        }
+
+        this.archivoSeleccionado &#x3D; archivo;
+    }
+
+    /**
+     * Verifica que el tipo MIME o la extensión del archivo correspondan
+     * al tipo de conversión activo.
+     *
+     * @param archivo Archivo a validar.
+     * @returns &#x60;null&#x60; si el archivo es válido, o un string con el mensaje
+     *          de error descriptivo si no lo es.
+     */
+    private validarTipoArchivo(archivo: File): string | null {
+        const mime &#x3D; (archivo.type || &#x27;&#x27;).toLowerCase();
+        const extension &#x3D; (this.obtenerExtension(archivo.name) || &#x27;&#x27;).toLowerCase();
+
+        const extensionesAudio  &#x3D; [&#x27;mp3&#x27;, &#x27;wav&#x27;, &#x27;aac&#x27;, &#x27;flac&#x27;, &#x27;ogg&#x27;, &#x27;m4a&#x27;, &#x27;wma&#x27;, &#x27;opus&#x27;, &#x27;aiff&#x27;, &#x27;amr&#x27;];
+        const extensionesVideo  &#x3D; [&#x27;mp4&#x27;, &#x27;mkv&#x27;, &#x27;avi&#x27;, &#x27;mov&#x27;, &#x27;webm&#x27;, &#x27;flv&#x27;, &#x27;wmv&#x27;, &#x27;mpeg&#x27;, &#x27;mpg&#x27;, &#x27;3gp&#x27;];
+        const extensionesImagen &#x3D; [&#x27;jpg&#x27;, &#x27;jpeg&#x27;, &#x27;png&#x27;, &#x27;webp&#x27;, &#x27;gif&#x27;, &#x27;bmp&#x27;, &#x27;tiff&#x27;, &#x27;tif&#x27;, &#x27;svg&#x27;, &#x27;heic&#x27;];
+
+        const nombresUsuarioAmigables: { [k: string]: string } &#x3D; {
+            audio: &#x27;audio (MP3, WAV, AAC, FLAC, OGG, M4A...)&#x27;,
+            video: &#x27;video (MP4, MKV, AVI, MOV, WEBM, FLV...)&#x27;,
+            imagen: &#x27;imagen (JPG, PNG, WEBP, GIF, BMP, TIFF...)&#x27;
+        };
+
+        let coincide &#x3D; false;
+        let tipoDetectado: string | null &#x3D; null;
+
+        if (mime.startsWith(&#x27;audio/&#x27;) || extensionesAudio.includes(extension)) {
+            tipoDetectado &#x3D; &#x27;audio&#x27;;
+        } else if (mime.startsWith(&#x27;video/&#x27;) || extensionesVideo.includes(extension)) {
+            tipoDetectado &#x3D; &#x27;video&#x27;;
+        } else if (mime.startsWith(&#x27;image/&#x27;) || extensionesImagen.includes(extension)) {
+            tipoDetectado &#x3D; &#x27;imagen&#x27;;
+        }
+
+        if (tipoDetectado &#x3D;&#x3D;&#x3D; this.tipo) {
+            coincide &#x3D; true;
+        }
+
+        if (!coincide) {
+            const esperado &#x3D; nombresUsuarioAmigables[this.tipo] || this.tipo;
+            if (tipoDetectado &amp;&amp; tipoDetectado !&#x3D;&#x3D; this.tipo) {
+                return &#x60;El archivo seleccionado es un ${tipoDetectado}, pero esta sección sólo acepta archivos de ${esperado}. Sube un archivo válido o cambia a la sección de ${tipoDetectado &#x3D;&#x3D;&#x3D; &#x27;imagen&#x27; ? &#x27;imágenes&#x27; : tipoDetectado + &#x27;s&#x27;}.&#x60;;
+            }
+            return &#x60;El archivo seleccionado no es un archivo de ${esperado} válido. Sube un archivo del tipo correcto.&#x60;;
+        }
+
+        return null;
+    }
+
+    /**
+     * Inicia la conversión del archivo seleccionado al formato de destino elegido.
+     *
+     * Validaciones previas:
+     * - Debe haber un archivo seleccionado.
+     * - Debe haberse elegido un formato de destino.
+     * - El formato de destino no puede ser igual al formato de origen.
+     *
+     * Ante un error 401 limpia la sesión local y redirige al login tras 1 500 ms.
+     */
+    convertir(): void {
+        if (!this.archivoSeleccionado) {
+            this.error &#x3D; &#x27;Selecciona un archivo primero.&#x27;;
+            return;
+        }
+        if (!this.formatoDestino) {
+            this.error &#x3D; &#x27;Selecciona un formato de destino.&#x27;;
+            return;
+        }
+
+        const extActual &#x3D; this.obtenerExtension(this.archivoSeleccionado.name);
+        if (extActual &amp;&amp; extActual.toLowerCase() &#x3D;&#x3D;&#x3D; this.formatoDestino.toLowerCase()) {
+            this.error &#x3D; &#x60;El archivo ya está en formato .${this.formatoDestino.toUpperCase()}. Elige un formato diferente.&#x60;;
+            return;
+        }
+
+        this.convirtiendo &#x3D; true;
+        this.error &#x3D; &#x27;&#x27;;
+        this.urlDescarga &#x3D; null;
+
+        this.conversionService.convertir(
+            this.archivoSeleccionado,
+            this.config.tipoBackend,
+            this.formatoDestino
+        ).subscribe({
+            next: (urlDescarga: string) &#x3D;&gt; {
+                this.convirtiendo &#x3D; false;
+                if (!urlDescarga || urlDescarga.trim().length &#x3D;&#x3D;&#x3D; 0) {
+                    this.error &#x3D; &#x27;El servidor devolvió una respuesta vacía. Intenta de nuevo.&#x27;;
+                    return;
+                }
+                this.urlDescarga &#x3D; urlDescarga.trim();
+                const nombreBase &#x3D; this.archivoSeleccionado!.name.replace(/\.[^/.]+$/, &#x27;&#x27;);
+                this.nombreArchivo &#x3D; &#x60;${nombreBase}.${this.formatoDestino}&#x60;;
+                this.exito &#x3D; true;
+            },
+            error: (err) &#x3D;&gt; {
+                this.convirtiendo &#x3D; false;
+                if (err?.status &#x3D;&#x3D;&#x3D; 401) {
+                    this.error &#x3D; &#x27;Tu sesión expiró. Inicia sesión nuevamente.&#x27;;
+                    this.auth.clearLocal();
+                    setTimeout(() &#x3D;&gt; this.router.navigate([&#x27;/login&#x27;]), 1500);
+                    return;
+                }
+                this.error &#x3D; this.errorHandler.extraerMensaje(
+                    err,
+                    &#x27;Error durante la conversión. Verifica el archivo e intenta de nuevo.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Abre en una nueva pestaña la URL de descarga del archivo convertido.
+     * No hace nada si &#x60;urlDescarga&#x60; es &#x60;null&#x60;.
+     */
+    descargar(): void {
+        if (!this.urlDescarga) return;
+        window.open(this.urlDescarga, &#x27;_blank&#x27;);
+    }
+
+    /**
+     * Restablece todos los campos del estado del componente a sus valores
+     * iniciales, dejándolo listo para una nueva conversión.
+     */
+    resetear(): void {
+        this.archivoSeleccionado &#x3D; null;
+        this.formatoDestino &#x3D; &#x27;&#x27;;
+        this.convirtiendo &#x3D; false;
+        this.urlDescarga &#x3D; null;
+        this.nombreArchivo &#x3D; &#x27;&#x27;;
+        this.error &#x3D; &#x27;&#x27;;
+        this.exito &#x3D; false;
+    }
+
+    /**
+     * Formatea un tamaño en bytes a una cadena legible con unidad.
+     *
+     * @param bytes Tamaño del archivo en bytes.
+     * @returns Cadena con el tamaño formateado: &#x60;&#x27;500 B&#x27;&#x60;, &#x60;&#x27;2.0 KB&#x27;&#x60; o &#x60;&#x27;3.0 MB&#x27;&#x60;.
+     */
+    formatearTamano(bytes: number): string {
+        if (bytes &lt; 1024) return bytes + &#x27; B&#x27;;
+        if (bytes &lt; 1024 * 1024) return (bytes / 1024).toFixed(1) + &#x27; KB&#x27;;
+        return (bytes / (1024 * 1024)).toFixed(1) + &#x27; MB&#x27;;
+    }
+
+    /**
+     * Extrae la extensión de un nombre de archivo.
+     *
+     * @param nombre Nombre del archivo (ej. &#x60;&#x27;video.mp4&#x27;&#x60;).
+     * @returns Extensión sin el punto (ej. &#x60;&#x27;mp4&#x27;&#x60;), o &#x60;null&#x60; si no tiene extensión.
+     */
+    private obtenerExtension(nombre: string): string | null {
+        const idx &#x3D; nombre.lastIndexOf(&#x27;.&#x27;);
+        return idx &gt;&#x3D; 0 ? nombre.substring(idx + 1) : null;
+    }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;converter-page&quot; [style.--tool-color]&#x3D;&quot;config.color&quot;&gt;
+
+  &lt;div class&#x3D;&quot;converter-header&quot;&gt;
+    &lt;div class&#x3D;&quot;header-icon&quot; [style.background]&#x3D;&quot;config.color + &#x27;15&#x27;&quot;&gt;
+      &lt;ng-container [ngSwitch]&#x3D;&quot;tipo&quot;&gt;
+        &lt;svg *ngSwitchCase&#x3D;&quot;&#x27;audio&#x27;&quot; width&#x3D;&quot;36&quot; height&#x3D;&quot;36&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;path d&#x3D;&quot;M9 19V6l12-3v13&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;6&quot; cy&#x3D;&quot;19&quot; r&#x3D;&quot;3&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;18&quot; cy&#x3D;&quot;16&quot; r&#x3D;&quot;3&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;svg *ngSwitchCase&#x3D;&quot;&#x27;video&#x27;&quot; width&#x3D;&quot;36&quot; height&#x3D;&quot;36&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;polygon points&#x3D;&quot;23 7 16 12 23 17 23 7&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+          &lt;rect x&#x3D;&quot;1&quot; y&#x3D;&quot;5&quot; width&#x3D;&quot;15&quot; height&#x3D;&quot;14&quot; rx&#x3D;&quot;2&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;svg *ngSwitchCase&#x3D;&quot;&#x27;imagen&#x27;&quot; width&#x3D;&quot;36&quot; height&#x3D;&quot;36&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;rect x&#x3D;&quot;3&quot; y&#x3D;&quot;3&quot; width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; rx&#x3D;&quot;2&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;circle cx&#x3D;&quot;8.5&quot; cy&#x3D;&quot;8.5&quot; r&#x3D;&quot;1.5&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;path d&#x3D;&quot;M21 15L16 10L5 21&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/ng-container&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;header-title&quot;&gt;{{ config.titulo }}&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;header-sub&quot;&gt;
+        Formatos soportados: {{ config.formatos.join(&#x27;, &#x27;).toUpperCase() }} &amp;nbsp;·&amp;nbsp;
+        Máx. {{ config.tamanoMaxMB }} MB
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;converter-card&quot;&gt;
+
+    &lt;div *ngIf&#x3D;&quot;!exito&quot;&gt;
+
+      &lt;div class&#x3D;&quot;msg-box msg-error&quot; *ngIf&#x3D;&quot;error&quot;&gt;
+        &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;{{ error }}&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div
+        class&#x3D;&quot;drop-zone&quot;
+        [class.has-file]&#x3D;&quot;archivoSeleccionado&quot;
+        (dragover)&#x3D;&quot;onDragOver($event)&quot;
+        (drop)&#x3D;&quot;onDrop($event)&quot;
+        (click)&#x3D;&quot;fileInput.click()&quot;&gt;
+
+        &lt;input
+          #fileInput
+          type&#x3D;&quot;file&quot;
+          [accept]&#x3D;&quot;config.aceptar&quot;
+          (change)&#x3D;&quot;onFileChange($event)&quot;
+          style&#x3D;&quot;display: none&quot;&gt;
+
+        &lt;ng-container *ngIf&#x3D;&quot;!archivoSeleccionado; else fileInfo&quot;&gt;
+          &lt;div class&#x3D;&quot;drop-icon&quot;&gt;
+            &lt;svg width&#x3D;&quot;48&quot; height&#x3D;&quot;48&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+              &lt;path d&#x3D;&quot;M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12&quot;
+                    [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;1.8&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;p class&#x3D;&quot;drop-text&quot;&gt;
+            Arrastra tu archivo aquí o &lt;span [style.color]&#x3D;&quot;config.color&quot;&gt;haz clic para seleccionar&lt;/span&gt;
+          &lt;/p&gt;
+          &lt;p class&#x3D;&quot;drop-sub&quot;&gt;{{ config.formatos.join(&#x27;, &#x27;).toUpperCase() }} · Máx. {{ config.tamanoMaxMB }} MB&lt;/p&gt;
+        &lt;/ng-container&gt;
+
+        &lt;ng-template #fileInfo&gt;
+          &lt;div class&#x3D;&quot;file-preview&quot;&gt;
+            &lt;div class&#x3D;&quot;file-icon-circle&quot; [style.background]&#x3D;&quot;config.color + &#x27;15&#x27;&quot;&gt;
+              &lt;svg width&#x3D;&quot;28&quot; height&#x3D;&quot;28&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;path d&#x3D;&quot;M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z&quot;
+                      [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+                &lt;polyline points&#x3D;&quot;14 2 14 8 20 8&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot;
+                          stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;file-details&quot;&gt;
+              &lt;p class&#x3D;&quot;file-name&quot;&gt;{{ archivoSeleccionado!.name }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;file-size&quot;&gt;{{ formatearTamano(archivoSeleccionado!.size) }}&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;button class&#x3D;&quot;btn-remove&quot; (click)&#x3D;&quot;resetear(); $event.stopPropagation()&quot; title&#x3D;&quot;Quitar archivo&quot;&gt;
+              &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+                &lt;line x1&#x3D;&quot;18&quot; y1&#x3D;&quot;6&quot; x2&#x3D;&quot;6&quot; y2&#x3D;&quot;18&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-muted&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+                &lt;line x1&#x3D;&quot;6&quot; y1&#x3D;&quot;6&quot; x2&#x3D;&quot;18&quot; y2&#x3D;&quot;18&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-muted&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/ng-template&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;format-section&quot; *ngIf&#x3D;&quot;archivoSeleccionado&quot;&gt;
+        &lt;label class&#x3D;&quot;format-label&quot;&gt;Convertir a:&lt;/label&gt;
+        &lt;div class&#x3D;&quot;format-buttons&quot;&gt;
+          &lt;button
+            class&#x3D;&quot;format-btn&quot;
+            *ngFor&#x3D;&quot;let f of config.formatos&quot;
+            [class.selected]&#x3D;&quot;formatoDestino &#x3D;&#x3D;&#x3D; f&quot;
+            [style.--btn-color]&#x3D;&quot;config.color&quot;
+            (click)&#x3D;&quot;formatoDestino &#x3D; f; error &#x3D; &#x27;&#x27;&quot;&gt;
+            .{{ f.toUpperCase() }}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;button
+        class&#x3D;&quot;btn-convertir&quot;
+        [style.background]&#x3D;&quot;config.color&quot;
+        [disabled]&#x3D;&quot;!archivoSeleccionado || !formatoDestino || convirtiendo&quot;
+        (click)&#x3D;&quot;convertir()&quot;&gt;
+        &lt;ng-container *ngIf&#x3D;&quot;!convirtiendo; else cargando&quot;&gt;
+          &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+            &lt;polyline points&#x3D;&quot;23 4 23 10 17 10&quot; stroke&#x3D;&quot;white&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+            &lt;path d&#x3D;&quot;M20.49 15a9 9 0 11-2.12-9.36L23 10&quot; stroke&#x3D;&quot;white&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+          &lt;/svg&gt;
+          Convertir ahora
+        &lt;/ng-container&gt;
+        &lt;ng-template #cargando&gt;
+          &lt;div class&#x3D;&quot;spinner&quot;&gt;&lt;/div&gt;
+          Convirtiendo...
+        &lt;/ng-template&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;success-panel&quot; *ngIf&#x3D;&quot;exito&quot;&gt;
+      &lt;div class&#x3D;&quot;success-icon&quot;&gt;
+        &lt;svg width&#x3D;&quot;52&quot; height&#x3D;&quot;52&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;path d&#x3D;&quot;M9 12l2 2 4-4&quot; [attr.stroke]&#x3D;&quot;config.color&quot; stroke-width&#x3D;&quot;2.5&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;h3&gt;¡Conversión completada!&lt;/h3&gt;
+      &lt;p class&#x3D;&quot;success-filename&quot;&gt;{{ nombreArchivo }}&lt;/p&gt;
+
+      &lt;div class&#x3D;&quot;success-actions&quot;&gt;
+        &lt;button class&#x3D;&quot;btn-descargar&quot; [style.background]&#x3D;&quot;config.color&quot; (click)&#x3D;&quot;descargar()&quot;&gt;
+          &lt;svg width&#x3D;&quot;18&quot; height&#x3D;&quot;18&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+            &lt;path d&#x3D;&quot;M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3&quot;
+                  stroke&#x3D;&quot;white&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+          &lt;/svg&gt;
+          Descargar archivo
+        &lt;/button&gt;
+        &lt;button class&#x3D;&quot;btn-nueva&quot; (click)&#x3D;&quot;resetear()&quot;&gt;Convertir otro archivo&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./conversion-tool.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.converter-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 2rem 80px;
+}
+
+.converter-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.header-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.header-title {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  letter-spacing: -0.5px;
+}
+
+.header-sub {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.converter-card {
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+  border: 1.5px solid var(--bg-hover);
+}
+
+.drop-zone {
+  border: 2px dashed var(--border-primary);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: var(--bg-primary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.drop-zone:hover, .drop-zone.has-file {
+  border-color: var(--tool-color, var(--accent));
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.drop-icon { margin-bottom: 1rem; }
+
+.drop-text {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.5rem;
+  font-weight: 500;
+}
+
+.drop-sub {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.file-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.file-details { flex: 1; text-align: left; }
+
+.file-name {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+  word-break: break-all;
+}
+
+.file-size {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.btn-remove:hover { background: var(--bg-tertiary); }
+
+.format-section { margin-bottom: 1.75rem; }
+
+.format-label {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.format-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.format-btn {
+  padding: 8px 18px;
+  border: 2px solid var(--border-secondary);
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.format-btn:hover {
+  border-color: var(--btn-color, var(--accent));
+  color: var(--btn-color, var(--accent));
+}
+
+.format-btn.selected {
+  border-color: var(--btn-color, var(--accent));
+  background: var(--btn-color, var(--accent));
+  color: var(--text-on-accent);
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--accent-light);
+  border-radius: 10px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.btn-convertir {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  color: var(--text-on-accent);
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.btn-convertir:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+}
+
+.btn-convertir:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: var(--text-on-accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.success-panel {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.success-icon { margin-bottom: 1.25rem; }
+
+.success-panel h3 {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.success-filename {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  margin: 0 0 2rem;
+}
+
+.success-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-descargar {
+  padding: 13px 28px;
+  border: none;
+  border-radius: 12px;
+  color: var(--text-on-accent);
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.btn-descargar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.btn-nueva {
+  padding: 13px 28px;
+  border: 2px solid var(--border-primary);
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.btn-nueva:hover {
+  border-color: var(--tool-color, var(--accent));
+  color: var(--tool-color, var(--accent));
+}
+
+.msg-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid;
+  font-weight: 500;
+}
+.msg-box svg { flex-shrink: 0; margin-top: 1px; }
+.msg-box span { flex: 1; word-break: break-word; }
+.msg-error { background: var(--bg-error-light); color: var(--error-dark); border-color: var(--error); }
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="converter-page" [style.--tool-color]="config.color">  <div class="converter-header">    <div class="header-icon" [style.background]="config.color + \'15\'">      <ng-container [ngSwitch]="tipo">        <svg *ngSwitchCase="\'audio\'" width="36" height="36" viewBox="0 0 24 24" fill="none">          <path d="M9 19V6l12-3v13" [attr.stroke]="config.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          <circle cx="6" cy="19" r="3" [attr.stroke]="config.color" stroke-width="2"/>          <circle cx="18" cy="16" r="3" [attr.stroke]="config.color" stroke-width="2"/>        </svg>        <svg *ngSwitchCase="\'video\'" width="36" height="36" viewBox="0 0 24 24" fill="none">          <polygon points="23 7 16 12 23 17 23 7" [attr.stroke]="config.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          <rect x="1" y="5" width="15" height="14" rx="2" [attr.stroke]="config.color" stroke-width="2"/>        </svg>        <svg *ngSwitchCase="\'imagen\'" width="36" height="36" viewBox="0 0 24 24" fill="none">          <rect x="3" y="3" width="18" height="18" rx="2" [attr.stroke]="config.color" stroke-width="2"/>          <circle cx="8.5" cy="8.5" r="1.5" [attr.stroke]="config.color" stroke-width="2"/>          <path d="M21 15L16 10L5 21" [attr.stroke]="config.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>        </svg>      </ng-container>    </div>    <div>      <h1 class="header-title">{{ config.titulo }}</h1>      <p class="header-sub">        Formatos soportados: {{ config.formatos.join(\', \').toUpperCase() }} &nbsp;·&nbsp;        Máx. {{ config.tamanoMaxMB }} MB      </p>    </div>  </div>  <div class="converter-card">    <div *ngIf="!exito">      <div class="msg-box msg-error" *ngIf="error">        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">          <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>          <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>          <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>        </svg>        <span>{{ error }}</span>      </div>      <div        class="drop-zone"        [class.has-file]="archivoSeleccionado"        (dragover)="onDragOver($event)"        (drop)="onDrop($event)"        (click)="fileInput.click()">        <input          #fileInput          type="file"          [accept]="config.aceptar"          (change)="onFileChange($event)"          style="display: none">        <ng-container *ngIf="!archivoSeleccionado; else fileInfo">          <div class="drop-icon">            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"                    [attr.stroke]="config.color" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>            </svg>          </div>          <p class="drop-text">            Arrastra tu archivo aquí o <span [style.color]="config.color">haz clic para seleccionar</span>          </p>          <p class="drop-sub">{{ config.formatos.join(\', \').toUpperCase() }} · Máx. {{ config.tamanoMaxMB }} MB</p>        </ng-container>        <ng-template #fileInfo>          <div class="file-preview">            <div class="file-icon-circle" [style.background]="config.color + \'15\'">              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"                      [attr.stroke]="config.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>                <polyline points="14 2 14 8 20 8" [attr.stroke]="config.color" stroke-width="2"                          stroke-linecap="round" stroke-linejoin="round"/>              </svg>            </div>            <div class="file-details">              <p class="file-name">{{ archivoSeleccionado!.name }}</p>              <p class="file-size">{{ formatearTamano(archivoSeleccionado!.size) }}</p>            </div>            <button class="btn-remove" (click)="resetear(); $event.stopPropagation()" title="Quitar archivo">              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">                <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" class="icon-muted" stroke-width="2" stroke-linecap="round"/>                <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" class="icon-muted" stroke-width="2" stroke-linecap="round"/>              </svg>            </button>          </div>        </ng-template>      </div>      <div class="format-section" *ngIf="archivoSeleccionado">        <label class="format-label">Convertir a:</label>        <div class="format-buttons">          <button            class="format-btn"            *ngFor="let f of config.formatos"            [class.selected]="formatoDestino === f"            [style.--btn-color]="config.color"            (click)="formatoDestino = f; error = \'\'">            .{{ f.toUpperCase() }}          </button>        </div>      </div>      <button        class="btn-convertir"        [style.background]="config.color"        [disabled]="!archivoSeleccionado || !formatoDestino || convirtiendo"        (click)="convertir()">        <ng-container *ngIf="!convirtiendo; else cargando">          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">            <polyline points="23 4 23 10 17 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          </svg>          Convertir ahora        </ng-container>        <ng-template #cargando>          <div class="spinner"></div>          Convirtiendo...        </ng-template>      </button>    </div>    <div class="success-panel" *ngIf="exito">      <div class="success-icon">        <svg width="52" height="52" viewBox="0 0 24 24" fill="none">          <circle cx="12" cy="12" r="10" [attr.stroke]="config.color" stroke-width="2"/>          <path d="M9 12l2 2 4-4" [attr.stroke]="config.color" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>        </svg>      </div>      <h3>¡Conversión completada!</h3>      <p class="success-filename">{{ nombreArchivo }}</p>      <div class="success-actions">        <button class="btn-descargar" [style.background]="config.color" (click)="descargar()">          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"                  stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>          </svg>          Descargar archivo        </button>        <button class="btn-nueva" (click)="resetear()">Convertir otro archivo</button>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AdminDashboardComponent', 'selector': 'app-admin-dashboard'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ConversionToolComponent', 'selector': 'app-conversion-tool'},{'name': 'HistorialComponent', 'selector': 'app-historial'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MiPerfilComponent', 'selector': 'app-mi-perfil'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ConversionToolComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ConversionToolComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,304 @@
+.historial-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 2rem 80px;
+}
+
+.historial-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.header-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--accent-light);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.historial-header h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    letter-spacing: -0.5px;
+}
+
+.historial-header p {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+.historial-header > div { flex: 1; }
+
+.btn-refresh {
+    padding: 10px 18px;
+    border: 1.5px solid var(--border-primary);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.btn-refresh:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.loading, .error-banner {
+    text-align: center;
+    padding: 3rem;
+    background: var(--bg-secondary);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border-radius: 14px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-tertiary);
+    border: 1.5px solid var(--bg-hover);
+}
+
+.error-banner {
+    color: var(--accent);
+    background: var(--accent-light);
+    border-color: var(--accent-light);
+}
+
+.empty-state {
+    text-align: center;
+    background: var(--bg-secondary);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border-radius: 16px;
+    padding: 4rem 2rem;
+    border: 1.5px solid var(--bg-hover);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem;
+}
+
+.empty-state p {
+    font-family: 'Sora', sans-serif;
+    color: var(--text-tertiary);
+    margin: 0 0 1.5rem;
+}
+
+.btn-empty {
+    display: inline-block;
+    padding: 12px 26px;
+    background: var(--accent);
+    color: var(--text-on-accent);
+    border-radius: 25px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-empty:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.conversions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.conversion-card {
+    background: var(--bg-secondary);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1.5px solid var(--bg-hover);
+    position: relative;
+}
+
+.conversion-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    border-color: transparent;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.tipo-tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.estado-tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.estado-completado { background: var(--bg-success-light); color: var(--success); }
+.estado-fallido { background: var(--bg-error-light); color: var(--error); }
+.estado-proceso { background: var(--bg-warning-light); color: var(--warning); }
+
+.archivo-nombre {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 1rem;
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.conversion-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.formato-tag {
+    padding: 5px 12px;
+    background: var(--bg-tertiary);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.formato-destino {
+    background: var(--card-color, var(--accent)) !important;
+    color: var(--text-on-accent) !important;
+}
+
+.fecha {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+}
+
+
+.botones-descarga {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+.btn-descargar-mini {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: var(--text-on-accent);
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-descargar-mini:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Botón secundario: archivo original — outline con el color de la tarjeta */
+.btn-descargar-original {
+    width: 100%;
+    padding: 9px;
+    border: 1.5px solid var(--card-color, var(--accent));
+    border-radius: 10px;
+    background: transparent;
+    color: var(--card-color, var(--accent));
+    font-family: 'Sora', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-descargar-original:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+/* ── Mensajes ── */
+.msg-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    border-left: 4px solid;
+    font-weight: 500;
+    max-width: 600px;
+}
+.msg-box svg { flex-shrink: 0; margin-top: 1px; }
+.msg-box span { flex: 1; word-break: break-word; }
+.msg-error { background: var(--bg-error-light); color: var(--error-dark); border-color: var(--error); }
+
+.sin-descarga {
+    font-family: 'Sora', sans-serif;
+    font-size: 0.78rem;
+    color: var(--error);
+    margin: 0;
+    padding: 8px 0 0;
+}
+
+.spinner-dark {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2.5px solid var(--border-primary);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

@@ -144,11 +144,11 @@ public class SecurityConfig {
 	/**
 	 * Crea y configura la fuente de configuración CORS.
 	 *
-	 * <p>Permite peticiones desde los orígenes de desarrollo habituales
-	 * ({@code http://localhost:4200} para Angular y
-	 * {@code http://localhost:8080} para el servidor local), los métodos
-	 * HTTP estándar y cualquier encabezado. Las credenciales se permiten
-	 * para soportar envío de cookies y encabezados de autorización.</p>
+	 * <p>Permite peticiones desde cualquier origen usando
+	 * {@code setAllowedOriginPatterns("*")}, lo cual es compatible con
+	 * {@code allowCredentials(true)} y permite el envío del token JWT
+	 * en el encabezado Authorization desde cualquier dominio, incluyendo
+	 * entornos de producción como el servidor Tomcat del profesor.</p>
 	 *
 	 * @return fuente de configuración CORS registrada para todas las rutas
 	 *         ({@code /**}).
@@ -156,9 +156,8 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuracion = new CorsConfiguration();
-		configuracion.setAllowedOrigins(Arrays.asList(
-				"http://localhost:4200",
-				"http://localhost:8080"));
+		
+		configuracion.setAllowedOriginPatterns(Arrays.asList("*"));
 		configuracion.setAllowedMethods(Arrays.asList(
 				"GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		configuracion.setAllowedHeaders(Arrays.asList("*"));

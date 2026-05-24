@@ -216,9 +216,10 @@ public class CloudConvertService {
 			JsonObject jobFinal = esperarJob(urlBase, jobId);
 			String urlDescarga = extraerUrlDescarga(jobFinal, formatoDestinoNormalizado);
 			String nombreConvertido = extraerNombreConvertido(jobFinal, formatoDestinoNormalizado);
+			String urlOriginal = extraerUrlOriginal(jobFinal);
 
 			registrarHistorialExitoso(tipoArchivo, formatoOrigen, formatoDestinoNormalizado,
-					nombreOriginal, nombreConvertido, urlDescarga, usuarioId);
+					nombreOriginal, nombreConvertido, urlOriginal, urlDescarga, usuarioId);
 
 			return urlDescarga;
 
@@ -341,6 +342,29 @@ public class CloudConvertService {
 		return archivos.get(0).getAsJsonObject().get("url").getAsString();
 	}
 
+
+	/**
+	 * Extrae la URL del archivo original desde la tarea de importación del job.
+	 * Retorna null si no está disponible.
+	 *
+	 * @param jobFinal respuesta final del job
+	 * @return URL del archivo original, o {@code null} si no está disponible
+	 */
+	private String extraerUrlOriginal(JsonObject jobFinal) {
+		try {
+			JsonObject tareaImport = encontrarTarea(
+					jobFinal.getAsJsonObject("data"), "import-archivo");
+			if (tareaImport == null) return null;
+			JsonObject result = tareaImport.getAsJsonObject("result");
+			if (result == null) return null;
+			JsonArray archivos = result.getAsJsonArray("files");
+			if (archivos == null || archivos.size() == 0) return null;
+			return archivos.get(0).getAsJsonObject().get("url").getAsString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	/**
 	 * Extrae el nombre del archivo convertido del resultado del job.
 	 * Si no se puede determinar, retorna un nombre genérico con el formato destino.
@@ -380,7 +404,7 @@ public class CloudConvertService {
 	 */
 	private void registrarHistorialExitoso(TipoArchivo tipoArchivo, String formatoOrigen,
 			String formatoDestino, String nombreOriginal, String nombreConvertido,
-			String urlDescarga, Long usuarioId) {
+			String urlOriginal, String urlDescarga, Long usuarioId) {
 		HistorialConversionDTO historial = new HistorialConversionDTO(
 				LocalDateTime.now(),
 				tipoArchivo,
@@ -388,7 +412,7 @@ public class CloudConvertService {
 				formatoDestino,
 				nombreOriginal,
 				nombreConvertido,
-				null,
+				urlOriginal,
 				urlDescarga,
 				EstadoConversion.COMPLETADO,
 				usuarioId);

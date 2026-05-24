@@ -47,17 +47,34 @@ import co.edu.unbosque.proyectofinal.util.enums.TipoAccion;
 @Transactional
 public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 
+	/** Opciones de rol válidas para mensajes de error. */
 	private static final String OPCIONES_ROL = "USUARIO, ADMIN";
 
+	/** Longitud máxima permitida para nombre y apellido. */
 	private static final int LONGITUD_MAXIMA_NOMBRE = 100;
+
+	/** Longitud máxima permitida para el correo electrónico. */
 	private static final int LONGITUD_MAXIMA_CORREO = 150;
+
+	/** Longitud máxima permitida para el nombre de usuario. */
 	private static final int LONGITUD_MAXIMA_USUARIO = 50;
+
+	/** Longitud mínima requerida para la contraseña. */
 	private static final int LONGITUD_MINIMA_CONTRASENA = 8;
+
+	/** Longitud máxima permitida para la contraseña. */
 	private static final int LONGITUD_MAXIMA_CONTRASENA = 100;
 
+	/**
+	 * Patrón que permite únicamente letras (incluyendo tildes y ñ) y espacios.
+	 * Se usa para validar nombre y apellido.
+	 */
 	private static final java.util.regex.Pattern PATRON_NOMBRE =
 			java.util.regex.Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]+$");
 
+	/**
+	 * Patrón para teléfonos colombianos de 10 dígitos que comienzan con 3.
+	 */
 	private static final java.util.regex.Pattern PATRON_TELEFONO =
 			java.util.regex.Pattern.compile("^3\\d{9}$");
 
@@ -79,9 +96,33 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	@Autowired
 	private AuditoriaService auditoriaService;
 
+	/**
+	 * Constructor sin argumentos requerido por Spring para la inyección
+	 * de dependencias.
+	 */
 	public UsuarioService() {
 	}
 
+	/**
+	 * Crea y persiste un nuevo usuario en la base de datos.
+	 * <p>
+	 * Valida todos los campos del DTO, prohíbe el nombre de usuario
+	 * reservado {@code admin}, verifica la unicidad de correo y nombre
+	 * de usuario, y cifra la contraseña con BCrypt antes de persistir.
+	 * Si no se indica rol, se asigna {@code USUARIO} por defecto.
+	 * </p>
+	 *
+	 * @param data DTO con los datos del usuario a crear
+	 * @return 0 si la operación fue exitosa
+	 * @throws TextoVacioException             si algún campo obligatorio está vacío
+	 * @throws TextoDemasiadoLargoException    si algún campo excede su longitud máxima
+	 * @throws FormatoCorreoInvalidoException  si el correo no tiene formato válido
+	 * @throws ContrasenaInvalidaException     si la contraseña no cumple los requisitos
+	 * @throws CorreoDuplicadoException        si el correo ya está registrado
+	 * @throws NombreUsuarioDuplicadoException si el nombre de usuario ya está registrado
+	 * @throws co.edu.unbosque.proyectofinal.exception.UsuarioSinPermisoException
+	 *         si se intenta usar el nombre de usuario reservado {@code admin}
+	 */
 	@Override
 	public int create(UsuarioDTO data) {
 		try {
@@ -125,6 +166,17 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	 * Solicita un código de verificación para un correo, validando primero
 	 * que el correo tenga formato válido, exista realmente y no esté ya
 	 * registrado en el sistema.
+	 * <p>
+	 * El código se envía por correo si Brevo está configurado, y siempre
+	 * se imprime en la consola del servidor para facilitar las pruebas.
+	 * </p>
+	 *
+	 * @param correo dirección de correo electrónico para la que se solicita el código
+	 * @throws TextoVacioException            si el correo está vacío o es nulo
+	 * @throws FormatoCorreoInvalidoException si el correo no tiene formato válido
+	 * @throws CorreoDuplicadoException       si el correo ya tiene una cuenta registrada
+	 * @throws co.edu.unbosque.proyectofinal.exception.CorreoNoExisteException
+	 *         si el dominio del correo no existe o es desechable
 	 */
 	public void solicitarCodigoRegistro(String correo) {
 		if (correo == null || correo.isBlank()) {
@@ -145,6 +197,16 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	/**
 	 * Crea un usuario nuevo después de validar el código de verificación
 	 * que se le envió por correo electrónico.
+	 * <p>
+	 * Si el código es válido y no ha expirado, delega la creación en
+	 * {@link #create(UsuarioDTO)}.
+	 * </p>
+	 *
+	 * @param data               DTO con los datos del usuario a crear
+	 * @param codigoVerificacion código de 6 dígitos recibido por correo
+	 * @throws DatoInvalidoException si el DTO o el correo son nulos
+	 * @throws co.edu.unbosque.proyectofinal.exception.CodigoVerificacionInvalidoException
+	 *         si el código no coincide o ha expirado
 	 */
 	public void crearConVerificacion(UsuarioDTO data, String codigoVerificacion) {
 		if (data == null || data.getCorreo() == null) {
@@ -154,13 +216,18 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		create(data);
 	}
 
+	/**
+	 * Retorna todos los usuarios registrados en la base de datos y registra
+	 * la consulta en la auditoría del sistema.
+	 *
+	 * @return lista de todos los usuarios como DTOs (sin contraseña)
+	 */
 	@Override
 	public List<UsuarioDTO> getAll() {
 		List<Usuario> lista = (List<Usuario>) repo.findAll();
 		List<UsuarioDTO> dtoList = new ArrayList<>();
 		lista.forEach(entity -> dtoList.add(mapToDTO(entity)));
 
-		// Auditoría: admin consultó la lista completa de usuarios
 		AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.READ,
 				"Consulta de todos los usuarios del sistema");
 		auditoriaService.create(auditoria);
@@ -168,6 +235,20 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return dtoList;
 	}
 
+	/**
+	 * Elimina el usuario identificado por el ID proporcionado.
+	 * <p>
+	 * La cuenta de administrador ({@code admin}) no puede ser eliminada.
+	 * La operación queda registrada en la auditoría antes de ejecutarse.
+	 * </p>
+	 *
+	 * @param id identificador del usuario a eliminar
+	 * @return 0 si la operación fue exitosa
+	 * @throws IdInvalidoException    si el ID es nulo o menor o igual a cero
+	 * @throws RecursoNoEncontradoException si no existe un usuario con ese ID
+	 * @throws co.edu.unbosque.proyectofinal.exception.UsuarioSinPermisoException
+	 *         si se intenta eliminar la cuenta de administrador
+	 */
 	@Override
 	public int deleteById(Long id) {
 		try {
@@ -182,7 +263,6 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 							"La cuenta de administrador no puede ser eliminada.");
 				}
 
-				// Auditoría: eliminación de usuario (antes de borrar para tener el nombre)
 				AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.DELETE,
 						"Usuario eliminado: " + u.getNombreUsuario()
 								+ " (id=" + u.getId() + ", correo=" + u.getCorreo() + ")");
@@ -201,6 +281,28 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return 1;
 	}
 
+	/**
+	 * Actualiza los datos del usuario identificado por el ID proporcionado.
+	 * <p>
+	 * La cuenta de administrador ({@code admin}) no puede ser modificada.
+	 * La contraseña solo se actualiza si viene con valor en el DTO.
+	 * La operación queda registrada en la auditoría al finalizar.
+	 * </p>
+	 *
+	 * @param id   identificador del usuario a actualizar
+	 * @param data DTO con los nuevos valores
+	 * @return 0 si la operación fue exitosa
+	 * @throws IdInvalidoException             si el ID es nulo o menor o igual a cero
+	 * @throws RecursoNoEncontradoException    si no existe un usuario con ese ID
+	 * @throws TextoVacioException             si algún campo obligatorio está vacío
+	 * @throws TextoDemasiadoLargoException    si algún campo excede su longitud máxima
+	 * @throws FormatoCorreoInvalidoException  si el correo no tiene formato válido
+	 * @throws ContrasenaInvalidaException     si la nueva contraseña no cumple los requisitos
+	 * @throws CorreoDuplicadoException        si el nuevo correo ya pertenece a otro usuario
+	 * @throws NombreUsuarioDuplicadoException si el nuevo nombre de usuario ya está en uso
+	 * @throws co.edu.unbosque.proyectofinal.exception.UsuarioSinPermisoException
+	 *         si se intenta modificar la cuenta de administrador
+	 */
 	@Override
 	public int updateById(Long id, UsuarioDTO data) {
 		try {
@@ -233,7 +335,7 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 			}
 			repo.save(entity);
 
-			// Auditoría: perfil actualizado
+			
 			AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.UPDATE,
 					"Perfil actualizado para usuario: " + entity.getNombreUsuario()
 							+ " (id=" + id + ")");
@@ -255,16 +357,33 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return 0;
 	}
 
+	/**
+	 * Retorna el número total de usuarios registrados en la base de datos.
+	 *
+	 * @return cantidad total de usuarios
+	 */
 	@Override
 	public long count() {
 		return repo.count();
 	}
 
+	/**
+	 * Verifica si existe un usuario con el ID proporcionado.
+	 *
+	 * @param id identificador a verificar
+	 * @return {@code true} si el usuario existe, {@code false} en caso contrario
+	 */
 	@Override
 	public boolean exist(Long id) {
 		return id != null && repo.existsById(id);
 	}
 
+	/**
+	 * Verifica si existe un usuario con el nombre de usuario indicado.
+	 *
+	 * @param nombreUsuario nombre de usuario a verificar
+	 * @return {@code true} si existe, {@code false} si no existe o el valor está vacío
+	 */
 	public boolean existsByNombreUsuario(String nombreUsuario) {
 		if (nombreUsuario == null || nombreUsuario.isBlank()) {
 			return false;
@@ -272,6 +391,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return repo.findByNombreUsuario(nombreUsuario.trim()).isPresent();
 	}
 
+	/**
+	 * Verifica si existe un usuario con el correo electrónico indicado.
+	 *
+	 * @param correo correo electrónico a verificar
+	 * @return {@code true} si existe, {@code false} si no existe o el valor está vacío
+	 */
 	public boolean existsByCorreo(String correo) {
 		if (correo == null || correo.isBlank()) {
 			return false;
@@ -279,6 +404,14 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return repo.findByCorreo(correo.trim()).isPresent();
 	}
 
+	/**
+	 * Busca un usuario por su ID y lo retorna como DTO.
+	 *
+	 * @param id identificador del usuario
+	 * @return DTO del usuario encontrado (sin contraseña)
+	 * @throws IdInvalidoException          si el ID es nulo o menor o igual a cero
+	 * @throws RecursoNoEncontradoException si no existe un usuario con ese ID
+	 */
 	public UsuarioDTO findById(Long id) {
 		try {
 			if (id == null || id <= 0) {
@@ -296,6 +429,15 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Busca un usuario por su correo electrónico y lo retorna como DTO.
+	 *
+	 * @param correo correo electrónico del usuario
+	 * @return DTO del usuario encontrado (sin contraseña)
+	 * @throws TextoVacioException            si el correo está vacío o es nulo
+	 * @throws FormatoCorreoInvalidoException si el correo no tiene formato válido
+	 * @throws RecursoNoEncontradoException   si no existe un usuario con ese correo
+	 */
 	public UsuarioDTO findByCorreo(String correo) {
 		try {
 			if (correo == null || correo.isBlank()) {
@@ -319,6 +461,14 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Busca un usuario por su nombre de usuario único y lo retorna como DTO.
+	 *
+	 * @param nombreUsuario nombre de usuario a buscar
+	 * @return DTO del usuario encontrado (sin contraseña)
+	 * @throws TextoVacioException          si el nombre de usuario está vacío o es nulo
+	 * @throws RecursoNoEncontradoException si no existe un usuario con ese nombre de usuario
+	 */
 	public UsuarioDTO findByNombreUsuario(String nombreUsuario) {
 		try {
 			if (nombreUsuario == null || nombreUsuario.isBlank()) {
@@ -338,6 +488,13 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Busca todos los usuarios cuyo nombre coincida exactamente con el indicado.
+	 *
+	 * @param nombre nombre a filtrar
+	 * @return lista de DTOs de usuarios encontrados; vacía si no hay coincidencias
+	 * @throws TextoVacioException si el nombre está vacío o es nulo
+	 */
 	public List<UsuarioDTO> findByNombre(String nombre) {
 		try {
 			if (nombre == null || nombre.isBlank()) {
@@ -357,6 +514,13 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Busca todos los usuarios cuyo apellido coincida exactamente con el indicado.
+	 *
+	 * @param apellido apellido a filtrar
+	 * @return lista de DTOs de usuarios encontrados; vacía si no hay coincidencias
+	 * @throws TextoVacioException si el apellido está vacío o es nulo
+	 */
 	public List<UsuarioDTO> findByApellido(String apellido) {
 		try {
 			if (apellido == null || apellido.isBlank()) {
@@ -376,6 +540,13 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Busca todos los usuarios que tengan el rol indicado.
+	 *
+	 * @param rol rol a filtrar (USUARIO o ADMIN)
+	 * @return lista de DTOs de usuarios encontrados; vacía si no hay coincidencias
+	 * @throws OpcionNoValidaException si el rol es {@code null}
+	 */
 	public List<UsuarioDTO> findByRol(RolUsuario rol) {
 		try {
 			if (rol == null) {
@@ -395,10 +566,16 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
-	// =====================================================================
-	// Métodos privados de validación
-	// =====================================================================
+	
 
+	/**
+	 * Valida los campos básicos del DTO de usuario.
+	 * Opcionalmente valida la contraseña si se indica que se está creando
+	 * o actualizando con una nueva.
+	 *
+	 * @param data              DTO con los datos a validar
+	 * @param validarContrasena {@code true} si la contraseña debe validarse
+	 */
 	private void validarCamposBasicos(UsuarioDTO data, boolean validarContrasena) {
 		if (data == null) {
 			lanzador.lanzarDatoInvalido("Los datos del usuario no pueden ser nulos.");
@@ -413,6 +590,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		validarTelefono(data.getTelefono());
 	}
 
+	/**
+	 * Valida que el nombre no esté vacío, no exceda la longitud máxima
+	 * y solo contenga letras y espacios.
+	 *
+	 * @param nombre nombre del usuario a validar
+	 */
 	private void validarNombre(String nombre) {
 		if (nombre == null || nombre.isBlank()) {
 			lanzador.lanzarTextoVacio("nombre");
@@ -429,6 +612,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Valida que el apellido no esté vacío, no exceda la longitud máxima
+	 * y solo contenga letras y espacios.
+	 *
+	 * @param apellido apellido del usuario a validar
+	 */
 	private void validarApellido(String apellido) {
 		if (apellido == null || apellido.isBlank()) {
 			lanzador.lanzarTextoVacio("apellido");
@@ -445,6 +634,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Valida que el correo no esté vacío, no exceda la longitud máxima
+	 * y tenga formato válido.
+	 *
+	 * @param correo correo electrónico a validar
+	 */
 	private void validarCorreo(String correo) {
 		if (correo == null || correo.isBlank()) {
 			lanzador.lanzarTextoVacio("correo");
@@ -458,6 +653,11 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Valida que el nombre de usuario no esté vacío y no exceda la longitud máxima.
+	 *
+	 * @param nombreUsuario nombre de usuario a validar
+	 */
 	private void validarNombreUsuario(String nombreUsuario) {
 		if (nombreUsuario == null || nombreUsuario.isBlank()) {
 			lanzador.lanzarTextoVacio("nombreUsuario");
@@ -468,6 +668,13 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Valida que la contraseña no esté vacía, no exceda la longitud máxima,
+	 * tenga al menos {@value #LONGITUD_MINIMA_CONTRASENA} caracteres,
+	 * contenga al menos una letra y al menos un número.
+	 *
+	 * @param contrasena contraseña a validar
+	 */
 	private void validarContrasena(String contrasena) {
 		if (contrasena == null || contrasena.isBlank()) {
 			lanzador.lanzarTextoVacio("contrasena");
@@ -483,6 +690,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Valida que el teléfono no esté vacío y cumpla el formato colombiano
+	 * (10 dígitos comenzando con 3, sin espacios ni guiones).
+	 *
+	 * @param telefono número de teléfono a validar
+	 */
 	private void validarTelefono(String telefono) {
 		if (telefono == null || telefono.isBlank()) {
 			lanzador.lanzarTelefonoInvalido(
@@ -499,6 +712,16 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Verifica que el correo y el nombre de usuario del DTO no estén ya
+	 * registrados por otro usuario distinto al indicado en {@code idActual}.
+	 *
+	 * @param data     DTO con los valores a verificar
+	 * @param idActual ID del usuario que se está actualizando, o {@code null}
+	 *                 si se está creando uno nuevo
+	 * @throws CorreoDuplicadoException        si el correo ya pertenece a otro usuario
+	 * @throws NombreUsuarioDuplicadoException si el nombre de usuario ya pertenece a otro usuario
+	 */
 	private void validarUnicidad(UsuarioDTO data, Long idActual) {
 		Optional<Usuario> porCorreo = repo.findByCorreo(data.getCorreo().trim());
 		if (porCorreo.isPresent()
@@ -516,6 +739,12 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 	}
 
+	/**
+	 * Valida si un correo electrónico tiene formato correcto mediante expresión regular.
+	 *
+	 * @param correo correo electrónico a verificar
+	 * @return {@code true} si el formato es válido, {@code false} en caso contrario
+	 */
 	private static boolean esCorreoValido(String correo) {
 		if (correo == null) {
 			return false;
@@ -523,6 +752,14 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		return correo.matches("^[\\w._%+\\-]+@[\\w.\\-]+\\.[a-zA-Z]{2,}$");
 	}
 
+	/**
+	 * Convierte una entidad {@link Usuario} a su DTO correspondiente.
+	 * La contraseña se omite en el DTO resultante por seguridad.
+	 * El historial de conversiones se representa como lista de IDs.
+	 *
+	 * @param entity entidad a convertir
+	 * @return DTO con los datos del usuario (sin contraseña)
+	 */
 	private UsuarioDTO mapToDTO(Usuario entity) {
 		UsuarioDTO dto = new UsuarioDTO();
 		dto.setId(entity.getId());

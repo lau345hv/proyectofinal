@@ -79,9 +79,7 @@ public class VerificacionCorreoService {
 	@Autowired
 	private LanzadorDeExcepcion lanzador;
 
-	// FIX JAVA-W1025: se eliminó el campo "gson" que nunca era usado en esta clase.
-	// Los JsonObject que sí se usan en enviarCorreoBrevo se construyen directamente
-	// con la API de JsonObject/JsonArray de Gson, sin necesidad de la instancia Gson.
+	
 
 	/**
 	 * Genera un código aleatorio de 6 dígitos, lo guarda asociado al
@@ -99,7 +97,7 @@ public class VerificacionCorreoService {
 		codigosPendientes.put(correo.trim().toLowerCase(),
 				new CodigoPendiente(codigo, LocalDateTime.now()));
 
-		// Siempre se imprime en consola (útil para desarrollo)
+		
 		System.out.println("");
 		System.out.println("========================================================");
 		System.out.println("[VerificacionCorreo] Código de verificación generado");
@@ -110,7 +108,7 @@ public class VerificacionCorreoService {
 		System.out.println("========================================================");
 		System.out.println("");
 
-		// Si hay configuración de Brevo, envía el correo real
+		
 		String apiKey = resolverApiKey();
 		if (apiKey != null && !apiKey.isBlank()) {
 			enviarCorreoBrevo(correo.trim(), codigo, apiKey);
@@ -159,7 +157,7 @@ public class VerificacionCorreoService {
 					"El código de verificación no es correcto. "
 							+ "Verifique el correo electrónico recibido.");
 		}
-		// OK → consumir el código
+		
 		codigosPendientes.remove(clave);
 	}
 

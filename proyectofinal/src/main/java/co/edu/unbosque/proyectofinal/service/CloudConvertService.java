@@ -170,21 +170,33 @@ public class CloudConvertService {
 
 	private final Gson gson = new Gson();
 
+	/**
+	 * Constructor sin argumentos requerido por Spring para la inyección
+	 * de dependencias.
+	 */
 	public CloudConvertService() {
 	}
 
 	/**
 	 * Convierte un archivo al formato indicado utilizando la API de
 	 * CloudConvert y registra la operación en el historial del usuario.
+	 * <p>
+	 * El flujo interno es: validar entradas → crear job y subir archivo →
+	 * hacer polling hasta que finalice → extraer URL de descarga →
+	 * guardar en historial y auditoría.
+	 * </p>
 	 *
-	 * @param archivo        Archivo subido por el usuario.
-	 * @param formatoDestino Formato al que se desea convertir (ej: mp4, mp3).
-	 * @param tipoArchivo    Tipo de archivo (AUDIO, VIDEO, IMAGEN).
-	 * @param usuarioId      ID del usuario que solicita la conversión.
-	 * @return URL de descarga del archivo convertido.
+	 * @param archivo        archivo subido por el usuario
+	 * @param formatoDestino formato al que se desea convertir (ej: mp4, mp3)
+	 * @param tipoArchivo    categoría del archivo (AUDIO, VIDEO o IMAGEN)
+	 * @param usuarioId      ID del usuario que solicita la conversión
+	 * @return URL de descarga del archivo convertido
+	 * @throws ArchivoVacioException          si el archivo está vacío o es nulo
+	 * @throws FormatoArchivoInvalidoException si el formato no es soportado
+	 * @throws ApiExternaException             si falla la comunicación con CloudConvert
+	 * @throws ConversionFallidaException      si el job de conversión termina en error
 	 */
-	// FIX JAVA-R1000: la lógica del método se dividió en métodos privados
-	// auxiliares para reducir la complejidad ciclomática.
+	
 	public String convertirArchivo(MultipartFile archivo, String formatoDestino,
 			TipoArchivo tipoArchivo, Long usuarioId) {
 
@@ -229,10 +241,11 @@ public class CloudConvertService {
 	}
 
 	/**
-	 * Devuelve los formatos soportados según el tipo de archivo.
+	 * Devuelve los formatos soportados según el tipo de archivo indicado.
 	 *
-	 * @param tipoArchivo Tipo de archivo.
-	 * @return Conjunto de extensiones soportadas.
+	 * @param tipoArchivo categoría del archivo (AUDIO, VIDEO o IMAGEN)
+	 * @return conjunto de extensiones soportadas para ese tipo
+	 * @throws FormatoArchivoInvalidoException si el tipo de archivo es {@code null}
 	 */
 	public Set<String> getFormatosDisponibles(TipoArchivo tipoArchivo) {
 		if (tipoArchivo == null) {
@@ -249,9 +262,12 @@ public class CloudConvertService {
 	/**
 	 * Valida los parámetros de entrada antes de iniciar la conversión.
 	 *
-	 * @param archivo        Archivo a convertir.
-	 * @param formatoDestino Formato destino.
-	 * @param tipoArchivo    Tipo de archivo.
+	 * @param archivo        archivo a convertir
+	 * @param formatoDestino formato destino
+	 * @param tipoArchivo    tipo de archivo
+	 * @throws ArchivoVacioException          si el archivo está vacío o es nulo
+	 * @throws FormatoArchivoInvalidoException si el formato o el tipo son nulos/vacíos
+	 * @throws ApiExternaException             si la API key no está configurada
 	 */
 	private void validarEntradaConversion(MultipartFile archivo, String formatoDestino,
 			TipoArchivo tipoArchivo) {
@@ -278,11 +294,11 @@ public class CloudConvertService {
 	 * Crea el job en CloudConvert, sube el archivo a la tarea de importación
 	 * y devuelve el ID del job creado.
 	 *
-	 * @param urlBase                URL base de la API.
-	 * @param archivo                Archivo a subir.
-	 * @param formatoDestinoNormalizado Formato destino en minúsculas.
-	 * @return ID del job creado.
-	 * @throws Exception si falla la creación o subida.
+	 * @param urlBase                   URL base de la API
+	 * @param archivo                   archivo a subir
+	 * @param formatoDestinoNormalizado formato destino en minúsculas
+	 * @return ID del job creado
+	 * @throws Exception si falla la creación del job o la subida del archivo
 	 */
 	private String crearJobYSubirArchivo(String urlBase, MultipartFile archivo,
 			String formatoDestinoNormalizado) throws Exception {
@@ -303,9 +319,11 @@ public class CloudConvertService {
 	/**
 	 * Extrae la URL de descarga del resultado del job finalizado.
 	 *
-	 * @param jobFinal               Resultado del job.
-	 * @param formatoDestinoNormalizado Formato destino en minúsculas.
-	 * @return URL de descarga.
+	 * @param jobFinal                  respuesta final del job
+	 * @param formatoDestinoNormalizado formato destino en minúsculas (para mensajes de error)
+	 * @return URL de descarga del archivo convertido
+	 * @throws ConversionFallidaException si no se encuentra la tarea de exportación
+	 *                                    o si la API no retornó ningún archivo
 	 */
 	private String extraerUrlDescarga(JsonObject jobFinal, String formatoDestinoNormalizado) {
 		JsonObject tareaExport = encontrarTarea(
@@ -325,10 +343,11 @@ public class CloudConvertService {
 
 	/**
 	 * Extrae el nombre del archivo convertido del resultado del job.
+	 * Si no se puede determinar, retorna un nombre genérico con el formato destino.
 	 *
-	 * @param jobFinal               Resultado del job.
-	 * @param formatoDestinoNormalizado Formato destino en minúsculas.
-	 * @return Nombre del archivo convertido.
+	 * @param jobFinal                  respuesta final del job
+	 * @param formatoDestinoNormalizado formato destino en minúsculas
+	 * @return nombre del archivo convertido
 	 */
 	private String extraerNombreConvertido(JsonObject jobFinal, String formatoDestinoNormalizado) {
 		JsonObject tareaExport = encontrarTarea(
@@ -348,15 +367,16 @@ public class CloudConvertService {
 	}
 
 	/**
-	 * Registra una conversión exitosa en el historial del usuario.
+	 * Registra una conversión exitosa en el historial del usuario y
+	 * genera el registro de auditoría correspondiente.
 	 *
-	 * @param tipoArchivo    Tipo de archivo.
-	 * @param formatoOrigen  Formato origen.
-	 * @param formatoDestino Formato destino.
-	 * @param nombreOriginal Nombre del archivo original.
-	 * @param nombreConvertido Nombre del archivo convertido.
-	 * @param urlDescarga    URL de descarga.
-	 * @param usuarioId      ID del usuario.
+	 * @param tipoArchivo      categoría del archivo convertido
+	 * @param formatoOrigen    extensión del archivo original
+	 * @param formatoDestino   extensión del archivo convertido
+	 * @param nombreOriginal   nombre original del archivo subido
+	 * @param nombreConvertido nombre del archivo resultante
+	 * @param urlDescarga      URL de descarga del archivo convertido
+	 * @param usuarioId        ID del usuario propietario
 	 */
 	private void registrarHistorialExitoso(TipoArchivo tipoArchivo, String formatoOrigen,
 			String formatoDestino, String nombreOriginal, String nombreConvertido,
@@ -375,12 +395,19 @@ public class CloudConvertService {
 		historialConversionService.create(historial);
 		
 		AuditoriaDTO auditoria = auditoriaService.preAccion(TipoAccion.CONVERSION,
-	            "Conversión exitosa: " + nombreOriginal
-	                    + " → " + formatoDestino
-	                    + " (" + tipoArchivo.name() + ")");
-	    auditoriaService.create(auditoria);
+                "Conversión exitosa: " + nombreOriginal
+                        + " → " + formatoDestino
+                        + " (" + tipoArchivo.name() + ")");
+        auditoriaService.create(auditoria);
 	}
 
+	/**
+	 * Construye el cuerpo JSON del job de CloudConvert con las tres tareas
+	 * necesarias: import/upload, convert y export/url.
+	 *
+	 * @param formatoDestino formato al que se convertirá el archivo
+	 * @return {@link JsonObject} con la estructura del job
+	 */
 	private JsonObject construirCuerpoJob(String formatoDestino) {
 		Map<String, Object> tareas = new HashMap<>();
 
@@ -404,6 +431,15 @@ public class CloudConvertService {
 		return gson.toJsonTree(body).getAsJsonObject();
 	}
 
+	/**
+	 * Realiza una petición POST a la API de CloudConvert con cuerpo JSON
+	 * y cabecera de autorización Bearer.
+	 *
+	 * @param url  URL del endpoint
+	 * @param body cuerpo JSON de la petición
+	 * @return respuesta de la API como {@link JsonObject}
+	 * @throws ApiExternaException si la respuesta no es 2xx
+	 */
 	private JsonObject postJson(String url, JsonObject body) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -441,6 +477,14 @@ public class CloudConvertService {
 		}
 	}
 
+	/**
+	 * Realiza una petición GET a la API de CloudConvert con cabecera de
+	 * autorización Bearer para consultar el estado de un job.
+	 *
+	 * @param url URL del endpoint del job
+	 * @return respuesta de la API como {@link JsonObject}
+	 * @throws ApiExternaException si la respuesta no es 2xx
+	 */
 	private JsonObject getJson(String url) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBearerAuth(apiKey);
@@ -461,6 +505,13 @@ public class CloudConvertService {
 		}
 	}
 
+	/**
+	 * Busca una tarea dentro del objeto {@code data} del job por su nombre.
+	 *
+	 * @param data        objeto {@code data} del job de CloudConvert
+	 * @param nombreTarea nombre de la tarea a buscar (ej. "import-archivo")
+	 * @return {@link JsonObject} de la tarea encontrada, o {@code null} si no existe
+	 */
 	private JsonObject encontrarTarea(JsonObject data, String nombreTarea) {
 		if (data == null || !data.has("tasks")) {
 			return null;
@@ -475,6 +526,16 @@ public class CloudConvertService {
 		return null;
 	}
 
+	/**
+	 * Sube el archivo binario al endpoint de importación de CloudConvert
+	 * usando multipart/form-data, incluyendo los parámetros del formulario
+	 * que devuelve la tarea de importación.
+	 *
+	 * @param tareaImport objeto JSON de la tarea import-archivo del job
+	 * @param archivo     archivo a subir
+	 * @throws ApiExternaException si la respuesta del servidor no es 2xx
+	 * @throws Exception           si ocurre algún error de I/O al leer el archivo
+	 */
 	private void subirArchivoATareaImport(JsonObject tareaImport, MultipartFile archivo)
 			throws Exception {
 
@@ -484,8 +545,7 @@ public class CloudConvertService {
 		JsonObject parametros = form.getAsJsonObject("parameters");
 
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-		// FIX JAVA-P0361: se usa entrySet() en lugar de keySet() para evitar la
-		// doble búsqueda en el mapa (una por clave y otra por valor).
+		
 		for (Map.Entry<String, JsonElement> entry : parametros.entrySet()) {
 			body.add(entry.getKey(), entry.getValue().getAsString());
 		}
@@ -511,6 +571,16 @@ public class CloudConvertService {
 		}
 	}
 
+	/**
+	 * Hace polling al estado del job de CloudConvert hasta que finaliza
+	 * ({@code finished}), falla ({@code error}) o se supera el tiempo máximo.
+	 *
+	 * @param urlBase URL base de la API
+	 * @param jobId   ID del job a consultar
+	 * @return {@link JsonObject} con el estado final del job
+	 * @throws InterruptedException   si el hilo es interrumpido durante el polling
+	 * @throws ConversionFallidaException si el job termina en error o se supera el timeout
+	 */
 	private JsonObject esperarJob(String urlBase, String jobId) throws InterruptedException {
 		long inicio = System.currentTimeMillis();
 		while (true) {
@@ -542,6 +612,13 @@ public class CloudConvertService {
 		}
 	}
 
+	/**
+	 * Verifica que el formato destino sea válido para el tipo de archivo indicado.
+	 *
+	 * @param formato     extensión del formato destino en minúsculas
+	 * @param tipoArchivo categoría del archivo (AUDIO, VIDEO o IMAGEN)
+	 * @throws FormatoArchivoInvalidoException si el formato no está en la lista permitida
+	 */
 	private void validarFormatoSegunTipo(String formato, TipoArchivo tipoArchivo) {
 		boolean valido = switch (tipoArchivo) {
 			case AUDIO -> FORMATOS_AUDIO.contains(formato);
@@ -560,6 +637,13 @@ public class CloudConvertService {
 		}
 	}
 
+	/**
+	 * Extrae la extensión del nombre de archivo proporcionado en minúsculas.
+	 * Si el nombre no contiene punto, retorna una cadena vacía.
+	 *
+	 * @param nombreArchivo nombre del archivo (ej. "video.mp4")
+	 * @return extensión en minúsculas (ej. "mp4"), o cadena vacía si no hay extensión
+	 */
 	private static String obtenerExtension(String nombreArchivo) {
 		if (nombreArchivo == null || !nombreArchivo.contains(".")) {
 			return "";
@@ -567,6 +651,18 @@ public class CloudConvertService {
 		return nombreArchivo.substring(nombreArchivo.lastIndexOf('.') + 1).toLowerCase();
 	}
 
+	/**
+	 * Registra una conversión fallida en el historial del usuario y
+	 * genera el registro de auditoría correspondiente.
+	 * Si este registro falla internamente, la excepción se ignora para
+	 * no ocultar la excepción original de la conversión.
+	 *
+	 * @param tipoArchivo    categoría del archivo
+	 * @param formatoOrigen  extensión del archivo original
+	 * @param formatoDestino extensión del formato destino
+	 * @param nombreOriginal nombre del archivo original
+	 * @param usuarioId      ID del usuario propietario
+	 */
 	private void registrarHistorialFallido(TipoArchivo tipoArchivo, String formatoOrigen,
 			String formatoDestino, String nombreOriginal, Long usuarioId) {
 		try {
@@ -582,14 +678,13 @@ public class CloudConvertService {
 			historialConversionService.create(historialFallido);
 			
 			AuditoriaDTO auditoriaFallida = auditoriaService.preAccion(TipoAccion.CONVERSION,
-	                "Conversión FALLIDA: " + nombreOriginal
-	                        + " → " + formatoDestino
-	                        + " (" + tipoArchivo.name() + ")");
-	        auditoriaService.create(auditoriaFallida);
+                    "Conversión FALLIDA: " + nombreOriginal
+                            + " → " + formatoDestino
+                            + " (" + tipoArchivo.name() + ")");
+            auditoriaService.create(auditoriaFallida);
 			
 		} catch (Exception ignorado) {
-			// Si no se puede registrar el fallo (por ejemplo, el usuario no
-			// existe), no propagamos la excepción para no ocultar la original.
+			
 		}
 	}
 }

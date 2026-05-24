@@ -48,10 +48,30 @@ public class DiagnosticoController {
 
 	private final RestTemplate restTemplate;
 
+	/**
+	 * Crea el controlador inyectando el {@link RestTemplate} necesario para
+	 * realizar peticiones HTTP a la API de CloudConvert.
+	 *
+	 * @param restTemplate cliente HTTP de Spring usado para probar la conectividad
+	 *                     con la API de CloudConvert
+	 */
 	public DiagnosticoController(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
 
+	/**
+	 * Verifica y muestra la configuración actual de CloudConvert sin realizar
+	 * ninguna petición a la API externa.
+	 * <p>
+	 * Informa el ambiente activo (SANDBOX o PRODUCCION), la URL base de la API,
+	 * si la API key está configurada, su longitud y los últimos 6 caracteres
+	 * para confirmar visualmente cuál key está en uso, y la fuente desde donde
+	 * se leyó ({@code application.properties} o variable de entorno).
+	 * </p>
+	 *
+	 * @return {@code 200 OK} con un mapa de información diagnóstica sobre la
+	 *         configuración de CloudConvert
+	 */
 	@GetMapping("/cloudconvert")
 	@Operation(
 		summary = "Verificar configuración de CloudConvert (SOLO ADMIN)",
@@ -104,6 +124,20 @@ public class DiagnosticoController {
 		return new ResponseEntity<>(resultado, HttpStatus.OK);
 	}
 
+	/**
+	 * Realiza una petición real al endpoint {@code /users/me} de CloudConvert
+	 * para verificar si la API key configurada es válida en el ambiente activo.
+	 * <p>
+	 * Un código HTTP {@code 200} de CloudConvert indica que la key es correcta.
+	 * Un código {@code 401} indica que la key no corresponde al ambiente
+	 * seleccionado (sandbox vs. producción son keys distintas). Cualquier otra
+	 * excepción se captura y se informa en el mapa de respuesta sin propagar
+	 * el error al cliente.
+	 * </p>
+	 *
+	 * @return {@code 200 OK} con el resultado de la prueba, incluyendo el estado,
+	 *         el código HTTP devuelto por CloudConvert y un mensaje explicativo
+	 */
 	@GetMapping("/cloudconvert/probar")
 	@Operation(
 		summary = "Probar la API key contra CloudConvert (SOLO ADMIN)",
@@ -167,6 +201,15 @@ public class DiagnosticoController {
 		return new ResponseEntity<>(resultado, HttpStatus.OK);
 	}
 
+	/**
+	 * Resuelve la API key de CloudConvert con la siguiente prioridad:
+	 * primero intenta obtenerla desde {@code application.properties}; si no
+	 * está configurada ahí, busca la variable de entorno
+	 * {@code CLOUDCONVERT_API_KEY}.
+	 *
+	 * @return la API key como cadena de texto, o una cadena vacía si no está
+	 *         configurada en ninguna fuente
+	 */
 	private String resolverApiKey() {
 		if (apiKeyDesdeProperties != null && !apiKeyDesdeProperties.isBlank()) {
 			return apiKeyDesdeProperties.trim();

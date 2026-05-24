@@ -12,6 +12,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  */
 public class ServletInitializer extends SpringBootServletInitializer {
 
+	/**
+	 * Configura la fuente de la aplicación Spring Boot para el
+	 * despliegue como WAR en un contenedor de servlets externo.
+	 *
+	 * @param application constructor de la aplicación Spring proporcionado
+	 *                    por el contenedor de servlets
+	 * @return el mismo {@link SpringApplicationBuilder} apuntando a la
+	 *         clase principal {@link ProyectofinalApplication}
+	 */
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(ProyectofinalApplication.class);

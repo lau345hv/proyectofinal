@@ -55,11 +55,28 @@ public class DataInitializer implements CommandLineRunner {
 	private final UsuarioRepository usuarioRepository;
 	private final PasswordEncoder passwordEncoder;
 
+	/**
+	 * Crea el inicializador inyectando las dependencias necesarias.
+	 *
+	 * @param usuarioRepository repositorio JPA para consultar y persistir usuarios
+	 * @param passwordEncoder   codificador BCrypt para cifrar la contraseña del admin
+	 */
 	public DataInitializer(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
 		this.usuarioRepository = usuarioRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
 
+	/**
+	 * Verifica si la cuenta de administrador ya existe y, en caso contrario,
+	 * la crea con los datos configurados en {@code application.properties}.
+	 * <p>
+	 * Este método es ejecutado automáticamente por Spring Boot al terminar
+	 * de cargar el contexto de la aplicación.
+	 * </p>
+	 *
+	 * @param args argumentos de línea de comandos (no utilizados)
+	 * @throws Exception si ocurre un error inesperado durante la inicialización
+	 */
 	@Override
 	public void run(String... args) throws Exception {
 		Optional<Usuario> existente = usuarioRepository.findByNombreUsuario(adminNombreUsuario);

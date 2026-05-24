@@ -77,10 +77,26 @@ public class Usuario implements UserDetails {
 			fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<HistorialConversion> historialConversiones = new ArrayList<>();
 
+	/**
+	 * Constructor sin argumentos requerido por JPA para la instanciación
+	 * de entidades al cargarlas desde la base de datos.
+	 * Asigna el rol {@code USUARIO} por defecto.
+	 */
 	public Usuario() {
 		this.rol = RolUsuario.USUARIO;
 	}
 
+	/**
+	 * Crea un usuario con los datos principales. El historial de conversiones
+	 * se inicializa como una lista vacía y el teléfono queda sin asignar.
+	 *
+	 * @param nombre        nombre del usuario
+	 * @param apellido      apellido del usuario
+	 * @param correo        correo electrónico único
+	 * @param nombreUsuario nombre de usuario único para iniciar sesión
+	 * @param contrasena    contraseña cifrada con BCrypt
+	 * @param rol           rol asignado al usuario (USUARIO o ADMIN)
+	 */
 	public Usuario(String nombre, String apellido, String correo, String nombreUsuario,
 			String contrasena, RolUsuario rol) {
 		this.nombre = nombre;
@@ -125,94 +141,218 @@ public class Usuario implements UserDetails {
 		return nombreUsuario;
 	}
 
+	/**
+	 * Indica si la cuenta del usuario no ha expirado.
+	 * Siempre retorna {@code true} ya que esta plataforma no implementa
+	 * expiración de cuentas.
+	 *
+	 * @return {@code true}
+	 */
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
+	/**
+	 * Indica si la cuenta del usuario no está bloqueada.
+	 * Siempre retorna {@code true} ya que esta plataforma no implementa
+	 * bloqueo de cuentas.
+	 *
+	 * @return {@code true}
+	 */
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
+	/**
+	 * Indica si las credenciales del usuario no han expirado.
+	 * Siempre retorna {@code true} ya que esta plataforma no implementa
+	 * expiración de credenciales.
+	 *
+	 * @return {@code true}
+	 */
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
+	/**
+	 * Indica si la cuenta del usuario está habilitada.
+	 * Siempre retorna {@code true} ya que esta plataforma no implementa
+	 * deshabilitación de cuentas.
+	 *
+	 * @return {@code true}
+	 */
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
 
+	/**
+	 * Retorna el identificador único del usuario.
+	 *
+	 * @return id generado por la base de datos
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Asigna el identificador único del usuario.
+	 *
+	 * @param id identificador generado por la base de datos
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Retorna el nombre del usuario.
+	 *
+	 * @return nombre del usuario
+	 */
 	public String getNombre() {
 		return nombre;
 	}
 
+	/**
+	 * Asigna el nombre del usuario.
+	 *
+	 * @param nombre nombre del usuario
+	 */
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
+	/**
+	 * Retorna el apellido del usuario.
+	 *
+	 * @return apellido del usuario
+	 */
 	public String getApellido() {
 		return apellido;
 	}
 
+	/**
+	 * Asigna el apellido del usuario.
+	 *
+	 * @param apellido apellido del usuario
+	 */
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
 
+	/**
+	 * Retorna el correo electrónico único del usuario.
+	 *
+	 * @return correo electrónico del usuario
+	 */
 	public String getCorreo() {
 		return correo;
 	}
 
+	/**
+	 * Asigna el correo electrónico único del usuario.
+	 *
+	 * @param correo correo electrónico del usuario
+	 */
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
 
+	/**
+	 * Retorna el nombre de usuario único utilizado para iniciar sesión.
+	 *
+	 * @return nombre de usuario
+	 */
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
 
+	/**
+	 * Asigna el nombre de usuario único utilizado para iniciar sesión.
+	 *
+	 * @param nombreUsuario nombre de usuario
+	 */
 	public void setNombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
 	}
 
+	/**
+	 * Retorna la contraseña cifrada del usuario almacenada en la base de datos.
+	 *
+	 * @return contraseña cifrada con BCrypt
+	 */
 	public String getContrasena() {
 		return contrasena;
 	}
 
+	/**
+	 * Asigna la contraseña (ya cifrada con BCrypt) del usuario.
+	 *
+	 * @param contrasena contraseña cifrada con BCrypt
+	 */
 	public void setContrasena(String contrasena) {
 		this.contrasena = contrasena;
 	}
 
+	/**
+	 * Retorna el número de teléfono del usuario.
+	 *
+	 * @return número de teléfono, o {@code null} si no fue proporcionado
+	 */
 	public String getTelefono() {
 		return telefono;
 	}
 
+	/**
+	 * Asigna el número de teléfono del usuario.
+	 *
+	 * @param telefono número de teléfono (10 dígitos comenzando con 3, Colombia)
+	 */
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 
+	/**
+	 * Retorna el rol asignado al usuario en el sistema.
+	 *
+	 * @return rol del usuario (USUARIO o ADMIN)
+	 */
 	public RolUsuario getRol() {
 		return rol;
 	}
 
+	/**
+	 * Asigna el rol del usuario en el sistema.
+	 *
+	 * @param rol rol del usuario (USUARIO o ADMIN)
+	 */
 	public void setRol(RolUsuario rol) {
 		this.rol = rol;
 	}
 
+	/**
+	 * Retorna la lista de conversiones realizadas por el usuario.
+	 * La relación se carga de forma perezosa ({@code LAZY}).
+	 *
+	 * @return lista de {@link HistorialConversion} del usuario
+	 */
 	public List<HistorialConversion> getHistorialConversiones() {
 		return historialConversiones;
 	}
 
+	/**
+	 * Asigna la lista de conversiones del usuario realizando una copia defensiva.
+	 * <p>
+	 * Se almacena una copia interna para que modificaciones posteriores sobre
+	 * la lista recibida no afecten el estado interno de la entidad
+	 * (corrección JAVA-E1086). Si se pasa {@code null}, se asigna una lista vacía.
+	 * </p>
+	 *
+	 * @param historialConversiones lista de conversiones a asignar; puede ser {@code null}
+	 */
 	// FIX JAVA-E1086: se copia la lista recibida para evitar que referencias
 	// externas puedan modificar el estado interno de la entidad.
 	public void setHistorialConversiones(List<HistorialConversion> historialConversiones) {
@@ -221,11 +361,23 @@ public class Usuario implements UserDetails {
 				: new ArrayList<>();
 	}
 
+	/**
+	 * Retorna un código hash basado únicamente en el {@code id} del usuario.
+	 *
+	 * @return código hash del usuario
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
 
+	/**
+	 * Compara esta entidad con otro objeto. Dos instancias de {@code Usuario}
+	 * son iguales si tienen el mismo {@code id}.
+	 *
+	 * @param obj objeto a comparar
+	 * @return {@code true} si los ids son iguales, {@code false} en caso contrario
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -236,6 +388,12 @@ public class Usuario implements UserDetails {
 		return Objects.equals(id, other.id);
 	}
 
+	/**
+	 * Retorna una representación en cadena de la entidad con los campos principales.
+	 * La contraseña no se incluye por seguridad.
+	 *
+	 * @return cadena con los valores de la entidad
+	 */
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido

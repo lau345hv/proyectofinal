@@ -1,3 +1,4 @@
+
 package co.edu.unbosque.proyectofinal.controller;
 
 import java.util.List;
@@ -31,22 +32,21 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
  *
  * <h3>Correcciones aplicadas (DeepSource JAVA-S1061):</h3>
  * <p>
- * Los endpoints {@code miPerfil} y {@code actualizar} recibían
- * anteriormente la entidad JPA {@code Usuario} directamente a través de
- * {@code @AuthenticationPrincipal Usuario usuarioAutenticado}. Esto
- * representa un riesgo de seguridad reconocido (CWE-501: Trust Boundary
- * Violation) porque el objeto de persistencia es manipulado directamente
- * en la capa web, sin pasar por las validaciones del servicio.
+ * Los endpoints {@code miPerfil} y {@code actualizar} recibían anteriormente la
+ * entidad JPA {@code Usuario} directamente a través de
+ * {@code @AuthenticationPrincipal Usuario usuarioAutenticado}. Esto representa
+ * un riesgo de seguridad reconocido (CWE-501: Trust Boundary Violation) porque
+ * el objeto de persistencia es manipulado directamente en la capa web, sin
+ * pasar por las validaciones del servicio.
  * </p>
  * <p>
- * <strong>Solución:</strong> Se reemplazó la entidad {@code Usuario} por
- * la interfaz {@link UserDetails} de Spring Security. Esta interfaz solo
- * expone información pública del principal (nombre de usuario, roles y
- * estado de la cuenta) sin exponer campos de la entidad JPA como
- * contraseña hasheada, relaciones con otras entidades, etc.
- * A partir del nombre de usuario se delega a {@link UsuarioService} la
- * obtención del {@link UsuarioDTO} con el ID necesario para las
- * operaciones.
+ * <strong>Solución:</strong> Se reemplazó la entidad {@code Usuario} por la
+ * interfaz {@link UserDetails} de Spring Security. Esta interfaz solo expone
+ * información pública del principal (nombre de usuario, roles y estado de la
+ * cuenta) sin exponer campos de la entidad JPA como contraseña hasheada,
+ * relaciones con otras entidades, etc. A partir del nombre de usuario se delega
+ * a {@link UsuarioService} la obtención del {@link UsuarioDTO} con el ID
+ * necesario para las operaciones.
  * </p>
  *
  * @author Equipo de desarrollo
@@ -63,18 +63,14 @@ public class UsuarioController {
 		this.service = service;
 	}
 
-	// =====================================================================
-	// ENDPOINTS PARA EL USUARIO AUTENTICADO (cualquier rol)
-	// =====================================================================
-
 	/**
 	 * Devuelve el perfil del usuario que envió el token JWT.
 	 * <p>
 	 * <strong>Corrección JAVA-S1061:</strong> Se usa {@link UserDetails} en lugar
 	 * de la entidad JPA {@code Usuario}. El nombre de usuario se extrae con
-	 * {@link UserDetails#getUsername()} y se resuelve el DTO completo a través
-	 * de {@link UsuarioService#findByNombreUsuario(String)}, manteniendo el
-	 * objeto de persistencia dentro de la capa de servicio.
+	 * {@link UserDetails#getUsername()} y se resuelve el DTO completo a través de
+	 * {@link UsuarioService#findByNombreUsuario(String)}, manteniendo el objeto de
+	 * persistencia dentro de la capa de servicio.
 	 * </p>
 	 *
 	 * @param userDetails principal inyectado por Spring Security desde el JWT.
@@ -82,14 +78,9 @@ public class UsuarioController {
 	 */
 	@GetMapping("/miPerfil")
 	@Operation(summary = "Consultar el perfil del usuario autenticado")
-	public ResponseEntity<UsuarioDTO> miPerfil(
-			@AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<UsuarioDTO> miPerfil(@AuthenticationPrincipal UserDetails userDetails) {
 
-		/*
-		 * Se extrae solo el nombre de usuario del principal y se consulta
-		 * el servicio. El servicio devuelve un DTO, nunca la entidad JPA,
-		 * cumpliendo con el principio de separación de capas.
-		 */
+		
 		UsuarioDTO usuario = service.findByNombreUsuario(userDetails.getUsername());
 		return new ResponseEntity<>(usuario, HttpStatus.OK);
 	}
@@ -97,16 +88,16 @@ public class UsuarioController {
 	/**
 	 * Actualiza los datos del usuario autenticado.
 	 * <p>
-	 * El correo y el rol NO pueden ser modificados por el propio usuario;
-	 * estos valores se preservan desde la base de datos. La contraseña
-	 * se actualiza solo si se envía con un valor no vacío.
+	 * El correo y el rol NO pueden ser modificados por el propio usuario; estos
+	 * valores se preservan desde la base de datos. La contraseña se actualiza solo
+	 * si se envía con un valor no vacío.
 	 * </p>
 	 * <p>
-	 * <strong>Corrección JAVA-S1061:</strong> Igual que en {@code miPerfil},
-	 * se reemplazó {@code @AuthenticationPrincipal Usuario} por
-	 * {@code @AuthenticationPrincipal UserDetails} para evitar recibir el
-	 * objeto de persistencia directamente en la capa web. El ID se obtiene
-	 * consultando al servicio con el nombre de usuario del principal.
+	 * <strong>Corrección JAVA-S1061:</strong> Igual que en {@code miPerfil}, se
+	 * reemplazó {@code @AuthenticationPrincipal Usuario} por
+	 * {@code @AuthenticationPrincipal UserDetails} para evitar recibir el objeto de
+	 * persistencia directamente en la capa web. El ID se obtiene consultando al
+	 * servicio con el nombre de usuario del principal.
 	 * </p>
 	 *
 	 * @param userDetails principal inyectado por Spring Security desde el JWT.
@@ -114,26 +105,17 @@ public class UsuarioController {
 	 * @return mensaje de confirmación con {@code 200 OK}.
 	 */
 	@PutMapping("/actualizar")
-	@Operation(summary = "Actualizar los datos del usuario autenticado",
-			description = "El usuario actualiza SUS propios datos. El id se obtiene "
-					+ "del token JWT. El correo y el rol no se pueden modificar por el "
-					+ "propio usuario. La contraseña se actualiza solo si se envía con "
-					+ "un valor distinto de vacío.")
-	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente"),
+	@Operation(summary = "Actualizar los datos del usuario autenticado", description = "El usuario actualiza SUS propios datos. El id se obtiene "
+			+ "del token JWT. El correo y el rol no se pueden modificar por el "
+			+ "propio usuario. La contraseña se actualiza solo si se envía con " + "un valor distinto de vacío.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente"),
 			@ApiResponse(responseCode = "400", description = "Datos inválidos"),
 			@ApiResponse(responseCode = "401", description = "Token inválido o ausente"),
-			@ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-	})
-	public ResponseEntity<String> actualizar(
-			@AuthenticationPrincipal UserDetails userDetails,
+			@ApiResponse(responseCode = "404", description = "Usuario no encontrado") })
+	public ResponseEntity<String> actualizar(@AuthenticationPrincipal UserDetails userDetails,
 			@RequestBody UsuarioDTO datos) {
 
-		/*
-		 * Se consulta el DTO actual del usuario usando el nombre de usuario
-		 * del principal. Luego se fuerzan los campos que el usuario no puede
-		 * cambiar por sí mismo (id, correo, rol) antes de delegar al servicio.
-		 */
+		
 		UsuarioDTO actual = service.findByNombreUsuario(userDetails.getUsername());
 		datos.setId(actual.getId());
 		datos.setCorreo(actual.getCorreo());
@@ -144,11 +126,9 @@ public class UsuarioController {
 
 	@GetMapping("/listar")
 	@Operation(summary = "Listar todos los usuarios (SOLO ADMIN)")
-	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Lista de usuarios"),
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Lista de usuarios"),
 			@ApiResponse(responseCode = "401", description = "Token inválido o ausente"),
-			@ApiResponse(responseCode = "403", description = "Solo administradores")
-	})
+			@ApiResponse(responseCode = "403", description = "Solo administradores") })
 	public ResponseEntity<List<UsuarioDTO>> listar() {
 		List<UsuarioDTO> lista = service.getAll();
 		if (lista.isEmpty()) {
@@ -158,14 +138,11 @@ public class UsuarioController {
 	}
 
 	@DeleteMapping("/eliminar")
-	@Operation(summary = "Eliminar un usuario por id (SOLO ADMIN)",
-			description = "La cuenta admin no puede ser eliminada.")
-	@ApiResponses({
-			@ApiResponse(responseCode = "200", description = "Usuario eliminado"),
+	@Operation(summary = "Eliminar un usuario por id (SOLO ADMIN)", description = "La cuenta admin no puede ser eliminada.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Usuario eliminado"),
 			@ApiResponse(responseCode = "401", description = "Token inválido o ausente"),
 			@ApiResponse(responseCode = "403", description = "Solo administradores"),
-			@ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-	})
+			@ApiResponse(responseCode = "404", description = "Usuario no encontrado") })
 	public ResponseEntity<String> eliminar(@RequestParam Long id) {
 		service.deleteById(id);
 		return new ResponseEntity<>("Usuario eliminado correctamente.", HttpStatus.OK);
@@ -175,5 +152,37 @@ public class UsuarioController {
 	@Operation(summary = "Contar usuarios registrados (SOLO ADMIN)")
 	public ResponseEntity<Long> contar() {
 		return new ResponseEntity<>(service.count(), HttpStatus.OK);
+	}
+
+	/**
+	 * Permite al administrador editar cualquier usuario, incluyendo cambiar su ROL
+	 * (USUARIO ↔ ADMIN), nombre, apellido, correo, nombreUsuario, teléfono y
+	 * contraseña.
+	 *
+	 * <p>
+	 * A diferencia de {@code /usuario/actualizar}, aquí el admin puede modificar el
+	 * correo y el rol. La contraseña solo se actualiza si el campo llega con valor
+	 * no vacío.
+	 * </p>
+	 *
+	 * @param id    id del usuario a editar (query param).
+	 * @param datos nuevos datos enviados en el body.
+	 * @return mensaje de confirmación con {@code 200 OK}.
+	 */
+	@PutMapping("/admin/editar")
+	@Operation(summary = "Editar cualquier usuario incluyendo rol (SOLO ADMIN)", description = "El admin puede cambiar nombre, apellido, correo, "
+			+ "nombreUsuario, teléfono, rol y contraseña de cualquier "
+			+ "usuario. La contraseña solo se actualiza si se envía "
+			+ "con valor no vacío. La cuenta 'admin' no puede ser modificada.")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente"),
+			@ApiResponse(responseCode = "400", description = "Datos inválidos"),
+			@ApiResponse(responseCode = "401", description = "Token inválido o ausente"),
+			@ApiResponse(responseCode = "403", description = "Solo administradores"),
+			@ApiResponse(responseCode = "404", description = "Usuario no encontrado") })
+	public ResponseEntity<String> adminEditarUsuario(@RequestParam Long id, @RequestBody UsuarioDTO datos) {
+
+		datos.setId(id);
+		service.updateById(id, datos);
+		return new ResponseEntity<>("Usuario actualizado correctamente.", HttpStatus.OK);
 	}
 }

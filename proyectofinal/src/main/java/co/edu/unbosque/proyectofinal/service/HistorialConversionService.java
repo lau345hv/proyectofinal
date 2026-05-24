@@ -513,8 +513,7 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 		}
 	}
 
-	// Encriptación / desencriptación
-
+	
 
 	/**
 	 * Encripta un valor con AES si no es nulo ni vacío.
@@ -532,16 +531,22 @@ public class HistorialConversionService implements CRUDoperation<HistorialConver
 
 	/**
 	 * Desencripta un valor con AES si no es nulo ni vacío.
-	 * Si el valor es nulo, lo retorna tal cual.
+	 * Si el valor es nulo o no se puede desencriptar (registro legacy o clave
+	 * diferente), lo retorna tal cual sin lanzar excepción.
 	 *
 	 * @param valor texto encriptado en Base64.
-	 * @return texto plano original, o {@code null} si el valor era nulo.
+	 * @return texto plano original, o el valor sin modificar si no estaba cifrado.
 	 */
 	private String desencriptarSiNoNulo(String valor) {
 		if (valor == null || valor.isBlank()) {
 			return valor;
 		}
-		return AESUtil.decrypt(valor);
+		try {
+			return AESUtil.decrypt(valor);
+		} catch (Exception e) {
+			
+			return valor;
+		}
 	}
 
 	/**

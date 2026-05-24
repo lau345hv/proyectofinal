@@ -49,12 +49,24 @@ public class AuditoriaController {
 	private final AuditoriaService auditoriaService;
 	private final LanzadorDeExcepcion lanzador;
 
+	/**
+	 * Crea el controlador inyectando las dependencias necesarias.
+	 *
+	 * @param auditoriaService servicio que gestiona los registros de auditoría
+	 * @param lanzador         componente centralizado para lanzar excepciones tipadas
+	 */
 	public AuditoriaController(AuditoriaService auditoriaService,
 			LanzadorDeExcepcion lanzador) {
 		this.auditoriaService = auditoriaService;
 		this.lanzador = lanzador;
 	}
 
+	/**
+	 * Devuelve todos los registros de auditoría del sistema.
+	 *
+	 * @return {@code 200 OK} con la lista de registros, o
+	 *         {@code 204 No Content} si no hay ninguno
+	 */
 	@GetMapping("/listar")
 	@Operation(summary = "Listar todos los registros de auditoría (SOLO ADMIN)")
 	public ResponseEntity<List<AuditoriaDTO>> listar() {
@@ -65,6 +77,12 @@ public class AuditoriaController {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	/**
+	 * Busca un registro de auditoría por su identificador único.
+	 *
+	 * @param id identificador del registro de auditoría
+	 * @return {@code 200 OK} con el registro encontrado
+	 */
 	@GetMapping("/buscarPorId")
 	@Operation(summary = "Buscar un registro de auditoría por id (SOLO ADMIN)")
 	public ResponseEntity<AuditoriaDTO> buscarPorId(@RequestParam Long id) {
@@ -72,6 +90,12 @@ public class AuditoriaController {
 		return new ResponseEntity<>(encontrado, HttpStatus.OK);
 	}
 
+	/**
+	 * Lista todos los registros de auditoría asociados a un usuario específico.
+	 *
+	 * @param usuarioId identificador del usuario cuyos registros se consultan
+	 * @return {@code 200 OK} con la lista, o {@code 204 No Content} si no hay registros
+	 */
 	@GetMapping("/porUsuario")
 	@Operation(summary = "Listar auditoría de un usuario por su id (SOLO ADMIN)")
 	public ResponseEntity<List<AuditoriaDTO>> porUsuario(@RequestParam Long usuarioId) {
@@ -82,6 +106,12 @@ public class AuditoriaController {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	/**
+	 * Lista los registros de auditoría filtrados por nombre de usuario.
+	 *
+	 * @param nombreUsuario nombre de usuario por el que se filtra
+	 * @return {@code 200 OK} con la lista, o {@code 204 No Content} si no hay registros
+	 */
 	@GetMapping("/porNombreUsuario")
 	@Operation(summary = "Listar auditoría filtrando por nombre de usuario (SOLO ADMIN)")
 	public ResponseEntity<List<AuditoriaDTO>> porNombreUsuario(
@@ -93,6 +123,13 @@ public class AuditoriaController {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	/**
+	 * Filtra los registros de auditoría por tipo de acción.
+	 *
+	 * @param tipoAccion nombre del tipo de acción (CREATE, READ, UPDATE, DELETE,
+	 *                   LOGIN, LOGOUT, CONVERSION); no distingue mayúsculas
+	 * @return {@code 200 OK} con la lista, o {@code 204 No Content} si no hay registros
+	 */
 	@GetMapping("/porTipoAccion")
 	@Operation(summary = "Filtrar auditoría por tipo de acción (SOLO ADMIN)")
 	public ResponseEntity<List<AuditoriaDTO>> porTipoAccion(
@@ -115,6 +152,12 @@ public class AuditoriaController {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	/**
+	 * Filtra los registros de auditoría por el rol del usuario que realizó la acción.
+	 *
+	 * @param rolUsuario nombre del rol (USUARIO o ADMIN); no distingue mayúsculas
+	 * @return {@code 200 OK} con la lista, o {@code 204 No Content} si no hay registros
+	 */
 	@GetMapping("/porRol")
 	@Operation(summary = "Filtrar auditoría por rol del usuario (SOLO ADMIN)")
 	public ResponseEntity<List<AuditoriaDTO>> porRol(
@@ -135,6 +178,13 @@ public class AuditoriaController {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	/**
+	 * Filtra los registros de auditoría cuya fecha esté dentro del rango indicado.
+	 *
+	 * @param inicio fecha y hora de inicio del rango (formato ISO 8601: yyyy-MM-ddTHH:mm:ss)
+	 * @param fin    fecha y hora de fin del rango (formato ISO 8601: yyyy-MM-ddTHH:mm:ss)
+	 * @return {@code 200 OK} con la lista, o {@code 204 No Content} si no hay registros
+	 */
 	@GetMapping("/porFechas")
 	@Operation(summary = "Filtrar auditoría por rango de fechas (SOLO ADMIN)",
 			description = "El formato es ISO 8601: yyyy-MM-ddTHH:mm:ss")
@@ -156,6 +206,14 @@ public class AuditoriaController {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	/**
+	 * Filtra los registros de auditoría de un usuario específico por tipo de acción.
+	 *
+	 * @param usuarioId  identificador del usuario
+	 * @param tipoAccion nombre del tipo de acción (CREATE, READ, UPDATE, DELETE,
+	 *                   LOGIN, LOGOUT, CONVERSION); no distingue mayúsculas
+	 * @return {@code 200 OK} con la lista, o {@code 204 No Content} si no hay registros
+	 */
 	@GetMapping("/porUsuarioYAccion")
 	@Operation(summary = "Filtrar auditoría por usuario y tipo de acción (SOLO ADMIN)")
 	public ResponseEntity<List<AuditoriaDTO>> porUsuarioYAccion(
@@ -180,12 +238,23 @@ public class AuditoriaController {
 		return new ResponseEntity<>(lista, HttpStatus.OK);
 	}
 
+	/**
+	 * Retorna el total de registros de auditoría almacenados en el sistema.
+	 *
+	 * @return {@code 200 OK} con el número total de registros
+	 */
 	@GetMapping("/contar")
 	@Operation(summary = "Contar total de registros de auditoría (SOLO ADMIN)")
 	public ResponseEntity<Long> contar() {
 		return new ResponseEntity<>(auditoriaService.count(), HttpStatus.OK);
 	}
 
+	/**
+	 * Elimina un registro de auditoría por su identificador único.
+	 *
+	 * @param id identificador del registro a eliminar
+	 * @return {@code 200 OK} con mensaje de confirmación
+	 */
 	@DeleteMapping("/eliminar")
 	@Operation(summary = "Eliminar un registro de auditoría por id (SOLO ADMIN)")
 	public ResponseEntity<String> eliminar(@RequestParam Long id) {

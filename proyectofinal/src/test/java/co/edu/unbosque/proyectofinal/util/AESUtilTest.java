@@ -41,7 +41,7 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @author Equipo de desarrollo
  * @version 1.0
  */
-public class AESUtil {
+public class AESUtilTest {
 
 	/** Algoritmo base para la construcción de la clave secreta. */
 	private static final String ALGORITMO = "AES";
@@ -55,7 +55,7 @@ public class AESUtil {
 	/** Llave predeterminada (16 caracteres = 128 bits). */
 	private static final String KEY_DEFAULT = "llavede16carater";
 
-	private AESUtil() {
+	private AESUtilTest() {
 	}
 
 	/**
@@ -95,11 +95,16 @@ public class AESUtil {
 
 	/**
 	 * Desencripta un texto previamente encriptado con {@link #encrypt(String, String, String)}.
+	 * <p>
+	 * Si la llave o el IV son incorrectos, AES/GCM detecta el fallo de
+	 * autenticación (AEADBadTagException) y devuelve cadena vacía en lugar
+	 * de propagar la excepción.
+	 * </p>
 	 *
 	 * @param llave     clave secreta de exactamente 16 caracteres (128 bits).
 	 * @param iv        vector de inicialización de exactamente 16 caracteres.
 	 * @param encrypted texto encriptado en Base64.
-	 * @return texto plano original, o cadena vacía si falla.
+	 * @return texto plano original, o cadena vacía si falla la autenticación.
 	 */
 	public static String decrypt(String llave, String iv, String encrypted) {
 		Cipher cipher = null;
@@ -118,12 +123,11 @@ public class AESUtil {
 		}
 
 		byte[] enc = decodeBase64(encrypted);
-		byte[] decrypted = null;
 		try {
-			decrypted = cipher.doFinal(enc);
+			
+			byte[] decrypted = cipher.doFinal(enc);
 			return new String(decrypted);
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 		}
 		return "";

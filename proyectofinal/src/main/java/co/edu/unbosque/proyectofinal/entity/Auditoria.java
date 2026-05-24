@@ -70,9 +70,29 @@ public class Auditoria {
 	@Column(nullable = false, name = "fecha")
 	private LocalDateTime fecha;
 
+	/**
+	 * Constructor sin argumentos requerido por JPA para la instanciación
+	 * de entidades al cargarlas desde la base de datos.
+	 */
 	public Auditoria() {
 	}
 
+	/**
+	 * Crea un registro de auditoría con todos los campos relevantes.
+	 * El campo {@code id} queda sin asignar porque lo genera la base de datos
+	 * al persistir la entidad.
+	 *
+	 * @param usuarioId     ID del usuario que realizó la acción; puede ser
+	 *                      {@code null} si la acción fue anónima
+	 * @param nombreUsuario nombre de usuario en el momento de la acción;
+	 *                      puede ser {@code null} si la acción fue anónima
+	 * @param rolUsuario    rol del usuario en el momento de ejecutar la acción
+	 * @param tipoAccion    tipo de acción ejecutada (CREATE, READ, UPDATE,
+	 *                      DELETE, LOGIN, LOGOUT, CONVERSION)
+	 * @param descripcion   descripción legible de la acción realizada
+	 * @param endpoint      ruta HTTP del endpoint invocado
+	 * @param fecha         fecha y hora exacta en que se registró la acción
+	 */
 	public Auditoria(Long usuarioId, String nombreUsuario, RolUsuario rolUsuario,
 			TipoAccion tipoAccion, String descripcion, String endpoint, LocalDateTime fecha) {
 		this.usuarioId = usuarioId;
@@ -84,75 +104,168 @@ public class Auditoria {
 		this.fecha = fecha;
 	}
 
+	/**
+	 * Retorna el identificador único del registro de auditoría.
+	 *
+	 * @return id generado por la base de datos
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Asigna el identificador único del registro de auditoría.
+	 *
+	 * @param id identificador generado por la base de datos
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Retorna el ID del usuario que realizó la acción auditada.
+	 *
+	 * @return id del usuario, o {@code null} si la acción fue anónima
+	 */
 	public Long getUsuarioId() {
 		return usuarioId;
 	}
 
+	/**
+	 * Asigna el ID del usuario que realizó la acción auditada.
+	 *
+	 * @param usuarioId id del usuario; puede ser {@code null}
+	 */
 	public void setUsuarioId(Long usuarioId) {
 		this.usuarioId = usuarioId;
 	}
 
+	/**
+	 * Retorna el nombre de usuario en el momento en que se realizó la acción.
+	 *
+	 * @return nombre de usuario, o {@code null} si la acción fue anónima
+	 */
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
 
+	/**
+	 * Asigna el nombre de usuario en el momento en que se realizó la acción.
+	 *
+	 * @param nombreUsuario nombre de usuario; puede ser {@code null}
+	 */
 	public void setNombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
 	}
 
+	/**
+	 * Retorna el rol del usuario en el momento de ejecutar la acción.
+	 *
+	 * @return rol del usuario (USUARIO o ADMIN), o {@code null} si fue anónimo
+	 */
 	public RolUsuario getRolUsuario() {
 		return rolUsuario;
 	}
 
+	/**
+	 * Asigna el rol del usuario en el momento de ejecutar la acción.
+	 *
+	 * @param rolUsuario rol del usuario (USUARIO o ADMIN)
+	 */
 	public void setRolUsuario(RolUsuario rolUsuario) {
 		this.rolUsuario = rolUsuario;
 	}
 
+	/**
+	 * Retorna el tipo de acción ejecutada y registrada en la auditoría.
+	 *
+	 * @return tipo de acción (CREATE, READ, UPDATE, DELETE, LOGIN, LOGOUT, CONVERSION)
+	 */
 	public TipoAccion getTipoAccion() {
 		return tipoAccion;
 	}
 
+	/**
+	 * Asigna el tipo de acción ejecutada y registrada en la auditoría.
+	 *
+	 * @param tipoAccion tipo de acción realizada
+	 */
 	public void setTipoAccion(TipoAccion tipoAccion) {
 		this.tipoAccion = tipoAccion;
 	}
 
+	/**
+	 * Retorna la descripción legible de la acción realizada.
+	 * Ejemplo: "Conversión de video.mkv a mp4", "Perfil actualizado".
+	 *
+	 * @return descripción de la acción
+	 */
 	public String getDescripcion() {
 		return descripcion;
 	}
 
+	/**
+	 * Asigna la descripción legible de la acción realizada.
+	 *
+	 * @param descripcion descripción de la acción
+	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
+	/**
+	 * Retorna el endpoint o recurso sobre el que se realizó la acción.
+	 *
+	 * @return ruta del endpoint (ej. {@code /autenticacion/login})
+	 */
 	public String getEndpoint() {
 		return endpoint;
 	}
 
+	/**
+	 * Asigna el endpoint o recurso sobre el que se realizó la acción.
+	 *
+	 * @param endpoint ruta del endpoint
+	 */
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
 
+	/**
+	 * Retorna la fecha y hora exacta en que se registró la acción.
+	 *
+	 * @return fecha y hora del registro de auditoría
+	 */
 	public LocalDateTime getFecha() {
 		return fecha;
 	}
 
+	/**
+	 * Asigna la fecha y hora exacta en que se registró la acción.
+	 *
+	 * @param fecha fecha y hora del registro de auditoría
+	 */
 	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 
+	/**
+	 * Retorna un código hash basado únicamente en el {@code id} del registro.
+	 *
+	 * @return código hash del registro
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
 
+	/**
+	 * Compara esta entidad con otro objeto. Dos instancias de
+	 * {@code Auditoria} son iguales si tienen el mismo {@code id}.
+	 *
+	 * @param obj objeto a comparar
+	 * @return {@code true} si los ids son iguales, {@code false} en caso contrario
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -163,6 +276,12 @@ public class Auditoria {
 		return Objects.equals(id, other.id);
 	}
 
+	/**
+	 * Retorna una representación en cadena del registro de auditoría con
+	 * todos sus campos principales.
+	 *
+	 * @return cadena con los valores de la entidad
+	 */
 	@Override
 	public String toString() {
 		return "Auditoria [id=" + id + ", usuarioId=" + usuarioId

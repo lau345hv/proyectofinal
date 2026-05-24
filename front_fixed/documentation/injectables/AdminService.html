@@ -1,0 +1,1614 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>convertidor-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">convertidor-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AdminService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/services/admin.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Servicio que encapsula todas las llamadas HTTP del panel de
+administración: gestión de usuarios, historial de conversiones
+y registros de auditoría.</p>
+<p>Los endpoints que pueden responder con <code>204 No Content</code> manejan
+ese caso retornando un array vacío para evitar errores en la vista.</p>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#auditoriaPorRol" >auditoriaPorRol</a>
+                            </li>
+                            <li>
+                                <a href="#auditoriaPorTipoAccion" >auditoriaPorTipoAccion</a>
+                            </li>
+                            <li>
+                                <a href="#auditoriaPorUsuario" >auditoriaPorUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#contarAuditoria" >contarAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#conversionesPorEstado" >conversionesPorEstado</a>
+                            </li>
+                            <li>
+                                <a href="#conversionesPorTipo" >conversionesPorTipo</a>
+                            </li>
+                            <li>
+                                <a href="#conversionesPorUsuario" >conversionesPorUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#editarUsuario" >editarUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarConversion" >eliminarConversion</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarRegistroAuditoria" >eliminarRegistroAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarUsuario" >eliminarUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#listarAuditoria" >listarAuditoria</a>
+                            </li>
+                            <li>
+                                <a href="#listarConversiones" >listarConversiones</a>
+                            </li>
+                            <li>
+                                <a href="#listarUsuarios" >listarUsuarios</a>
+                            </li>
+                            <li>
+                                <a href="#resumen" >resumen</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/services/admin.service.ts:21</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Cliente HTTP de Angular para realizar las peticiones REST.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auditoriaPorRol"></a>
+                    <span class="name">
+                        <span ><b>auditoriaPorRol</b></span>
+                        <a href="#auditoriaPorRol"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>auditoriaPorRol(rolUsuario: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="223"
+                                    class="link-to-prism">src/app/services/admin.service.ts:223</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Filtra los registros de auditoría por rol del usuario que realizó la acción.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rolUsuario</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Rol a filtrar: <code>&#39;USUARIO&#39;</code> o <code>&#39;ADMIN&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AuditoriaDTO.html" target="_self" >Observable&lt;AuditoriaDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array filtrado, o vacío si no hay resultados.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auditoriaPorTipoAccion"></a>
+                    <span class="name">
+                        <span ><b>auditoriaPorTipoAccion</b></span>
+                        <a href="#auditoriaPorTipoAccion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>auditoriaPorTipoAccion(tipoAccion: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">src/app/services/admin.service.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Filtra los registros de auditoría por tipo de acción.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipoAccion</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Tipo de acción a filtrar (ej. <code>&#39;LOGIN&#39;</code>, <code>&#39;CONVERSION&#39;</code>, <code>&#39;DELETE&#39;</code>).</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AuditoriaDTO.html" target="_self" >Observable&lt;AuditoriaDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array filtrado, o vacío si no hay resultados.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auditoriaPorUsuario"></a>
+                    <span class="name">
+                        <span ><b>auditoriaPorUsuario</b></span>
+                        <a href="#auditoriaPorUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>auditoriaPorUsuario(usuarioId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="189"
+                                    class="link-to-prism">src/app/services/admin.service.ts:189</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene los registros de auditoría generados por un usuario específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usuarioId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>ID del usuario cuyos registros se desean consultar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AuditoriaDTO.html" target="_self" >Observable&lt;AuditoriaDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array filtrado, o vacío si no hay resultados.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="contarAuditoria"></a>
+                    <span class="name">
+                        <span ><b>contarAuditoria</b></span>
+                        <a href="#contarAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>contarAuditoria()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="239"
+                                    class="link-to-prism">src/app/services/admin.service.ts:239</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna el conteo total de registros de auditoría en el sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el número total de registros.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="conversionesPorEstado"></a>
+                    <span class="name">
+                        <span ><b>conversionesPorEstado</b></span>
+                        <a href="#conversionesPorEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>conversionesPorEstado(estado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/app/services/admin.service.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Filtra el historial de conversiones por estado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>estado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Estado a filtrar: <code>&#39;PENDIENTE&#39;</code>, <code>&#39;EN_PROCESO&#39;</code>, <code>&#39;COMPLETADO&#39;</code> o <code>&#39;FALLIDO&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/HistorialConversionDTO.html" target="_self" >Observable&lt;HistorialConversionDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array filtrado, o vacío si no hay resultados.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="conversionesPorTipo"></a>
+                    <span class="name">
+                        <span ><b>conversionesPorTipo</b></span>
+                        <a href="#conversionesPorTipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>conversionesPorTipo(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="108"
+                                    class="link-to-prism">src/app/services/admin.service.ts:108</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Filtra el historial de conversiones por tipo de archivo.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Categoría del archivo: <code>&#39;AUDIO&#39;</code>, <code>&#39;VIDEO&#39;</code> o <code>&#39;IMAGEN&#39;</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/HistorialConversionDTO.html" target="_self" >Observable&lt;HistorialConversionDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array filtrado, o vacío si no hay resultados.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="conversionesPorUsuario"></a>
+                    <span class="name">
+                        <span ><b>conversionesPorUsuario</b></span>
+                        <a href="#conversionesPorUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>conversionesPorUsuario(usuarioId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/app/services/admin.service.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene el historial de conversiones de un usuario específico.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usuarioId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>ID del usuario cuyas conversiones se desean consultar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/HistorialConversionDTO.html" target="_self" >Observable&lt;HistorialConversionDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array de conversiones, o vacío si no hay ninguna.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editarUsuario"></a>
+                    <span class="name">
+                        <span ><b>editarUsuario</b></span>
+                        <a href="#editarUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>editarUsuario(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, datos: <a href="../interfaces/UsuarioDTO.html" target="_self">UsuarioDTO</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/app/services/admin.service.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Edición completa de un usuario por el ADMIN.
+Permite cambiar nombre, apellido, correo, nombreUsuario,
+teléfono y ROL. La contraseña solo se actualiza si no está vacía.</p>
+<p>Endpoint: <code>PUT /usuario/admin/editar?id={id}</code></p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del usuario a editar.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>datos</td>
+                                            <td>
+                                                            <code><a href="../interfaces/UsuarioDTO.html" target="_self" >UsuarioDTO</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>DTO con los nuevos datos del usuario.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el mensaje de confirmación del servidor.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarConversion"></a>
+                    <span class="name">
+                        <span ><b>eliminarConversion</b></span>
+                        <a href="#eliminarConversion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarConversion(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/app/services/admin.service.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina un registro de conversión por su ID.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del registro a eliminar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el mensaje de confirmación del servidor.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarRegistroAuditoria"></a>
+                    <span class="name">
+                        <span ><b>eliminarRegistroAuditoria</b></span>
+                        <a href="#eliminarRegistroAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarRegistroAuditoria(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="249"
+                                    class="link-to-prism">src/app/services/admin.service.ts:249</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina un registro de auditoría por su ID.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del registro a eliminar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el mensaje de confirmación del servidor.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarUsuario"></a>
+                    <span class="name">
+                        <span ><b>eliminarUsuario</b></span>
+                        <a href="#eliminarUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarUsuario(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/app/services/admin.service.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina el usuario con el ID indicado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Identificador del usuario a eliminar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el mensaje de confirmación del servidor.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listarAuditoria"></a>
+                    <span class="name">
+                        <span ><b>listarAuditoria</b></span>
+                        <a href="#listarAuditoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>listarAuditoria()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="173"
+                                    class="link-to-prism">src/app/services/admin.service.ts:173</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene todos los registros de auditoría del sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AuditoriaDTO.html" target="_self" >Observable&lt;AuditoriaDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array de registros, o vacío si no hay ninguno.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listarConversiones"></a>
+                    <span class="name">
+                        <span ><b>listarConversiones</b></span>
+                        <a href="#listarConversiones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>listarConversiones()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/app/services/admin.service.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene el historial completo de conversiones de todos los usuarios.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/HistorialConversionDTO.html" target="_self" >Observable&lt;HistorialConversionDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array de conversiones, o vacío si no hay ninguna.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listarUsuarios"></a>
+                    <span class="name">
+                        <span ><b>listarUsuarios</b></span>
+                        <a href="#listarUsuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>listarUsuarios()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/app/services/admin.service.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene la lista completa de usuarios registrados en el sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UsuarioDTO.html" target="_self" >Observable&lt;UsuarioDTO[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el array de usuarios, o vacío si no hay ninguno.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resumen"></a>
+                    <span class="name">
+                        <span ><b>resumen</b></span>
+                        <a href="#resumen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resumen()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/app/services/admin.service.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene el resumen estadístico general del sistema.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ResumenAdmin.html" target="_self" >Observable&lt;ResumenAdmin&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite un <code>ResumenAdmin</code> con totales y agrupaciones.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { HttpClient, HttpParams } from &#x27;@angular/common/http&#x27;;
+import { Observable, of } from &#x27;rxjs&#x27;;
+import { catchError, map } from &#x27;rxjs/operators&#x27;;
+import { UsuarioDTO } from &#x27;../models/usuario-dto&#x27;;
+import { HistorialConversionDTO } from &#x27;../models/historial-conversion-dto&#x27;;
+import { ResumenAdmin } from &#x27;../models/resumen-admin&#x27;;
+import { AuditoriaDTO } from &#x27;../models/auditoria-dto&#x27;;
+
+const API &#x3D; &#x27;http://gpcueb.org/SuperConvertLJJJ&#x27;;
+
+/**
+ * Servicio que encapsula todas las llamadas HTTP del panel de
+ * administración: gestión de usuarios, historial de conversiones
+ * y registros de auditoría.
+ *
+ * Los endpoints que pueden responder con &#x60;204 No Content&#x60; manejan
+ * ese caso retornando un array vacío para evitar errores en la vista.
+ */
+@Injectable({ providedIn: &#x27;root&#x27; })
+export class AdminService {
+
+    /** @param http Cliente HTTP de Angular para realizar las peticiones REST. */
+    constructor(private http: HttpClient) {}
+
+
+
+    /**
+     * Obtiene el resumen estadístico general del sistema.
+     *
+     * @returns Observable que emite un &#x60;ResumenAdmin&#x60; con totales y agrupaciones.
+     */
+    resumen(): Observable&lt;ResumenAdmin&gt; {
+        return this.http.get&lt;ResumenAdmin&gt;(&#x60;${API}/historial/resumen&#x60;);
+    }
+
+
+
+    /**
+     * Obtiene la lista completa de usuarios registrados en el sistema.
+     *
+     * @returns Observable que emite el array de usuarios, o vacío si no hay ninguno.
+     */
+    listarUsuarios(): Observable&lt;UsuarioDTO[]&gt; {
+        return this.http.get&lt;UsuarioDTO[]&gt;(&#x60;${API}/usuario/listar&#x60;).pipe(
+            map(data &#x3D;&gt; data ?? []),
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Elimina el usuario con el ID indicado.
+     *
+     * @param id Identificador del usuario a eliminar.
+     * @returns Observable que emite el mensaje de confirmación del servidor.
+     */
+    eliminarUsuario(id: number): Observable&lt;string&gt; {
+        return this.http.delete(&#x60;${API}/usuario/eliminar&#x60;, {
+            params: new HttpParams().set(&#x27;id&#x27;, id),
+            responseType: &#x27;text&#x27;
+        });
+    }
+
+    /**
+     * Edición completa de un usuario por el ADMIN.
+     * Permite cambiar nombre, apellido, correo, nombreUsuario,
+     * teléfono y ROL. La contraseña solo se actualiza si no está vacía.
+     *
+     * Endpoint: &#x60;PUT /usuario/admin/editar?id&#x3D;{id}&#x60;
+     *
+     * @param id    Identificador del usuario a editar.
+     * @param datos DTO con los nuevos datos del usuario.
+     * @returns Observable que emite el mensaje de confirmación del servidor.
+     */
+    editarUsuario(id: number, datos: UsuarioDTO): Observable&lt;string&gt; {
+        return this.http.put(&#x60;${API}/usuario/admin/editar&#x60;, datos, {
+            params: new HttpParams().set(&#x27;id&#x27;, id),
+            responseType: &#x27;text&#x27;
+        });
+    }
+
+
+
+    /**
+     * Obtiene el historial completo de conversiones de todos los usuarios.
+     *
+     * @returns Observable que emite el array de conversiones, o vacío si no hay ninguna.
+     */
+    listarConversiones(): Observable&lt;HistorialConversionDTO[]&gt; {
+        return this.http.get&lt;HistorialConversionDTO[]&gt;(&#x60;${API}/historial/listar&#x60;).pipe(
+            map(data &#x3D;&gt; data ?? []),
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Filtra el historial de conversiones por tipo de archivo.
+     *
+     * @param tipo Categoría del archivo: &#x60;&#x27;AUDIO&#x27;&#x60;, &#x60;&#x27;VIDEO&#x27;&#x60; o &#x60;&#x27;IMAGEN&#x27;&#x60;.
+     * @returns Observable que emite el array filtrado, o vacío si no hay resultados.
+     */
+    conversionesPorTipo(tipo: string): Observable&lt;HistorialConversionDTO[]&gt; {
+        return this.http.get&lt;HistorialConversionDTO[]&gt;(&#x60;${API}/historial/porTipo&#x60;, {
+            params: new HttpParams().set(&#x27;tipoArchivo&#x27;, tipo)
+        }).pipe(
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Filtra el historial de conversiones por estado.
+     *
+     * @param estado Estado a filtrar: &#x60;&#x27;PENDIENTE&#x27;&#x60;, &#x60;&#x27;EN_PROCESO&#x27;&#x60;, &#x60;&#x27;COMPLETADO&#x27;&#x60; o &#x60;&#x27;FALLIDO&#x27;&#x60;.
+     * @returns Observable que emite el array filtrado, o vacío si no hay resultados.
+     */
+    conversionesPorEstado(estado: string): Observable&lt;HistorialConversionDTO[]&gt; {
+        return this.http.get&lt;HistorialConversionDTO[]&gt;(&#x60;${API}/historial/porEstado&#x60;, {
+            params: new HttpParams().set(&#x27;estado&#x27;, estado)
+        }).pipe(
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Obtiene el historial de conversiones de un usuario específico.
+     *
+     * @param usuarioId ID del usuario cuyas conversiones se desean consultar.
+     * @returns Observable que emite el array de conversiones, o vacío si no hay ninguna.
+     */
+    conversionesPorUsuario(usuarioId: number): Observable&lt;HistorialConversionDTO[]&gt; {
+        return this.http.get&lt;HistorialConversionDTO[]&gt;(&#x60;${API}/historial/porUsuario&#x60;, {
+            params: new HttpParams().set(&#x27;usuarioId&#x27;, usuarioId)
+        }).pipe(
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Elimina un registro de conversión por su ID.
+     *
+     * @param id Identificador del registro a eliminar.
+     * @returns Observable que emite el mensaje de confirmación del servidor.
+     */
+    eliminarConversion(id: number): Observable&lt;string&gt; {
+        return this.http.delete(&#x60;${API}/historial/eliminar&#x60;, {
+            params: new HttpParams().set(&#x27;id&#x27;, id),
+            responseType: &#x27;text&#x27;
+        });
+    }
+
+
+
+    /**
+     * Obtiene todos los registros de auditoría del sistema.
+     *
+     * @returns Observable que emite el array de registros, o vacío si no hay ninguno.
+     */
+    listarAuditoria(): Observable&lt;AuditoriaDTO[]&gt; {
+        return this.http.get&lt;AuditoriaDTO[]&gt;(&#x60;${API}/auditoria/listar&#x60;).pipe(
+            map(data &#x3D;&gt; data ?? []),
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Obtiene los registros de auditoría generados por un usuario específico.
+     *
+     * @param usuarioId ID del usuario cuyos registros se desean consultar.
+     * @returns Observable que emite el array filtrado, o vacío si no hay resultados.
+     */
+    auditoriaPorUsuario(usuarioId: number): Observable&lt;AuditoriaDTO[]&gt; {
+        return this.http.get&lt;AuditoriaDTO[]&gt;(&#x60;${API}/auditoria/porUsuario&#x60;, {
+            params: new HttpParams().set(&#x27;usuarioId&#x27;, usuarioId)
+        }).pipe(
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Filtra los registros de auditoría por tipo de acción.
+     *
+     * @param tipoAccion Tipo de acción a filtrar (ej. &#x60;&#x27;LOGIN&#x27;&#x60;, &#x60;&#x27;CONVERSION&#x27;&#x60;, &#x60;&#x27;DELETE&#x27;&#x60;).
+     * @returns Observable que emite el array filtrado, o vacío si no hay resultados.
+     */
+    auditoriaPorTipoAccion(tipoAccion: string): Observable&lt;AuditoriaDTO[]&gt; {
+        return this.http.get&lt;AuditoriaDTO[]&gt;(&#x60;${API}/auditoria/porTipoAccion&#x60;, {
+            params: new HttpParams().set(&#x27;tipoAccion&#x27;, tipoAccion)
+        }).pipe(
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Filtra los registros de auditoría por rol del usuario que realizó la acción.
+     *
+     * @param rolUsuario Rol a filtrar: &#x60;&#x27;USUARIO&#x27;&#x60; o &#x60;&#x27;ADMIN&#x27;&#x60;.
+     * @returns Observable que emite el array filtrado, o vacío si no hay resultados.
+     */
+    auditoriaPorRol(rolUsuario: string): Observable&lt;AuditoriaDTO[]&gt; {
+        return this.http.get&lt;AuditoriaDTO[]&gt;(&#x60;${API}/auditoria/porRol&#x60;, {
+            params: new HttpParams().set(&#x27;rolUsuario&#x27;, rolUsuario)
+        }).pipe(
+            catchError(err &#x3D;&gt; {
+                if (err?.status &#x3D;&#x3D;&#x3D; 204) return of([]);
+                throw err;
+            })
+        );
+    }
+
+    /**
+     * Retorna el conteo total de registros de auditoría en el sistema.
+     *
+     * @returns Observable que emite el número total de registros.
+     */
+    contarAuditoria(): Observable&lt;number&gt; {
+        return this.http.get&lt;number&gt;(&#x60;${API}/auditoria/contar&#x60;);
+    }
+
+    /**
+     * Elimina un registro de auditoría por su ID.
+     *
+     * @param id Identificador del registro a eliminar.
+     * @returns Observable que emite el mensaje de confirmación del servidor.
+     */
+    eliminarRegistroAuditoria(id: number): Observable&lt;string&gt; {
+        return this.http.delete(&#x60;${API}/auditoria/eliminar&#x60;, {
+            params: new HttpParams().set(&#x27;id&#x27;, id),
+            responseType: &#x27;text&#x27;
+        });
+    }
+}</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

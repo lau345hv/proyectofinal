@@ -1,0 +1,379 @@
+<div class="admin-page">
+
+    <div class="admin-header">
+        <div class="admin-header-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" class="icon-accent" stroke-width="2"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" class="icon-accent" stroke-width="2"/>
+            </svg>
+        </div>
+        <div>
+            <h1>Panel de Administración</h1>
+            <p>Gestión de usuarios, conversiones y auditoría</p>
+        </div>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <p class="stat-val">{{ usuarios.length }}</p>
+            <p class="stat-lbl">Usuarios registrados</p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-val">{{ conversiones.length }}</p>
+            <p class="stat-lbl">Conversiones</p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-val">3</p>
+            <p class="stat-lbl">Tipos de conversión</p>
+        </div>
+
+    </div>
+
+    <div class="tabs">
+        <button class="tab" [class.active]="tabActiva === 'usuarios'" (click)="activarTab('usuarios')">
+            Usuarios
+        </button>
+        <button class="tab" [class.active]="tabActiva === 'conversiones'" (click)="activarTab('conversiones')">
+            Conversiones
+        </button>
+        <button class="tab tab-auditoria" [class.active]="tabActiva === 'auditoria'" (click)="activarTab('auditoria')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:middle">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Auditoría
+        </button>
+    </div>
+
+    <div class="table-card" *ngIf="tabActiva === 'usuarios'">
+        <div class="table-header">
+            <h3>Usuarios registrados</h3>
+            <button class="btn-refresh" (click)="cargarUsuarios()">↺ Actualizar</button>
+        </div>
+
+        <div class="msg-box msg-error" *ngIf="errorUsuarios">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+                <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>{{ errorUsuarios }}</span>
+        </div>
+
+        <div class="loading" *ngIf="cargandoUsuarios">
+            <div class="spinner-dark"></div> Cargando usuarios...
+        </div>
+
+        <table *ngIf="!cargandoUsuarios && !errorUsuarios && usuarios.length > 0">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let u of usuarios">
+                <td class="id-col">{{ u.id }}</td>
+                <td><strong>{{ u.nombre }} {{ u.apellido }}</strong></td>
+                <td>{{ u.nombreUsuario }}</td>
+                <td>{{ u.correo }}</td>
+                <td>{{ u.telefono }}</td>
+                <td>
+                    <span class="badge"
+                          [class.badge-admin]="esAdmin(u)"
+                          [class.badge-cliente]="!esAdmin(u)">
+                        {{ esAdmin(u) ? 'ADMIN' : 'USUARIO' }}
+                    </span>
+                </td>
+                <td>
+                    <div class="acciones-row">
+                        <button
+                                class="btn-editar"
+                                *ngIf="u.nombreUsuario !== 'admin'"
+                                (click)="abrirModalEdicion(u)"
+                                title="Editar usuario">
+                            Editar
+                        </button>
+                        <button
+                                class="btn-eliminar"
+                                *ngIf="u.nombreUsuario !== 'admin'"
+                                (click)="eliminarUsuario(u.id)">
+                            Eliminar
+                        </button>
+                        <button
+                                class="btn-historial"
+                                *ngIf="!esAdmin(u)"
+                                (click)="eliminarHistorialDeUsuario(u.id, u.nombreUsuario)">
+                            Limpiar historial
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="empty" *ngIf="!cargandoUsuarios && !errorUsuarios && usuarios.length === 0">
+            No hay usuarios registrados aún.
+        </div>
+    </div>
+
+    <div class="table-card" *ngIf="tabActiva === 'conversiones'">
+        <div class="table-header">
+            <h3>Historial de conversiones</h3>
+            <button class="btn-refresh" (click)="cargarConversiones()">↺ Actualizar</button>
+        </div>
+
+        <div class="filters-row">
+            <span class="filter-label">Tipo:</span>
+            <button class="filter-chip" [class.active]="filtroTipo === 'AUDIO'"  (click)="cambiarFiltroTipo('AUDIO')">Audio</button>
+            <button class="filter-chip" [class.active]="filtroTipo === 'VIDEO'"  (click)="cambiarFiltroTipo('VIDEO')">Video</button>
+            <button class="filter-chip" [class.active]="filtroTipo === 'IMAGEN'" (click)="cambiarFiltroTipo('IMAGEN')">Imagen</button>
+            <span class="filter-label" style="margin-left:1rem">Estado:</span>
+            <button class="filter-chip" [class.active]="filtroEstado === 'COMPLETADO'" (click)="cambiarFiltroEstado('COMPLETADO')">Completado</button>
+            <button class="filter-chip" [class.active]="filtroEstado === 'FALLIDO'"    (click)="cambiarFiltroEstado('FALLIDO')">Fallido</button>
+            <button class="filter-chip clear-chip" *ngIf="filtroTipo || filtroEstado" (click)="limpiarFiltros()">✕ Limpiar</button>
+        </div>
+
+        <div class="msg-box msg-error" *ngIf="errorConversiones">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+                <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>{{ errorConversiones }}</span>
+        </div>
+
+        <div class="loading" *ngIf="cargandoConversiones">
+            <div class="spinner-dark"></div> Cargando conversiones...
+        </div>
+
+        <table *ngIf="!cargandoConversiones && !errorConversiones && conversiones.length > 0">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Archivo</th>
+                <th>Tipo</th>
+                <th>Origen → Destino</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let c of conversiones">
+                <td class="id-col">{{ c.id }}</td>
+                <td>{{ ('ID ' + c.usuarioId) }}</td>
+                <td class="archivo-cell" [title]="c.nombreArchivoOriginal">{{ c.nombreArchivoOriginal }}</td>
+                <td>
+                    <span class="tipo-badge"
+                          [style.background]="colorTipo(c.tipoArchivo) + '15'"
+                          [style.color]="colorTipo(c.tipoArchivo)">
+                        {{ c.tipoArchivo }}
+                    </span>
+                </td>
+                <td>
+                    <span class="formato-pair">
+                        <span class="formato-pequeno">{{ c.formatoOrigen.toUpperCase() }}</span>
+                        <span class="flecha-pequena">→</span>
+                        <span class="formato-pequeno formato-destino-mini">{{ c.formatoDestino.toUpperCase() }}</span>
+                    </span>
+                </td>
+                <td>
+                    <span class="estado-badge"
+                          [class.e-completado]="c.estado === 'COMPLETADO'"
+                          [class.e-fallido]="c.estado === 'FALLIDO'"
+                          [class.e-proceso]="c.estado === 'EN_PROCESO' || c.estado === 'PENDIENTE'">
+                        {{ c.estado }}
+                    </span>
+                </td>
+                <td>{{ c.fechaConversion | date:'dd/MM/yy HH:mm' }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="empty" *ngIf="!cargandoConversiones && !errorConversiones && conversiones.length === 0">
+            No hay conversiones que mostrar con los filtros aplicados.
+        </div>
+    </div>
+
+    <div class="table-card" *ngIf="tabActiva === 'auditoria'">
+        <div class="table-header">
+            <h3>Registro de auditoría</h3>
+            <button class="btn-refresh" (click)="cargarAuditoria()">↺ Actualizar</button>
+        </div>
+
+        <!-- Filtros de auditoría -->
+        <div class="filters-row">
+            <span class="filter-label">Acción:</span>
+            <button class="filter-chip" [class.active]="filtroAccion === 'LOGIN'"      (click)="cambiarFiltroAccion('LOGIN')">Login</button>
+            <button class="filter-chip" [class.active]="filtroAccion === 'LOGOUT'"     (click)="cambiarFiltroAccion('LOGOUT')">Logout</button>
+            <button class="filter-chip" [class.active]="filtroAccion === 'CONVERSION'" (click)="cambiarFiltroAccion('CONVERSION')">Conversión</button>
+            <button class="filter-chip" [class.active]="filtroAccion === 'CREATE'"     (click)="cambiarFiltroAccion('CREATE')">Crear</button>
+            <button class="filter-chip" [class.active]="filtroAccion === 'UPDATE'"     (click)="cambiarFiltroAccion('UPDATE')">Actualizar</button>
+            <button class="filter-chip" [class.active]="filtroAccion === 'DELETE'"     (click)="cambiarFiltroAccion('DELETE')">Eliminar</button>
+            <span class="filter-label" style="margin-left:1rem">Rol:</span>
+            <button class="filter-chip" [class.active]="filtroRolAuditoria === 'USUARIO'" (click)="cambiarFiltroRolAuditoria('USUARIO')">Usuario</button>
+            <button class="filter-chip" [class.active]="filtroRolAuditoria === 'ADMIN'"   (click)="cambiarFiltroRolAuditoria('ADMIN')">Admin</button>
+            <button class="filter-chip clear-chip" *ngIf="filtroAccion || filtroRolAuditoria" (click)="limpiarFiltrosAuditoria()">✕ Limpiar</button>
+        </div>
+
+        <div class="msg-box msg-error" *ngIf="errorAuditoria">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>
+                <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+                <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>{{ errorAuditoria }}</span>
+        </div>
+
+        <div class="loading" *ngIf="cargandoAuditoria">
+            <div class="spinner-dark"></div> Cargando registros de auditoría...
+        </div>
+
+        <table *ngIf="!cargandoAuditoria && !errorAuditoria && auditoria.length > 0">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Acción</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let a of auditoria">
+                <td class="id-col">{{ a.id }}</td>
+                <td>
+                    <span class="usuario-cell">
+                        <strong>{{ a.nombreUsuario }}</strong>
+                        <span class="id-sub">#{{ a.usuarioId }}</span>
+                    </span>
+                </td>
+                <td>
+                    <span class="badge"
+                          [class.badge-admin]="a.rolUsuario === 'ADMIN'"
+                          [class.badge-cliente]="a.rolUsuario !== 'ADMIN'">
+                        {{ a.rolUsuario }}
+                    </span>
+                </td>
+                <td>
+                    <span class="accion-badge" [ngClass]="colorAccion(a.tipoAccion)">
+                        {{ a.tipoAccion }}
+                    </span>
+                </td>
+                <td class="descripcion-cell">
+                    <span class="desc-texto" [class.desc-completa]="a.expandida">
+                        {{ a.descripcion }}
+                    </span>
+                    <button *ngIf="a.descripcion && a.descripcion.length > 45"
+                            class="btn-expandir"
+                            (click)="a.expandida = !a.expandida">
+                        {{ a.expandida ? 'Ver menos ▲' : 'Ver más ▼' }}
+                    </button>
+                </td>
+                <td>{{ a.fecha | date:'dd/MM/yy HH:mm' }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="empty" *ngIf="!cargandoAuditoria && !errorAuditoria && auditoria.length === 0">
+            No hay registros de auditoría para mostrar.
+        </div>
+
+        <div class="audit-footer" *ngIf="auditoria.length > 0">
+            Mostrando {{ auditoria.length }} registro(s)
+            <span *ngIf="filtroAccion"> · Filtro: {{ filtroAccion }}</span>
+            <span *ngIf="filtroRolAuditoria"> · Rol: {{ filtroRolAuditoria }}</span>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalEdicion" (click)="cerrarModalEdicion()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <h2>Editar usuario</h2>
+            <button class="modal-close" (click)="cerrarModalEdicion()" aria-label="Cerrar">✕</button>
+        </div>
+
+        <div *ngIf="usuarioEditando">
+
+            <div class="msg-box msg-error" *ngIf="errorEdicion">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>{{ errorEdicion }}</span>
+            </div>
+
+            <div class="msg-box msg-success" *ngIf="exitoEdicion">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>{{ exitoEdicion }}</span>
+            </div>
+
+            <div class="modal-form-grid">
+
+                <div class="modal-field">
+                    <label>Nombre</label>
+                    <input type="text" [(ngModel)]="usuarioEditando.nombre" class="modal-input" placeholder="Nombre">
+                </div>
+
+                <div class="modal-field">
+                    <label>Apellido</label>
+                    <input type="text" [(ngModel)]="usuarioEditando.apellido" class="modal-input" placeholder="Apellido">
+                </div>
+
+                <div class="modal-field">
+                    <label>Usuario</label>
+                    <input type="text" [(ngModel)]="usuarioEditando.nombreUsuario" class="modal-input" placeholder="nombreUsuario">
+                </div>
+
+                <div class="modal-field">
+                    <label>Correo</label>
+                    <input type="email" [(ngModel)]="usuarioEditando.correo" class="modal-input" placeholder="correo@ejemplo.com">
+                </div>
+
+                <div class="modal-field">
+                    <label>Teléfono</label>
+                    <input type="text" [(ngModel)]="usuarioEditando.telefono" class="modal-input" placeholder="3XXXXXXXXX">
+                </div>
+
+                <div class="modal-field">
+                    <label>Rol</label>
+                    <select [(ngModel)]="usuarioEditando.rol" class="modal-input modal-select">
+                        <option value="USUARIO">USUARIO</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+                </div>
+
+                <div class="modal-field modal-field-full">
+                    <label>Nueva contraseña <span class="hint-inline">(dejar vacío para no cambiar)</span></label>
+                    <input type="password" [(ngModel)]="usuarioEditando.contrasena" class="modal-input" placeholder="••••••••">
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancelar-modal" (click)="cerrarModalEdicion()" [disabled]="guardandoEdicion">
+                    Cancelar
+                </button>
+                <button class="btn-guardar-modal" (click)="guardarEdicion()" [disabled]="guardandoEdicion">
+                    <span *ngIf="!guardandoEdicion">Guardar cambios</span>
+                    <span *ngIf="guardandoEdicion">
+                        <span class="spinner-inline"></span> Guardando...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

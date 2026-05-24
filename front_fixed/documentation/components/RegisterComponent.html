@@ -1,0 +1,1988 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>convertidor-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">convertidor-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  RegisterComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/components/register/register.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Componente que gestiona el flujo de registro en dos pasos:</p>
+<ul>
+<li><strong>Paso 1:</strong> El usuario ingresa su correo y solicita un código de verificación.</li>
+<li><strong>Paso 2:</strong> El usuario completa sus datos personales e ingresa el código
+recibido por correo para crear la cuenta.</li>
+</ul>
+<p>Tras un registro exitoso redirige a <code>/login</code> después de 1 800 ms.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-register</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./register.component.css</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./register.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#correoVerificado" >correoVerificado</a>
+                            </li>
+                            <li>
+                                <a href="#error" >error</a>
+                            </li>
+                            <li>
+                                <a href="#formCorreo" >formCorreo</a>
+                            </li>
+                            <li>
+                                <a href="#formRegistro" >formRegistro</a>
+                            </li>
+                            <li>
+                                <a href="#mensajeExito" >mensajeExito</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarContrasena" >mostrarContrasena</a>
+                            </li>
+                            <li>
+                                <a href="#paso" >paso</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#obtenerTextoErrorRaw" >obtenerTextoErrorRaw</a>
+                            </li>
+                            <li>
+                                <a href="#reenviarCodigo" >reenviarCodigo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#reenviarCodigoSilencioso" >reenviarCodigoSilencioso</a>
+                            </li>
+                            <li>
+                                <a href="#registrar" >registrar</a>
+                            </li>
+                            <li>
+                                <a href="#solicitarCodigo" >solicitarCodigo</a>
+                            </li>
+                            <li>
+                                <a href="#toggleContrasena" >toggleContrasena</a>
+                            </li>
+                            <li>
+                                <a href="#volverACorreo" >volverACorreo</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(fb: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, auth: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, router: <a href="https://angular.io/api/router/Router" target="_blank">Router</a>, errorHandler: <a href="../injectables/ErrorHandlerService.html" target="_self">ErrorHandlerService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/components/register/register.component.ts:45</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>fb</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Constructor de formularios reactivos de Angular.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>auth</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio de autenticación.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>router</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/router/Router" target="_blank" >Router</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Router de Angular para la navegación post-registro.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>errorHandler</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ErrorHandlerService.html" target="_self" >ErrorHandlerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio centralizado de manejo de errores HTTP.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="obtenerTextoErrorRaw"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>obtenerTextoErrorRaw</b></span>
+                        <a href="#obtenerTextoErrorRaw"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>obtenerTextoErrorRaw(err: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="224"
+                                    class="link-to-prism">src/app/components/register/register.component.ts:224</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Extrae el texto crudo del cuerpo del error HTTP para detectar
+mensajes específicos del backend (ej. código expirado).</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>err</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Error capturado en el <code>subscribe</code>.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Texto concatenado del cuerpo del error.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reenviarCodigo"></a>
+                    <span class="name">
+                        <span ><b>reenviarCodigo</b></span>
+                        <a href="#reenviarCodigo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>reenviarCodigo()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="111"
+                                    class="link-to-prism">src/app/components/register/register.component.ts:111</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reenvía el código de verificación al correo ya validado en el paso 1.
+No hace nada si <code>correoVerificado</code> está vacío.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reenviarCodigoSilencioso"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>reenviarCodigoSilencioso</b></span>
+                        <a href="#reenviarCodigoSilencioso"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reenviarCodigoSilencioso()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="205"
+                                    class="link-to-prism">src/app/components/register/register.component.ts:205</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reenvía el código de verificación de forma silenciosa (sin modificar
+el estado de <code>cargando</code>) para no interrumpir la experiencia del usuario.
+Actualiza <code>mensajeExito</code> o <code>error</code> según el resultado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registrar"></a>
+                    <span class="name">
+                        <span ><b>registrar</b></span>
+                        <a href="#registrar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>registrar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/components/register/register.component.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Envía el formulario de registro al backend con los datos del paso 2.</p>
+<p>Si el formulario es inválido muestra un error sin llamar al servicio.
+Si el backend indica que el código expiró, limpia el campo del código
+y reenvía uno nuevo automáticamente.
+Tras un registro exitoso redirige a <code>/login</code> después de 1 800 ms.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="solicitarCodigo"></a>
+                    <span class="name">
+                        <span ><b>solicitarCodigo</b></span>
+                        <a href="#solicitarCodigo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>solicitarCodigo()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="79"
+                                    class="link-to-prism">src/app/components/register/register.component.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Solicita el envío del código de verificación al correo ingresado.</p>
+<p>Si el campo <code>correo</code> es inválido, muestra un error y no llama al
+servicio. Ante éxito avanza al paso 2 guardando el correo validado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleContrasena"></a>
+                    <span class="name">
+                        <span ><b>toggleContrasena</b></span>
+                        <a href="#toggleContrasena"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleContrasena()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/app/components/register/register.component.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Alterna la visibilidad de la contraseña entre texto plano y enmascarado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="volverACorreo"></a>
+                    <span class="name">
+                        <span ><b>volverACorreo</b></span>
+                        <a href="#volverACorreo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>volverACorreo()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/app/components/register/register.component.ts:132</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Regresa al paso 1, limpia los mensajes y resetea el formulario de registro.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/components/register/register.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indica si hay una petición en curso.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="correoVerificado"></a>
+                    <span class="name">
+                        <span ><b>correoVerificado</b></span>
+                        <a href="#correoVerificado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/components/register/register.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Correo validado en el paso 1, usado al enviar el registro en el paso 2.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="error"></a>
+                    <span class="name">
+                        <span ><b>error</b></span>
+                        <a href="#error"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/components/register/register.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de error a mostrar al usuario.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formCorreo"></a>
+                    <span class="name">
+                        <span ><b>formCorreo</b></span>
+                        <a href="#formCorreo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/components/register/register.component.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Formulario del paso 1: solo el campo correo.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formRegistro"></a>
+                    <span class="name">
+                        <span ><b>formRegistro</b></span>
+                        <a href="#formRegistro"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/forms/FormGroup" target="_blank" >FormGroup</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/components/register/register.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Formulario del paso 2: datos personales y código de verificación.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mensajeExito"></a>
+                    <span class="name">
+                        <span ><b>mensajeExito</b></span>
+                        <a href="#mensajeExito"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/components/register/register.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mensaje de éxito a mostrar al usuario.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarContrasena"></a>
+                    <span class="name">
+                        <span ><b>mostrarContrasena</b></span>
+                        <a href="#mostrarContrasena"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/components/register/register.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Controla si la contraseña se muestra en texto plano o enmascarada.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="paso"></a>
+                    <span class="name">
+                        <span ><b>paso</b></span>
+                        <a href="#paso"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;1&quot; | &quot;2&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>1</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/components/register/register.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Paso actual del flujo de registro: <code>1</code> = correo, <code>2</code> = datos personales.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { FormBuilder, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { AuthService } from &#x27;../../services/auth.service&#x27;;
+import { ErrorHandlerService } from &#x27;../../services/error-handler.service&#x27;;
+
+/**
+ * Componente que gestiona el flujo de registro en dos pasos:
+ *
+ * - **Paso 1:** El usuario ingresa su correo y solicita un código de verificación.
+ * - **Paso 2:** El usuario completa sus datos personales e ingresa el código
+ *   recibido por correo para crear la cuenta.
+ *
+ * Tras un registro exitoso redirige a &#x60;/login&#x60; después de 1 800 ms.
+ */
+@Component({
+    selector: &#x27;app-register&#x27;,
+    templateUrl: &#x27;./register.component.html&#x27;,
+    styleUrls: [&#x27;./register.component.css&#x27;]
+})
+export class RegisterComponent {
+
+    /** Paso actual del flujo de registro: &#x60;1&#x60; &#x3D; correo, &#x60;2&#x60; &#x3D; datos personales. */
+    paso: 1 | 2 &#x3D; 1;
+
+    /** Indica si hay una petición en curso. */
+    cargando: boolean &#x3D; false;
+
+    /** Mensaje de error a mostrar al usuario. */
+    error: string &#x3D; &#x27;&#x27;;
+
+    /** Mensaje de éxito a mostrar al usuario. */
+    mensajeExito: string &#x3D; &#x27;&#x27;;
+
+    /** Controla si la contraseña se muestra en texto plano o enmascarada. */
+    mostrarContrasena: boolean &#x3D; false;
+
+    /** Formulario del paso 1: solo el campo correo. */
+    formCorreo: FormGroup;
+
+    /** Formulario del paso 2: datos personales y código de verificación. */
+    formRegistro: FormGroup;
+
+    /** Correo validado en el paso 1, usado al enviar el registro en el paso 2. */
+    correoVerificado: string &#x3D; &#x27;&#x27;;
+
+    /**
+     * @param fb           Constructor de formularios reactivos de Angular.
+     * @param auth         Servicio de autenticación.
+     * @param router       Router de Angular para la navegación post-registro.
+     * @param errorHandler Servicio centralizado de manejo de errores HTTP.
+     */
+    constructor(
+        private fb: FormBuilder,
+        private auth: AuthService,
+        private router: Router,
+        private errorHandler: ErrorHandlerService
+    ) {
+        this.formCorreo &#x3D; this.fb.group({
+            correo: [&#x27;&#x27;, [Validators.required, Validators.email]]
+        });
+
+        this.formRegistro &#x3D; this.fb.group({
+            nombre: [&#x27;&#x27;, [Validators.required, Validators.minLength(2)]],
+            apellido: [&#x27;&#x27;, [Validators.required, Validators.minLength(2)]],
+            nombreUsuario: [&#x27;&#x27;, [Validators.required, Validators.minLength(3)]],
+            contrasena: [&#x27;&#x27;, [Validators.required, Validators.minLength(8)]],
+            telefono: [&#x27;&#x27;, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+            codigoVerificacion: [&#x27;&#x27;, [Validators.required, Validators.minLength(4)]]
+        });
+    }
+
+    /**
+     * Solicita el envío del código de verificación al correo ingresado.
+     *
+     * Si el campo &#x60;correo&#x60; es inválido, muestra un error y no llama al
+     * servicio. Ante éxito avanza al paso 2 guardando el correo validado.
+     */
+    solicitarCodigo(): void {
+        if (this.formCorreo.invalid) {
+            this.error &#x3D; &#x27;Ingresa un correo electrónico válido.&#x27;;
+            return;
+        }
+        this.cargando &#x3D; true;
+        this.error &#x3D; &#x27;&#x27;;
+        this.mensajeExito &#x3D; &#x27;&#x27;;
+
+        const correo &#x3D; this.formCorreo.value.correo.trim();
+
+        this.auth.solicitarCodigo(correo).subscribe({
+            next: () &#x3D;&gt; {
+                this.cargando &#x3D; false;
+                this.correoVerificado &#x3D; correo;
+                this.paso &#x3D; 2;
+                this.mensajeExito &#x3D; &#x60;Se envió un código de verificación a ${correo}. Revisa tu bandeja de entrada (y la carpeta de spam).&#x60;;
+            },
+            error: (err) &#x3D;&gt; {
+                this.cargando &#x3D; false;
+                this.error &#x3D; this.errorHandler.extraerMensaje(
+                    err,
+                    &#x27;No se pudo enviar el código. Verifica que el correo sea válido y que no esté ya registrado.&#x27;
+                );
+            }
+        });
+    }
+
+    /**
+     * Reenvía el código de verificación al correo ya validado en el paso 1.
+     * No hace nada si &#x60;correoVerificado&#x60; está vacío.
+     */
+    reenviarCodigo(): void {
+        if (!this.correoVerificado) return;
+        this.cargando &#x3D; true;
+        this.error &#x3D; &#x27;&#x27;;
+        this.mensajeExito &#x3D; &#x27;&#x27;;
+
+        this.auth.solicitarCodigo(this.correoVerificado).subscribe({
+            next: () &#x3D;&gt; {
+                this.cargando &#x3D; false;
+                this.mensajeExito &#x3D; &#x27;Código reenviado correctamente. Revisa tu correo.&#x27;;
+            },
+            error: (err) &#x3D;&gt; {
+                this.cargando &#x3D; false;
+                this.error &#x3D; this.errorHandler.extraerMensaje(err, &#x27;No se pudo reenviar el código.&#x27;);
+            }
+        });
+    }
+
+    /**
+     * Regresa al paso 1, limpia los mensajes y resetea el formulario de registro.
+     */
+    volverACorreo(): void {
+        this.paso &#x3D; 1;
+        this.error &#x3D; &#x27;&#x27;;
+        this.mensajeExito &#x3D; &#x27;&#x27;;
+        this.formRegistro.reset();
+    }
+
+    /**
+     * Alterna la visibilidad de la contraseña entre texto plano y enmascarado.
+     */
+    toggleContrasena(): void {
+        this.mostrarContrasena &#x3D; !this.mostrarContrasena;
+    }
+
+    /**
+     * Envía el formulario de registro al backend con los datos del paso 2.
+     *
+     * Si el formulario es inválido muestra un error sin llamar al servicio.
+     * Si el backend indica que el código expiró, limpia el campo del código
+     * y reenvía uno nuevo automáticamente.
+     * Tras un registro exitoso redirige a &#x60;/login&#x60; después de 1 800 ms.
+     */
+    registrar(): void {
+        if (this.formRegistro.invalid) {
+            this.formRegistro.markAllAsTouched();
+            this.error &#x3D; &#x27;Por favor completa todos los campos correctamente.&#x27;;
+            return;
+        }
+        this.cargando &#x3D; true;
+        this.error &#x3D; &#x27;&#x27;;
+        this.mensajeExito &#x3D; &#x27;&#x27;;
+
+        const v &#x3D; this.formRegistro.value;
+
+        this.auth.registrar({
+            nombre: v.nombre.trim(),
+            apellido: v.apellido.trim(),
+            correo: this.correoVerificado,
+            nombreUsuario: v.nombreUsuario.trim(),
+            contrasena: v.contrasena,
+            telefono: v.telefono.trim(),
+            codigoVerificacion: v.codigoVerificacion.trim()
+        }).subscribe({
+            next: () &#x3D;&gt; {
+                this.cargando &#x3D; false;
+                this.mensajeExito &#x3D; &#x27;¡Cuenta creada con éxito! Redirigiendo al login...&#x27;;
+                setTimeout(() &#x3D;&gt; this.router.navigate([&#x27;/login&#x27;]), 1800);
+            },
+            error: (err) &#x3D;&gt; {
+                this.cargando &#x3D; false;
+                const msg &#x3D; this.errorHandler.extraerMensaje(
+                    err,
+                    &#x27;No se pudo crear la cuenta. Revisa que el código sea correcto y que el nombre de usuario no esté en uso.&#x27;
+                );
+
+                const errorTexto &#x3D; this.obtenerTextoErrorRaw(err).toLowerCase();
+
+                if (errorTexto.includes(&#x27;no hay ning&#x27;) &amp;&amp; errorTexto.includes(&#x27;digo pendiente&#x27;)) {
+                    this.error &#x3D; &#x27;El código de verificación expiró o no se encontró. Se reenviará un nuevo código a tu correo automáticamente.&#x27;;
+                    this.formRegistro.patchValue({ codigoVerificacion: &#x27;&#x27; });
+                    this.reenviarCodigoSilencioso();
+                } else {
+                    this.error &#x3D; msg;
+                }
+            }
+        });
+    }
+
+    /**
+     * Reenvía el código de verificación de forma silenciosa (sin modificar
+     * el estado de &#x60;cargando&#x60;) para no interrumpir la experiencia del usuario.
+     * Actualiza &#x60;mensajeExito&#x60; o &#x60;error&#x60; según el resultado.
+     */
+    private reenviarCodigoSilencioso(): void {
+        if (!this.correoVerificado) return;
+        this.auth.solicitarCodigo(this.correoVerificado).subscribe({
+            next: () &#x3D;&gt; {
+                this.mensajeExito &#x3D; &#x27;Se envió un nuevo código a tu correo. Ingrésalo arriba.&#x27;;
+            },
+            error: () &#x3D;&gt; {
+                this.error &#x3D; &#x27;No se pudo reenviar el código. Haz clic en &quot;← Cambiar correo&quot; y repite el proceso.&#x27;;
+            }
+        });
+    }
+
+    /**
+     * Extrae el texto crudo del cuerpo del error HTTP para detectar
+     * mensajes específicos del backend (ej. código expirado).
+     *
+     * @param err Error capturado en el &#x60;subscribe&#x60;.
+     * @returns Texto concatenado del cuerpo del error.
+     */
+    private obtenerTextoErrorRaw(err: any): string {
+        if (!err) return &#x27;&#x27;;
+        const body &#x3D; err?.error;
+        if (typeof body &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) return body;
+        if (body &amp;&amp; typeof body &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+            return (body.message || &#x27;&#x27;) + &#x27; &#x27; + (body.trace || &#x27;&#x27;);
+        }
+        return err?.message || &#x27;&#x27;;
+    }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;auth-page&quot;&gt;
+  &lt;div class&#x3D;&quot;auth-card&quot;&gt;
+
+    &lt;div class&#x3D;&quot;auth-brand&quot;&gt;
+      &lt;div class&#x3D;&quot;brand-dot&quot;&gt;&lt;/div&gt;
+      &lt;span&gt;SuperConvert&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;steps-indicator&quot;&gt;
+      &lt;div class&#x3D;&quot;step-circle&quot; [class.active]&#x3D;&quot;paso &#x3D;&#x3D;&#x3D; 1&quot; [class.done]&#x3D;&quot;paso &gt; 1&quot;&gt;
+        &lt;span *ngIf&#x3D;&quot;paso &#x3D;&#x3D;&#x3D; 1&quot;&gt;1&lt;/span&gt;
+        &lt;span *ngIf&#x3D;&quot;paso &gt; 1&quot;&gt;✓&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;step-line&quot; [class.done]&#x3D;&quot;paso &gt; 1&quot;&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;step-circle&quot; [class.active]&#x3D;&quot;paso &#x3D;&#x3D;&#x3D; 2&quot;&gt;2&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;steps-labels&quot;&gt;
+      &lt;span [class.active]&#x3D;&quot;paso &#x3D;&#x3D;&#x3D; 1&quot;&gt;Verificar correo&lt;/span&gt;
+      &lt;span [class.active]&#x3D;&quot;paso &#x3D;&#x3D;&#x3D; 2&quot;&gt;Crear cuenta&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;ng-container *ngIf&#x3D;&quot;paso &#x3D;&#x3D;&#x3D; 1&quot;&gt;
+      &lt;h2 class&#x3D;&quot;auth-title&quot;&gt;Verifica tu correo&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;auth-sub&quot;&gt;Te enviaremos un código de verificación a tu correo electrónico.&lt;/p&gt;
+
+      &lt;div class&#x3D;&quot;msg-box msg-error&quot; *ngIf&#x3D;&quot;error&quot;&gt;
+        &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;{{ error }}&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;msg-box msg-success&quot; *ngIf&#x3D;&quot;mensajeExito&quot;&gt;
+        &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-success&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;path d&#x3D;&quot;M9 12l2 2 4-4&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-success&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;{{ mensajeExito }}&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;form [formGroup]&#x3D;&quot;formCorreo&quot; (ngSubmit)&#x3D;&quot;solicitarCodigo()&quot;&gt;
+        &lt;div class&#x3D;&quot;field-group&quot;&gt;
+          &lt;label&gt;Correo electrónico&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;email&quot;
+            formControlName&#x3D;&quot;correo&quot;
+            placeholder&#x3D;&quot;tu@correo.com&quot;
+            autocomplete&#x3D;&quot;email&quot;
+            [class.error-input]&#x3D;&quot;formCorreo.get(&#x27;correo&#x27;)?.invalid &amp;&amp; formCorreo.get(&#x27;correo&#x27;)?.touched&quot;&gt;
+          &lt;span class&#x3D;&quot;field-error&quot; *ngIf&#x3D;&quot;formCorreo.get(&#x27;correo&#x27;)?.invalid &amp;&amp; formCorreo.get(&#x27;correo&#x27;)?.touched&quot;&gt;
+            Ingresa un correo válido
+          &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn-submit&quot; [disabled]&#x3D;&quot;formCorreo.invalid || cargando&quot;&gt;
+          &lt;div class&#x3D;&quot;spinner&quot; *ngIf&#x3D;&quot;cargando&quot;&gt;&lt;/div&gt;
+          {{ cargando ? &#x27;Enviando código...&#x27; : &#x27;Enviar código de verificación&#x27; }}
+        &lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/ng-container&gt;
+
+    &lt;ng-container *ngIf&#x3D;&quot;paso &#x3D;&#x3D;&#x3D; 2&quot;&gt;
+      &lt;h2 class&#x3D;&quot;auth-title&quot;&gt;Completa tu registro&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;auth-sub&quot;&gt;
+        Código enviado a &lt;strong&gt;{{ correoVerificado }}&lt;/strong&gt;
+      &lt;/p&gt;
+
+      &lt;div class&#x3D;&quot;msg-box msg-error&quot; *ngIf&#x3D;&quot;error&quot;&gt;
+        &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;8&quot; x2&#x3D;&quot;12&quot; y2&#x3D;&quot;12&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+          &lt;line x1&#x3D;&quot;12&quot; y1&#x3D;&quot;16&quot; x2&#x3D;&quot;12.01&quot; y2&#x3D;&quot;16&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-error&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;{{ error }}&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;msg-box msg-success&quot; *ngIf&#x3D;&quot;mensajeExito&quot;&gt;
+        &lt;svg width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot;&gt;
+          &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-success&quot; stroke-width&#x3D;&quot;2&quot;/&gt;
+          &lt;path d&#x3D;&quot;M9 12l2 2 4-4&quot; stroke&#x3D;&quot;currentColor&quot; class&#x3D;&quot;icon-success&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;/&gt;
+        &lt;/svg&gt;
+        &lt;span&gt;{{ mensajeExito }}&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;form [formGroup]&#x3D;&quot;formRegistro&quot; (ngSubmit)&#x3D;&quot;registrar()&quot;&gt;
+
+        &lt;div class&#x3D;&quot;codigo-section&quot;&gt;
+          &lt;label class&#x3D;&quot;codigo-label&quot;&gt;Código de verificación&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            formControlName&#x3D;&quot;codigoVerificacion&quot;
+            class&#x3D;&quot;codigo-input&quot;
+            placeholder&#x3D;&quot;Ingresa el código&quot;
+            maxlength&#x3D;&quot;10&quot;
+            autocomplete&#x3D;&quot;one-time-code&quot;&gt;
+          &lt;span class&#x3D;&quot;field-error&quot; *ngIf&#x3D;&quot;formRegistro.get(&#x27;codigoVerificacion&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;codigoVerificacion&#x27;)?.touched&quot;&gt;
+            Ingresa el código que recibiste en tu correo
+          &lt;/span&gt;
+          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;link-btn&quot; (click)&#x3D;&quot;reenviarCodigo()&quot; [disabled]&#x3D;&quot;cargando&quot;&gt;
+            ¿No recibiste el código? Reenviar
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;form-row&quot;&gt;
+          &lt;div class&#x3D;&quot;field-group&quot;&gt;
+            &lt;label&gt;Nombre&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              formControlName&#x3D;&quot;nombre&quot;
+              placeholder&#x3D;&quot;Juan&quot;
+              [class.error-input]&#x3D;&quot;formRegistro.get(&#x27;nombre&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;nombre&#x27;)?.touched&quot;&gt;
+            &lt;span class&#x3D;&quot;field-error&quot; *ngIf&#x3D;&quot;formRegistro.get(&#x27;nombre&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;nombre&#x27;)?.touched&quot;&gt;
+              Mínimo 2 caracteres
+            &lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;field-group&quot;&gt;
+            &lt;label&gt;Apellido&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              formControlName&#x3D;&quot;apellido&quot;
+              placeholder&#x3D;&quot;Pérez&quot;
+              [class.error-input]&#x3D;&quot;formRegistro.get(&#x27;apellido&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;apellido&#x27;)?.touched&quot;&gt;
+            &lt;span class&#x3D;&quot;field-error&quot; *ngIf&#x3D;&quot;formRegistro.get(&#x27;apellido&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;apellido&#x27;)?.touched&quot;&gt;
+              Mínimo 2 caracteres
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;field-group&quot;&gt;
+          &lt;label&gt;Nombre de usuario&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            formControlName&#x3D;&quot;nombreUsuario&quot;
+            placeholder&#x3D;&quot;juanperez&quot;
+            autocomplete&#x3D;&quot;username&quot;
+            [class.error-input]&#x3D;&quot;formRegistro.get(&#x27;nombreUsuario&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;nombreUsuario&#x27;)?.touched&quot;&gt;
+          &lt;span class&#x3D;&quot;field-error&quot; *ngIf&#x3D;&quot;formRegistro.get(&#x27;nombreUsuario&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;nombreUsuario&#x27;)?.touched&quot;&gt;
+            Mínimo 3 caracteres
+          &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;field-group&quot;&gt;
+          &lt;label&gt;Contraseña&lt;/label&gt;
+          &lt;div class&#x3D;&quot;password-wrapper&quot;&gt;
+            &lt;input
+              [type]&#x3D;&quot;mostrarContrasena ? &#x27;text&#x27; : &#x27;password&#x27;&quot;
+              formControlName&#x3D;&quot;contrasena&quot;
+              placeholder&#x3D;&quot;Mínimo 8 caracteres&quot;
+              autocomplete&#x3D;&quot;new-password&quot;
+              [class.error-input]&#x3D;&quot;formRegistro.get(&#x27;contrasena&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;contrasena&#x27;)?.touched&quot;&gt;
+            &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;password-toggle&quot; (click)&#x3D;&quot;toggleContrasena()&quot;
+                    [attr.aria-label]&#x3D;&quot;mostrarContrasena ? &#x27;Ocultar contraseña&#x27; : &#x27;Mostrar contraseña&#x27;&quot;&gt;
+              &lt;svg *ngIf&#x3D;&quot;!mostrarContrasena&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+                &lt;path d&#x3D;&quot;M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z&quot;&gt;&lt;/path&gt;
+                &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;3&quot;&gt;&lt;/circle&gt;
+              &lt;/svg&gt;
+              &lt;svg *ngIf&#x3D;&quot;mostrarContrasena&quot; width&#x3D;&quot;20&quot; height&#x3D;&quot;20&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+                &lt;path d&#x3D;&quot;M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24&quot;&gt;&lt;/path&gt;
+                &lt;line x1&#x3D;&quot;1&quot; y1&#x3D;&quot;1&quot; x2&#x3D;&quot;23&quot; y2&#x3D;&quot;23&quot;&gt;&lt;/line&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;span class&#x3D;&quot;field-error&quot; *ngIf&#x3D;&quot;formRegistro.get(&#x27;contrasena&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;contrasena&#x27;)?.touched&quot;&gt;
+            Mínimo 8 caracteres
+          &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;field-group&quot;&gt;
+          &lt;label&gt;Teléfono&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            formControlName&#x3D;&quot;telefono&quot;
+            placeholder&#x3D;&quot;3001234567&quot;
+            maxlength&#x3D;&quot;10&quot;
+            [class.error-input]&#x3D;&quot;formRegistro.get(&#x27;telefono&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;telefono&#x27;)?.touched&quot;&gt;
+          &lt;span class&#x3D;&quot;field-error&quot; *ngIf&#x3D;&quot;formRegistro.get(&#x27;telefono&#x27;)?.invalid &amp;&amp; formRegistro.get(&#x27;telefono&#x27;)?.touched&quot;&gt;
+            Debe contener exactamente 10 dígitos
+          &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;actions-row&quot;&gt;
+          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn-back&quot; (click)&#x3D;&quot;volverACorreo()&quot; [disabled]&#x3D;&quot;cargando&quot;&gt;
+            ← Cambiar correo
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn-submit btn-flex&quot; [disabled]&#x3D;&quot;formRegistro.invalid || cargando&quot;&gt;
+            &lt;div class&#x3D;&quot;spinner&quot; *ngIf&#x3D;&quot;cargando&quot;&gt;&lt;/div&gt;
+            {{ cargando ? &#x27;Creando cuenta...&#x27; : &#x27;Crear cuenta&#x27; }}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/ng-container&gt;
+
+    &lt;p class&#x3D;&quot;auth-footer&quot;&gt;
+      ¿Ya tienes cuenta? &lt;a routerLink&#x3D;&quot;/login&quot;&gt;Inicia sesión&lt;/a&gt;
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="styleData">
+                <p class="comment">
+                    <code>./register.component.css</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">.auth-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  padding: 2rem;
+}
+
+.auth-card {
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.08);
+  border: 1.5px solid var(--bg-hover);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.steps-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 0.5rem;
+}
+
+.step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-hover);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.step-circle.active {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  box-shadow: 0 0 0 5px rgba(230,57,70,0.15);
+}
+
+.step-circle.done {
+  background: var(--info);
+  color: var(--text-on-accent);
+}
+
+.step-line {
+  width: 60px;
+  height: 2px;
+  background: var(--bg-hover);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background 0.3s;
+}
+
+.step-line.done {
+  background: var(--info);
+}
+
+.steps-labels {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.75rem;
+}
+
+.steps-labels span {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.3s;
+  text-align: center;
+  width: 92px;
+}
+
+.steps-labels span.active {
+  color: var(--accent);
+}
+
+.auth-title {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.5px;
+}
+
+.auth-sub {
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  margin: 0 0 1.5rem;
+  line-height: 1.5;
+}
+
+.auth-sub strong { color: var(--accent); }
+
+.msg-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid;
+  word-break: normal;
+  white-space: normal;
+  font-weight: 500;
+}
+
+.msg-box svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.msg-box span {
+  flex: 1;
+  word-break: break-word;
+  font-family: &#x27;Sora&#x27;, sans-serif !important;
+  font-style: normal;
+}
+
+.msg-error {
+  background: var(--bg-error-light);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  color: var(--error-dark);
+  border-color: var(--error);
+}
+
+.msg-success {
+  background: var(--bg-success-light);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.codigo-section {
+  background: var(--accent-light);
+  border: 1.5px dashed var(--accent-light);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.codigo-label {
+  display: block;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.codigo-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid var(--accent-light);
+  border-radius: 10px;
+  font-family: &#x27;JetBrains Mono&#x27;, &#x27;Courier New&#x27;, monospace;
+  font-size: 1.3rem;
+  letter-spacing: 4px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: border 0.2s;
+  outline: none;
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+.codigo-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(230,57,70,0.1);
+}
+
+.link-btn {
+  display: block;
+  background: none;
+  border: none;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 8px 0 0;
+  text-decoration: underline;
+}
+
+.link-btn:hover { color: var(--accent-hover); }
+.link-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field-group {
+  margin-bottom: 1rem;
+}
+
+.field-group label {
+  display: block;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+
+.field-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border-primary);
+  border-radius: 10px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: border 0.2s, background 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.field-group input:focus {
+  border-color: var(--accent);
+  background: var(--bg-secondary);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.field-group input.error-input {
+  border-color: var(--accent);
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 44px !important;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
+}
+
+.password-toggle:hover {
+  color: var(--accent);
+}
+
+.password-toggle:focus {
+  outline: none;
+  color: var(--accent);
+}
+
+.field-error {
+  display: block;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-top: 3px;
+}
+
+.actions-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border: none;
+  border-radius: 12px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(230,57,70,0.3);
+}
+
+.btn-submit.btn-flex { flex: 1; }
+
+.btn-submit:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(230,57,70,0.35);
+}
+
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-back {
+  padding: 14px 18px;
+  background: transparent;
+  border: 1.5px solid var(--border-primary);
+  border-radius: 12px;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-back:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-back:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: var(--text-on-accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.auth-footer {
+  text-align: center;
+  margin: 1.5rem 0 0;
+  font-family: &#x27;Sora&#x27;, sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
+}
+
+.auth-footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer a:hover { text-decoration: underline; }
+
+@media (max-width: 500px) {
+  .form-row { grid-template-columns: 1fr; }
+  .actions-row { flex-direction: column; }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="auth-page">  <div class="auth-card">    <div class="auth-brand">      <div class="brand-dot"></div>      <span>SuperConvert</span>    </div>    <div class="steps-indicator">      <div class="step-circle" [class.active]="paso === 1" [class.done]="paso > 1">        <span *ngIf="paso === 1">1</span>        <span *ngIf="paso > 1">✓</span>      </div>      <div class="step-line" [class.done]="paso > 1"></div>      <div class="step-circle" [class.active]="paso === 2">2</div>    </div>    <div class="steps-labels">      <span [class.active]="paso === 1">Verificar correo</span>      <span [class.active]="paso === 2">Crear cuenta</span>    </div>    <ng-container *ngIf="paso === 1">      <h2 class="auth-title">Verifica tu correo</h2>      <p class="auth-sub">Te enviaremos un código de verificación a tu correo electrónico.</p>      <div class="msg-box msg-error" *ngIf="error">        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">          <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>          <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>          <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>        </svg>        <span>{{ error }}</span>      </div>      <div class="msg-box msg-success" *ngIf="mensajeExito">        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">          <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-success" stroke-width="2"/>          <path d="M9 12l2 2 4-4" stroke="currentColor" class="icon-success" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>        </svg>        <span>{{ mensajeExito }}</span>      </div>      <form [formGroup]="formCorreo" (ngSubmit)="solicitarCodigo()">        <div class="field-group">          <label>Correo electrónico</label>          <input            type="email"            formControlName="correo"            placeholder="tu@correo.com"            autocomplete="email"            [class.error-input]="formCorreo.get(\'correo\')?.invalid && formCorreo.get(\'correo\')?.touched">          <span class="field-error" *ngIf="formCorreo.get(\'correo\')?.invalid && formCorreo.get(\'correo\')?.touched">            Ingresa un correo válido          </span>        </div>        <button type="submit" class="btn-submit" [disabled]="formCorreo.invalid || cargando">          <div class="spinner" *ngIf="cargando"></div>          {{ cargando ? \'Enviando código...\' : \'Enviar código de verificación\' }}        </button>      </form>    </ng-container>    <ng-container *ngIf="paso === 2">      <h2 class="auth-title">Completa tu registro</h2>      <p class="auth-sub">        Código enviado a <strong>{{ correoVerificado }}</strong>      </p>      <div class="msg-box msg-error" *ngIf="error">        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">          <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>          <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>          <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>        </svg>        <span>{{ error }}</span>      </div>      <div class="msg-box msg-success" *ngIf="mensajeExito">        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">          <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-success" stroke-width="2"/>          <path d="M9 12l2 2 4-4" stroke="currentColor" class="icon-success" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>        </svg>        <span>{{ mensajeExito }}</span>      </div>      <form [formGroup]="formRegistro" (ngSubmit)="registrar()">        <div class="codigo-section">          <label class="codigo-label">Código de verificación</label>          <input            type="text"            formControlName="codigoVerificacion"            class="codigo-input"            placeholder="Ingresa el código"            maxlength="10"            autocomplete="one-time-code">          <span class="field-error" *ngIf="formRegistro.get(\'codigoVerificacion\')?.invalid && formRegistro.get(\'codigoVerificacion\')?.touched">            Ingresa el código que recibiste en tu correo          </span>          <button type="button" class="link-btn" (click)="reenviarCodigo()" [disabled]="cargando">            ¿No recibiste el código? Reenviar          </button>        </div>        <div class="form-row">          <div class="field-group">            <label>Nombre</label>            <input              type="text"              formControlName="nombre"              placeholder="Juan"              [class.error-input]="formRegistro.get(\'nombre\')?.invalid && formRegistro.get(\'nombre\')?.touched">            <span class="field-error" *ngIf="formRegistro.get(\'nombre\')?.invalid && formRegistro.get(\'nombre\')?.touched">              Mínimo 2 caracteres            </span>          </div>          <div class="field-group">            <label>Apellido</label>            <input              type="text"              formControlName="apellido"              placeholder="Pérez"              [class.error-input]="formRegistro.get(\'apellido\')?.invalid && formRegistro.get(\'apellido\')?.touched">            <span class="field-error" *ngIf="formRegistro.get(\'apellido\')?.invalid && formRegistro.get(\'apellido\')?.touched">              Mínimo 2 caracteres            </span>          </div>        </div>        <div class="field-group">          <label>Nombre de usuario</label>          <input            type="text"            formControlName="nombreUsuario"            placeholder="juanperez"            autocomplete="username"            [class.error-input]="formRegistro.get(\'nombreUsuario\')?.invalid && formRegistro.get(\'nombreUsuario\')?.touched">          <span class="field-error" *ngIf="formRegistro.get(\'nombreUsuario\')?.invalid && formRegistro.get(\'nombreUsuario\')?.touched">            Mínimo 3 caracteres          </span>        </div>        <div class="field-group">          <label>Contraseña</label>          <div class="password-wrapper">            <input              [type]="mostrarContrasena ? \'text\' : \'password\'"              formControlName="contrasena"              placeholder="Mínimo 8 caracteres"              autocomplete="new-password"              [class.error-input]="formRegistro.get(\'contrasena\')?.invalid && formRegistro.get(\'contrasena\')?.touched">            <button type="button" class="password-toggle" (click)="toggleContrasena()"                    [attr.aria-label]="mostrarContrasena ? \'Ocultar contraseña\' : \'Mostrar contraseña\'">              <svg *ngIf="!mostrarContrasena" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>                <circle cx="12" cy="12" r="3"></circle>              </svg>              <svg *ngIf="mostrarContrasena" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>                <line x1="1" y1="1" x2="23" y2="23"></line>              </svg>            </button>          </div>          <span class="field-error" *ngIf="formRegistro.get(\'contrasena\')?.invalid && formRegistro.get(\'contrasena\')?.touched">            Mínimo 8 caracteres          </span>        </div>        <div class="field-group">          <label>Teléfono</label>          <input            type="text"            formControlName="telefono"            placeholder="3001234567"            maxlength="10"            [class.error-input]="formRegistro.get(\'telefono\')?.invalid && formRegistro.get(\'telefono\')?.touched">          <span class="field-error" *ngIf="formRegistro.get(\'telefono\')?.invalid && formRegistro.get(\'telefono\')?.touched">            Debe contener exactamente 10 dígitos          </span>        </div>        <div class="actions-row">          <button type="button" class="btn-back" (click)="volverACorreo()" [disabled]="cargando">            ← Cambiar correo          </button>          <button type="submit" class="btn-submit btn-flex" [disabled]="formRegistro.invalid || cargando">            <div class="spinner" *ngIf="cargando"></div>            {{ cargando ? \'Creando cuenta...\' : \'Crear cuenta\' }}          </button>        </div>      </form>    </ng-container>    <p class="auth-footer">      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>    </p>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AdminDashboardComponent', 'selector': 'app-admin-dashboard'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ConversionToolComponent', 'selector': 'app-conversion-tool'},{'name': 'HistorialComponent', 'selector': 'app-historial'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MiPerfilComponent', 'selector': 'app-mi-perfil'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'RegisterComponent', 'selector': 'app-register'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'RegisterComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'RegisterComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

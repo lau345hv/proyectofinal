@@ -1,0 +1,93 @@
+<div class="perfil-container">
+
+    <div class="perfil-header">
+        <div class="perfil-header-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+        </div>
+        <div>
+            <h2 class="perfil-titulo">Mi Perfil</h2>
+            <p class="perfil-subtitulo">Actualiza tus datos personales y de acceso.</p>
+        </div>
+    </div>
+
+
+    <div class="estado-carga" *ngIf="cargando">
+        <div class="spinner"></div>
+        <span>Cargando perfil...</span>
+    </div>
+
+
+    <div class="alerta alerta-error" *ngIf="errorCarga">
+        {{ errorCarga }}
+    </div>
+
+
+    <div class="form-card" *ngIf="!cargando && !errorCarga">
+
+
+        <h3 class="section-title">Información Personal</h3>
+        <div class="form-grid">
+
+            <div class="field-group">
+                <label>Nombre</label>
+                <input type="text" [(ngModel)]="perfil.nombre" class="form-input" placeholder="Tu nombre">
+            </div>
+
+            <div class="field-group">
+                <label>Apellido</label>
+                <input type="text" [(ngModel)]="perfil.apellido" class="form-input" placeholder="Tu apellido">
+            </div>
+
+            <div class="field-group">
+                <label>Teléfono</label>
+                <input type="text" [(ngModel)]="perfil.telefono" class="form-input" placeholder="3XXXXXXXXX">
+            </div>
+
+            <div class="field-group">
+                <label>Rol</label>
+                <input type="text" [value]="perfil.rol || ''" class="form-input" readonly>
+                <small class="hint">El rol no puede modificarse.</small>
+            </div>
+
+        </div>
+
+
+        <h3 class="section-title mt-40">Cuenta y Seguridad</h3>
+        <div class="form-grid">
+
+            <div class="field-group">
+                <label>Nombre de usuario</label>
+                <input type="text" [(ngModel)]="perfil.nombreUsuario" class="form-input" placeholder="nombreUsuario">
+            </div>
+
+            <div class="field-group">
+                <label>Correo electrónico</label>
+                <input type="email" [value]="perfil.correo" class="form-input" readonly>
+                <small class="hint">El correo no puede modificarse.</small>
+            </div>
+
+            <div class="field-group field-full">
+                <label>Nueva contraseña</label>
+                <input type="password" [(ngModel)]="nuevaContrasena" class="form-input"
+                       placeholder="Dejar en blanco para no cambiar">
+                <small class="hint">Solo se actualizará si escribes algo aquí.</small>
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+            <div class="alerta alerta-exito" *ngIf="mensajeExito">{{ mensajeExito }}</div>
+            <div class="alerta alerta-error" *ngIf="mensajeError">{{ mensajeError }}</div>
+            <button class="btn-guardar" (click)="guardar()" [disabled]="guardando">
+                <span *ngIf="!guardando">Guardar cambios</span>
+                <span *ngIf="guardando">Guardando...</span>
+            </button>
+        </div>
+
+    </div>
+</div>

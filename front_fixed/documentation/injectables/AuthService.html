@@ -1,0 +1,1608 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>convertidor-front documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">convertidor-front documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AuthService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/services/auth.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Servicio central de autenticación de la aplicación.</p>
+<p>Gestiona el ciclo de vida de la sesión del usuario: registro, login,
+logout y consulta del perfil. Persiste el token JWT y los datos del
+usuario en <code>localStorage</code> y expone el usuario activo a través del
+observable <code>currentUser$</code>.</p>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#currentUser$" >currentUser$</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#userSubject" >userSubject</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#cargarUsuario" >cargarUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#clearLocal" >clearLocal</a>
+                            </li>
+                            <li>
+                                <a href="#getAuthToken" >getAuthToken</a>
+                            </li>
+                            <li>
+                                <a href="#getCurrentUser" >getCurrentUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#guardarUsuario" >guardarUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#isAdmin" >isAdmin</a>
+                            </li>
+                            <li>
+                                <a href="#isLoggedIn" >isLoggedIn</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#limpiarSesionLocal" >limpiarSesionLocal</a>
+                            </li>
+                            <li>
+                                <a href="#login" >login</a>
+                            </li>
+                            <li>
+                                <a href="#logout" >logout</a>
+                            </li>
+                            <li>
+                                <a href="#miPerfil" >miPerfil</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#persistirSesion" >persistirSesion</a>
+                            </li>
+                            <li>
+                                <a href="#registrar" >registrar</a>
+                            </li>
+                            <li>
+                                <a href="#solicitarCodigo" >solicitarCodigo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#toLoginResponse" >toLoginResponse</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(http: <a href="https://angular.io/api/common/http/HttpClient" target="_blank">HttpClient</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/services/auth.service.ts:33</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>http</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/common/http/HttpClient" target="_blank" >HttpClient</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Cliente HTTP de Angular para las peticiones REST.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarUsuario"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>cargarUsuario</b></span>
+                        <a href="#cargarUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cargarUsuario()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="249"
+                                    class="link-to-prism">src/app/services/auth.service.ts:249</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga el usuario almacenado en <code>localStorage</code> al inicializar el servicio.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UsuarioDTO.html" target="_self" >UsuarioDTO | null</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>El <code>UsuarioDTO</code> parseado, o <code>null</code> si no existe o el JSON es inválido.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearLocal"></a>
+                    <span class="name">
+                        <span ><b>clearLocal</b></span>
+                        <a href="#clearLocal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearLocal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/services/auth.service.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Limpia la sesión local de forma pública.
+Útil para forzar el cierre de sesión desde otros componentes
+(ej. al detectar un error 401).</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAuthToken"></a>
+                    <span class="name">
+                        <span ><b>getAuthToken</b></span>
+                        <a href="#getAuthToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAuthToken()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">src/app/services/auth.service.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna el token JWT guardado en <code>localStorage</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>El token como string, o <code>null</code> si no existe.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCurrentUser"></a>
+                    <span class="name">
+                        <span ><b>getCurrentUser</b></span>
+                        <a href="#getCurrentUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCurrentUser()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/app/services/auth.service.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retorna el usuario activo almacenado en el BehaviorSubject.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UsuarioDTO.html" target="_self" >UsuarioDTO | null</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>El <code>UsuarioDTO</code> actual, o <code>null</code> si no hay sesión activa.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardarUsuario"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>guardarUsuario</b></span>
+                        <a href="#guardarUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>guardarUsuario(u: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="239"
+                                    class="link-to-prism">src/app/services/auth.service.ts:239</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Guarda el objeto de usuario en <code>localStorage</code> y lo emite en
+el BehaviorSubject para notificar a los suscriptores.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>u</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Objeto de usuario a persistir.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isAdmin"></a>
+                    <span class="name">
+                        <span ><b>isAdmin</b></span>
+                        <a href="#isAdmin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isAdmin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/services/auth.service.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica si el usuario activo tiene rol de administrador.</p>
+<p>Comprueba tanto el campo <code>rol</code> como el array <code>roles</code> para compatibilidad
+con distintas versiones de la respuesta del backend.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si el usuario es ADMIN, <code>false</code> en caso contrario.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isLoggedIn"></a>
+                    <span class="name">
+                        <span ><b>isLoggedIn</b></span>
+                        <a href="#isLoggedIn"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isLoggedIn()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/app/services/auth.service.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifica si el usuario tiene una sesión activa comprobando la
+existencia del token JWT y del usuario en el BehaviorSubject.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si hay sesión activa, <code>false</code> en caso contrario.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="limpiarSesionLocal"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>limpiarSesionLocal</b></span>
+                        <a href="#limpiarSesionLocal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>limpiarSesionLocal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="121"
+                                    class="link-to-prism">src/app/services/auth.service.ts:121</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina el token JWT y los datos del usuario de <code>localStorage</code>
+y emite <code>null</code> en <code>currentUser$</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="login"></a>
+                    <span class="name">
+                        <span ><b>login</b></span>
+                        <a href="#login"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>login(nombreUsuario: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, contrasena: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/app/services/auth.service.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicia sesión con nombre de usuario y contraseña.</p>
+<p>El backend retorna <code>{ token, rol, id, nombreUsuario }</code>. El token
+se guarda en <code>localStorage</code> y el perfil completo se carga en
+segundo plano.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>nombreUsuario</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Nombre de usuario único.</p>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>contrasena</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Contraseña en texto plano.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/LoginResponse.html" target="_self" >Observable&lt;LoginResponse&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite un <code>LoginResponse</code> con el usuario autenticado.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logout"></a>
+                    <span class="name">
+                        <span ><b>logout</b></span>
+                        <a href="#logout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>logout()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/services/auth.service.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cierra la sesión del usuario llamando al endpoint del backend y
+limpiando los datos locales independientemente del resultado.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite <code>&#39;ok&#39;</code> al completar.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="miPerfil"></a>
+                    <span class="name">
+                        <span ><b>miPerfil</b></span>
+                        <a href="#miPerfil"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>miPerfil()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/app/services/auth.service.ts:132</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene el perfil completo del usuario autenticado desde el backend.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UsuarioDTO.html" target="_self" >Observable&lt;UsuarioDTO&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite el <code>UsuarioDTO</code> del usuario activo.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="persistirSesion"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>persistirSesion</b></span>
+                        <a href="#persistirSesion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>persistirSesion(res: <a href="../interfaces/AuthBackendResponse.html" target="_self">AuthBackendResponse</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="195"
+                                    class="link-to-prism">src/app/services/auth.service.ts:195</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Persiste el token JWT en <code>localStorage</code>, guarda un objeto mínimo del
+usuario de forma inmediata (para que <code>isAdmin()</code> funcione al instante)
+y lanza una petición en segundo plano a <code>/miPerfil</code> para enriquecer
+los datos con la información completa del usuario.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>res</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AuthBackendResponse.html" target="_self" >AuthBackendResponse</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Respuesta cruda del backend tras login o registro.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registrar"></a>
+                    <span class="name">
+                        <span ><b>registrar</b></span>
+                        <a href="#registrar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>registrar(data: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/app/services/auth.service.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Paso 2 del registro: crea la cuenta del usuario enviando sus datos
+junto con el código de verificación recibido por correo.</p>
+<p>El backend recibe el body como <code>UsuarioDTO</code> y el código como
+query param <code>codigoVerificacion</code>.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Objeto con los datos del usuario y el código de verificación.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/LoginResponse.html" target="_self" >Observable&lt;LoginResponse&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite un <code>LoginResponse</code> con el usuario creado.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="solicitarCodigo"></a>
+                    <span class="name">
+                        <span ><b>solicitarCodigo</b></span>
+                        <a href="#solicitarCodigo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>solicitarCodigo(correo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/services/auth.service.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Paso 1 del registro: solicita el envío de un código de verificación
+al correo indicado.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>correo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Dirección de correo electrónico del futuro usuario.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable que emite la respuesta del servidor como texto.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toLoginResponse"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>toLoginResponse</b></span>
+                        <a href="#toLoginResponse"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toLoginResponse(res: <a href="../interfaces/AuthBackendResponse.html" target="_self">AuthBackendResponse</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="222"
+                                    class="link-to-prism">src/app/services/auth.service.ts:222</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Construye un <code>LoginResponse</code> normalizado a partir de la respuesta
+cruda del backend.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>res</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AuthBackendResponse.html" target="_self" >AuthBackendResponse</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Respuesta cruda del backend.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/LoginResponse.html" target="_self" >LoginResponse</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>LoginResponse</code> con mensaje <code>&#39;ok&#39;</code> y datos mínimos del usuario.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="currentUser$"></a>
+                    <span class="name">
+                        <span ><b>currentUser$</b></span>
+                        <a href="#currentUser$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.userSubject.asObservable()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/services/auth.service.ts:33</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observable público del usuario activo. Los componentes pueden
+suscribirse para reaccionar a cambios de sesión.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userSubject"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>userSubject</b></span>
+                        <a href="#userSubject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new BehaviorSubject&lt;UsuarioDTO | null&gt;(this.cargarUsuario())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/services/auth.service.ts:27</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>BehaviorSubject que mantiene el usuario activo. Se inicializa
+leyendo el valor guardado en <code>localStorage</code>.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { Observable, BehaviorSubject, of } from &#x27;rxjs&#x27;;
+import { tap, switchMap } from &#x27;rxjs/operators&#x27;;
+import { UsuarioDTO } from &#x27;../models/usuario-dto&#x27;;
+import { AuthBackendResponse, LoginResponse } from &#x27;../models/auth-backend-response&#x27;;
+
+const API  &#x3D; &#x27;http://gpcueb.org/SuperConvertLJJJ&#x27;;
+const AUTH &#x3D; &#x60;${API}/autenticacion&#x60;;
+const USER &#x3D; &#x60;${API}/usuario&#x60;;
+
+/**
+ * Servicio central de autenticación de la aplicación.
+ *
+ * Gestiona el ciclo de vida de la sesión del usuario: registro, login,
+ * logout y consulta del perfil. Persiste el token JWT y los datos del
+ * usuario en &#x60;localStorage&#x60; y expone el usuario activo a través del
+ * observable &#x60;currentUser$&#x60;.
+ */
+@Injectable({ providedIn: &#x27;root&#x27; })
+export class AuthService {
+
+    /**
+     * BehaviorSubject que mantiene el usuario activo. Se inicializa
+     * leyendo el valor guardado en &#x60;localStorage&#x60;.
+     */
+    private userSubject &#x3D; new BehaviorSubject&lt;UsuarioDTO | null&gt;(this.cargarUsuario());
+
+    /**
+     * Observable público del usuario activo. Los componentes pueden
+     * suscribirse para reaccionar a cambios de sesión.
+     */
+    currentUser$ &#x3D; this.userSubject.asObservable();
+
+    /** @param http Cliente HTTP de Angular para las peticiones REST. */
+    constructor(private http: HttpClient) {}
+
+    /**
+     * Paso 1 del registro: solicita el envío de un código de verificación
+     * al correo indicado.
+     *
+     * @param correo Dirección de correo electrónico del futuro usuario.
+     * @returns Observable que emite la respuesta del servidor como texto.
+     */
+    solicitarCodigo(correo: string): Observable&lt;string&gt; {
+        return this.http.post(&#x60;${AUTH}/solicitar-codigo&#x60;, null, {
+            params: { correo },
+            responseType: &#x27;text&#x27;
+        });
+    }
+
+    /**
+     * Paso 2 del registro: crea la cuenta del usuario enviando sus datos
+     * junto con el código de verificación recibido por correo.
+     *
+     * El backend recibe el body como &#x60;UsuarioDTO&#x60; y el código como
+     * query param &#x60;codigoVerificacion&#x60;.
+     *
+     * @param data Objeto con los datos del usuario y el código de verificación.
+     * @returns Observable que emite un &#x60;LoginResponse&#x60; con el usuario creado.
+     */
+    registrar(data: {
+        nombre: string; apellido: string; correo: string;
+        nombreUsuario: string; contrasena: string; telefono: string;
+        codigoVerificacion: string;
+    }): Observable&lt;LoginResponse&gt; {
+        const body &#x3D; {
+            nombre: data.nombre,
+            apellido: data.apellido,
+            correo: data.correo,
+            nombreUsuario: data.nombreUsuario,
+            contrasena: data.contrasena,
+            telefono: data.telefono
+        };
+        return this.http.post&lt;AuthBackendResponse&gt;(&#x60;${AUTH}/register&#x60;, body, {
+            params: { codigoVerificacion: data.codigoVerificacion }
+        }).pipe(
+            tap(res &#x3D;&gt; this.persistirSesion(res)),
+            switchMap(res &#x3D;&gt; of(this.toLoginResponse(res)))
+        );
+    }
+
+    /**
+     * Inicia sesión con nombre de usuario y contraseña.
+     *
+     * El backend retorna &#x60;{ token, rol, id, nombreUsuario }&#x60;. El token
+     * se guarda en &#x60;localStorage&#x60; y el perfil completo se carga en
+     * segundo plano.
+     *
+     * @param nombreUsuario Nombre de usuario único.
+     * @param contrasena    Contraseña en texto plano.
+     * @returns Observable que emite un &#x60;LoginResponse&#x60; con el usuario autenticado.
+     */
+    login(nombreUsuario: string, contrasena: string): Observable&lt;LoginResponse&gt; {
+        return this.http.post&lt;AuthBackendResponse&gt;(&#x60;${AUTH}/login&#x60;, { nombreUsuario, contrasena }).pipe(
+            tap(res &#x3D;&gt; this.persistirSesion(res)),
+            switchMap(res &#x3D;&gt; of(this.toLoginResponse(res)))
+        );
+    }
+
+    /**
+     * Cierra la sesión del usuario llamando al endpoint del backend y
+     * limpiando los datos locales independientemente del resultado.
+     *
+     * @returns Observable que emite &#x60;&#x27;ok&#x27;&#x60; al completar.
+     */
+    logout(): Observable&lt;string&gt; {
+        return this.http.post(&#x60;${AUTH}/logout&#x60;, {}, { responseType: &#x27;text&#x27; }).pipe(
+            tap({
+                next: () &#x3D;&gt; this.limpiarSesionLocal(),
+                error: () &#x3D;&gt; this.limpiarSesionLocal()
+            }),
+            switchMap(() &#x3D;&gt; of(&#x27;ok&#x27;))
+        );
+    }
+
+    /**
+     * Elimina el token JWT y los datos del usuario de &#x60;localStorage&#x60;
+     * y emite &#x60;null&#x60; en &#x60;currentUser$&#x60;.
+     */
+    private limpiarSesionLocal(): void {
+        localStorage.removeItem(&#x27;jwt_token&#x27;);
+        localStorage.removeItem(&#x27;usuario&#x27;);
+        this.userSubject.next(null);
+    }
+
+    /**
+     * Obtiene el perfil completo del usuario autenticado desde el backend.
+     *
+     * @returns Observable que emite el &#x60;UsuarioDTO&#x60; del usuario activo.
+     */
+    miPerfil(): Observable&lt;UsuarioDTO&gt; {
+        return this.http.get&lt;UsuarioDTO&gt;(&#x60;${USER}/miPerfil&#x60;);
+    }
+
+    /**
+     * Verifica si el usuario tiene una sesión activa comprobando la
+     * existencia del token JWT y del usuario en el BehaviorSubject.
+     *
+     * @returns &#x60;true&#x60; si hay sesión activa, &#x60;false&#x60; en caso contrario.
+     */
+    isLoggedIn(): boolean {
+        return !!localStorage.getItem(&#x27;jwt_token&#x27;) &amp;&amp; !!this.userSubject.value;
+    }
+
+    /**
+     * Verifica si el usuario activo tiene rol de administrador.
+     *
+     * Comprueba tanto el campo &#x60;rol&#x60; como el array &#x60;roles&#x60; para compatibilidad
+     * con distintas versiones de la respuesta del backend.
+     *
+     * @returns &#x60;true&#x60; si el usuario es ADMIN, &#x60;false&#x60; en caso contrario.
+     */
+    isAdmin(): boolean {
+        const u &#x3D; this.userSubject.value as any;
+        if (!u) return false;
+        return u.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27; || u.roles?.includes(&#x27;ADMIN&#x27;) || false;
+    }
+
+    /**
+     * Retorna el usuario activo almacenado en el BehaviorSubject.
+     *
+     * @returns El &#x60;UsuarioDTO&#x60; actual, o &#x60;null&#x60; si no hay sesión activa.
+     */
+    getCurrentUser(): UsuarioDTO | null {
+        return this.userSubject.value;
+    }
+
+    /**
+     * Limpia la sesión local de forma pública.
+     * Útil para forzar el cierre de sesión desde otros componentes
+     * (ej. al detectar un error 401).
+     */
+    clearLocal(): void {
+        this.limpiarSesionLocal();
+    }
+
+    /**
+     * Retorna el token JWT guardado en &#x60;localStorage&#x60;.
+     *
+     * @returns El token como string, o &#x60;null&#x60; si no existe.
+     */
+    getAuthToken(): string | null {
+        return localStorage.getItem(&#x27;jwt_token&#x27;);
+    }
+
+    /**
+     * Persiste el token JWT en &#x60;localStorage&#x60;, guarda un objeto mínimo del
+     * usuario de forma inmediata (para que &#x60;isAdmin()&#x60; funcione al instante)
+     * y lanza una petición en segundo plano a &#x60;/miPerfil&#x60; para enriquecer
+     * los datos con la información completa del usuario.
+     *
+     * @param res Respuesta cruda del backend tras login o registro.
+     */
+    private persistirSesion(res: AuthBackendResponse): void {
+        localStorage.setItem(&#x27;jwt_token&#x27;, res.token);
+        const minimo: any &#x3D; {
+            id: res.id,
+            nombreUsuario: res.nombreUsuario,
+            nombre: &#x27;&#x27;, apellido: &#x27;&#x27;, correo: &#x27;&#x27;, telefono: &#x27;&#x27;,
+            rol: res.rol,
+            roles: [res.rol]
+        };
+        this.guardarUsuario(minimo);
+
+        this.http.get&lt;UsuarioDTO&gt;(&#x60;${USER}/miPerfil&#x60;).subscribe({
+            next: perfil &#x3D;&gt; {
+                const completo: any &#x3D; { ...perfil, rol: res.rol, roles: [res.rol] };
+                this.guardarUsuario(completo);
+            },
+            error: () &#x3D;&gt; {}
+        });
+    }
+
+    /**
+     * Construye un &#x60;LoginResponse&#x60; normalizado a partir de la respuesta
+     * cruda del backend.
+     *
+     * @param res Respuesta cruda del backend.
+     * @returns &#x60;LoginResponse&#x60; con mensaje &#x60;&#x27;ok&#x27;&#x60; y datos mínimos del usuario.
+     */
+    private toLoginResponse(res: AuthBackendResponse): LoginResponse {
+        const usuario: any &#x3D; {
+            id: res.id,
+            nombreUsuario: res.nombreUsuario,
+            nombre: &#x27;&#x27;, apellido: &#x27;&#x27;, correo: &#x27;&#x27;, telefono: &#x27;&#x27;,
+            rol: res.rol,
+            roles: [res.rol]
+        };
+        return { mensaje: &#x27;ok&#x27;, usuario };
+    }
+
+    /**
+     * Guarda el objeto de usuario en &#x60;localStorage&#x60; y lo emite en
+     * el BehaviorSubject para notificar a los suscriptores.
+     *
+     * @param u Objeto de usuario a persistir.
+     */
+    private guardarUsuario(u: any): void {
+        localStorage.setItem(&#x27;usuario&#x27;, JSON.stringify(u));
+        this.userSubject.next(u);
+    }
+
+    /**
+     * Carga el usuario almacenado en &#x60;localStorage&#x60; al inicializar el servicio.
+     *
+     * @returns El &#x60;UsuarioDTO&#x60; parseado, o &#x60;null&#x60; si no existe o el JSON es inválido.
+     */
+    private cargarUsuario(): UsuarioDTO | null {
+        try {
+            const raw &#x3D; localStorage.getItem(&#x27;usuario&#x27;);
+            return raw ? JSON.parse(raw) : null;
+        } catch { return null; }
+    }
+}</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'AuthService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

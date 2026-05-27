@@ -1,0 +1,115 @@
+<div class="home-container">
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Herramientas gratuitas de conversión</div>
+      <h1 class="hero-title">
+        Convierte tus archivos<br>
+        <span class="hero-highlight">al instante</span>
+      </h1>
+      <p class="hero-subtitle">
+        Audio, video e imágenes en los formatos más populares.<br>
+        Rápido, seguro y sin instalaciones.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" (click)="irAConvertir('audio')">Comenzar ahora</button>
+        <a class="btn-secondary" routerLink="/register" *ngIf="!auth.isLoggedIn()">Crear cuenta gratis</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-card card-1">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 19V6l12-3v13" stroke="currentColor" class="icon-accent" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="6" cy="19" r="3" stroke="currentColor" class="icon-accent" stroke-width="2"/>
+          <circle cx="18" cy="16" r="3" stroke="currentColor" class="icon-accent" stroke-width="2"/>
+        </svg>
+        <span>MP3 → WAV</span>
+      </div>
+      <div class="floating-card card-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <polygon points="23 7 16 12 23 17 23 7" stroke="currentColor" class="icon-info" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="1" y="5" width="15" height="14" rx="2" stroke="currentColor" class="icon-info" stroke-width="2"/>
+        </svg>
+        <span>MP4 → AVI</span>
+      </div>
+      <div class="floating-card card-3">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" class="icon-info" stroke-width="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" class="icon-info" stroke-width="2"/>
+          <path d="M21 15L16 10L5 21" stroke="currentColor" class="icon-info" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>PNG → WEBP</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="tools-section">
+    <div class="section-header">
+      <h2>Herramientas de conversión</h2>
+      <p>Selecciona el tipo de archivo que necesitas convertir</p>
+    </div>
+
+    <div class="tools-grid">
+      <div
+        class="tool-card"
+        *ngFor="let herramienta of herramientas"
+        (click)="irAConvertir(herramienta.tipo)"
+        [style.--card-color]="herramienta.color">
+
+        <div class="tool-icon-wrapper">
+          <div class="tool-icon" [style.background]="herramienta.color + '18'">
+            <ng-container [ngSwitch]="herramienta.icono">
+              <svg *ngSwitchCase="'audio'" width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <path d="M9 19V6l12-3v13" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="6" cy="19" r="3" [attr.stroke]="herramienta.color" stroke-width="2"/>
+                <circle cx="18" cy="16" r="3" [attr.stroke]="herramienta.color" stroke-width="2"/>
+              </svg>
+              <svg *ngSwitchCase="'video'" width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <polygon points="23 7 16 12 23 17 23 7" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="1" y="5" width="15" height="14" rx="2" [attr.stroke]="herramienta.color" stroke-width="2"/>
+              </svg>
+              <svg *ngSwitchCase="'imagen'" width="32" height="32" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="18" height="18" rx="2" [attr.stroke]="herramienta.color" stroke-width="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5" [attr.stroke]="herramienta.color" stroke-width="2"/>
+                <path d="M21 15L16 10L5 21" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="tool-info">
+          <h3 class="tool-title">{{ herramienta.titulo }}</h3>
+          <p class="tool-desc">{{ herramienta.descripcion }}</p>
+          <div class="tool-formats">
+            <span class="format-badge" *ngFor="let f of herramienta.formatos">{{ f }}</span>
+          </div>
+        </div>
+
+        <div class="tool-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12h14M12 5l7 7-7 7" [attr.stroke]="herramienta.color" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="feature-item">
+      <h4>Rápido</h4>
+      <p>Conversiones en segundos gracias a CloudConvert</p>
+    </div>
+    <div class="feature-item">
+      <h4>Seguro</h4>
+      <p>Tus archivos se procesan de forma privada</p>
+    </div>
+    <div class="feature-item">
+      <h4>Alta calidad</h4>
+      <p>Sin pérdida de calidad en la conversión</p>
+    </div>
+    <div class="feature-item">
+      <h4>Sin instalación</h4>
+      <p>Funciona directo en tu navegador</p>
+    </div>
+  </section>
+</div>

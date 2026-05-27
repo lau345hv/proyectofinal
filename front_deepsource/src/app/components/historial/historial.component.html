@@ -1,0 +1,87 @@
+<div class="historial-page">
+
+  <div class="historial-header">
+    <div class="header-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-accent" stroke-width="2"/>
+        <polyline points="12 6 12 12 16 14" stroke="currentColor" class="icon-accent" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Mi historial de conversiones</h1>
+      <p>Todos tus archivos convertidos en un solo lugar</p>
+    </div>
+    <button class="btn-refresh" (click)="cargar()">↺ Actualizar</button>
+  </div>
+
+  <div class="loading" *ngIf="cargando">
+    <div class="spinner-dark"></div> Cargando historial...
+  </div>
+
+  <div class="msg-box msg-error" *ngIf="error && !cargando">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" class="icon-error" stroke-width="2"/>
+      <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+      <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" class="icon-error" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span>{{ error }}</span>
+  </div>
+
+  <div class="empty-state" *ngIf="!cargando && !error && conversiones.length === 0">
+    <div class="empty-icon">📁</div>
+    <h3>Aún no tienes conversiones</h3>
+    <p>Cuando conviertas archivos, aparecerán aquí.</p>
+    <a class="btn-empty" routerLink="/">Convertir mi primer archivo</a>
+  </div>
+
+  <div class="conversions-grid" *ngIf="!cargando && !error && conversiones.length > 0">
+    <div
+      class="conversion-card"
+      *ngFor="let c of conversiones"
+      [style.--card-color]="colorTipo(c.tipoArchivo)">
+
+      <div class="card-top">
+        <span class="tipo-tag"
+              [style.background]="colorTipo(c.tipoArchivo) + '15'"
+              [style.color]="colorTipo(c.tipoArchivo)">
+          {{ c.tipoArchivo }}
+        </span>
+        <span class="estado-tag"
+              [class.estado-completado]="c.estado === 'COMPLETADO'"
+              [class.estado-fallido]="c.estado === 'FALLIDO'"
+              [class.estado-proceso]="c.estado === 'EN_PROCESO' || c.estado === 'PENDIENTE'">
+          {{ iconoEstado(c.estado) }} {{ c.estado }}
+        </span>
+      </div>
+
+      <p class="archivo-nombre" [title]="c.nombreArchivoOriginal">{{ c.nombreArchivoOriginal }}</p>
+
+      <div class="conversion-flow">
+        <span class="formato-tag">{{ c.formatoOrigen.toUpperCase() }}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" class="icon-muted" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="formato-tag formato-destino">{{ c.formatoDestino.toUpperCase() }}</span>
+      </div>
+
+      <p class="fecha">{{ c.fechaConversion | date:'dd/MM/yyyy HH:mm' }}</p>
+
+      <button
+        class="btn-descargar-mini"
+        *ngIf="c.estado === 'COMPLETADO' && c.urlDescarga"
+        [style.background]="colorTipo(c.tipoArchivo)"
+        (click)="descargar(c.urlDescarga)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"
+                stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Descargar
+      </button>
+
+      <p class="sin-descarga" *ngIf="c.estado === 'FALLIDO'">
+        La conversión falló. Intenta de nuevo.
+      </p>
+    </div>
+  </div>
+
+</div>

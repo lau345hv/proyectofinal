@@ -50,13 +50,13 @@ import co.edu.unbosque.proyectofinal.util.enums.TipoArchivo;
  * <p>
  * El flujo completo es:
  * <ol>
- *   <li>Crear un Job en CloudConvert con tres tareas: import-upload, convert
- *       y export-url.</li>
+ *   <li>Crear un Job en CloudConvert con cuatro tareas: import-upload, convert,
+ *       export-url del convertido y export-url del original.</li>
  *   <li>Subir el archivo binario al endpoint que devuelve la tarea
  *       import-upload.</li>
  *   <li>Hacer polling al estado del job hasta que termine.</li>
- *   <li>Tomar la URL de descarga del archivo convertido y registrar la
- *       operación en el historial del usuario.</li>
+ *   <li>Tomar la URL de descarga del archivo convertido y del original, y registrar
+ *       la operación en el historial del usuario.</li>
  * </ol>
  * </p>
  *
@@ -68,7 +68,7 @@ import co.edu.unbosque.proyectofinal.util.enums.TipoArchivo;
  * </ul>
  *
  * @author Equipo de desarrollo
- * @version 1.0
+ * @version 1.1
  */
 @Service
 public class CloudConvertService {
@@ -196,7 +196,6 @@ public class CloudConvertService {
 	 * @throws ApiExternaException             si falla la comunicación con CloudConvert
 	 * @throws ConversionFallidaException      si el job de conversión termina en error
 	 */
-	
 	public String convertirArchivo(MultipartFile archivo, String formatoDestino,
 			TipoArchivo tipoArchivo, Long usuarioId) {
 
@@ -342,20 +341,20 @@ public class CloudConvertService {
 		return archivos.get(0).getAsJsonObject().get("url").getAsString();
 	}
 
-
 	/**
-	 * Extrae la URL del archivo original desde la tarea de importación del job.
-	 * Retorna null si no está disponible.
+	 * Extrae la URL del archivo original desde la tarea export-original del job.
+	 * Esta tarea exporta el archivo original con una URL descargable, igual que
+	 * se hace con el archivo convertido, garantizando que siempre esté disponible.
 	 *
 	 * @param jobFinal respuesta final del job
 	 * @return URL del archivo original, o {@code null} si no está disponible
 	 */
 	private String extraerUrlOriginal(JsonObject jobFinal) {
 		try {
-			JsonObject tareaImport = encontrarTarea(
-					jobFinal.getAsJsonObject("data"), "import-archivo");
-			if (tareaImport == null) return null;
-			JsonObject result = tareaImport.getAsJsonObject("result");
+			JsonObject tareaExportOriginal = encontrarTarea(
+					jobFinal.getAsJsonObject("data"), "export-original");
+			if (tareaExportOriginal == null) return null;
+			JsonObject result = tareaExportOriginal.getAsJsonObject("result");
 			if (result == null) return null;
 			JsonArray archivos = result.getAsJsonArray("files");
 			if (archivos == null || archivos.size() == 0) return null;
@@ -399,6 +398,7 @@ public class CloudConvertService {
 	 * @param formatoDestino   extensión del archivo convertido
 	 * @param nombreOriginal   nombre original del archivo subido
 	 * @param nombreConvertido nombre del archivo resultante
+	 * @param urlOriginal      URL de descarga del archivo original
 	 * @param urlDescarga      URL de descarga del archivo convertido
 	 * @param usuarioId        ID del usuario propietario
 	 */
@@ -426,8 +426,8 @@ public class CloudConvertService {
 	}
 
 	/**
-	 * Construye el cuerpo JSON del job de CloudConvert con las tres tareas
-	 * necesarias: import/upload, convert y export/url.
+	 * Construye el cuerpo JSON del job de CloudConvert con cuatro tareas:
+	 * import/upload, convert, export/url del convertido y export/url del original.
 	 *
 	 * @param formatoDestino formato al que se convertirá el archivo
 	 * @return {@link JsonObject} con la estructura del job
@@ -449,6 +449,11 @@ public class CloudConvertService {
 		exportTask.put("operation", "export/url");
 		exportTask.put("input", "convert-archivo");
 		tareas.put("export-archivo", exportTask);
+
+		Map<String, Object> exportOriginalTask = new HashMap<>();
+		exportOriginalTask.put("operation", "export/url");
+		exportOriginalTask.put("input", "import-archivo");
+		tareas.put("export-original", exportOriginalTask);
 
 		Map<String, Object> body = new HashMap<>();
 		body.put("tasks", tareas);

@@ -70,7 +70,7 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 	 * Se usa para validar nombre y apellido.
 	 */
 	private static final java.util.regex.Pattern PATRON_NOMBRE =
-			java.util.regex.Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]+$");
+			java.util.regex.Pattern.compile("^[A-ZÁÉÍÓÚÑÜ][A-Za-zÁÉÍÓÚáéíóúÑñÜü6 ]*$");
 
 	/**
 	 * Patrón para teléfonos colombianos de 10 dígitos que comienzan con 3.
@@ -606,8 +606,8 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 		if (!PATRON_NOMBRE.matcher(nombre.trim()).matches()) {
 			lanzador.lanzarNombreInvalido(
-					"El nombre solo puede contener letras y espacios. "
-							+ "No se permiten números ni caracteres especiales. "
+					"El nombre solo puede contener letras y espacios (se permite el número 6). "
+							+ "Debe comenzar con mayúscula. "
 							+ "Recibido: '" + nombre + "'");
 		}
 	}
@@ -628,8 +628,8 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 		}
 		if (!PATRON_NOMBRE.matcher(apellido.trim()).matches()) {
 			lanzador.lanzarNombreInvalido(
-					"El apellido solo puede contener letras y espacios. "
-							+ "No se permiten números ni caracteres especiales. "
+					"El apellido solo puede contener letras y espacios (se permite el número 6). "
+							+ "Debe comenzar con mayúscula. "
 							+ "Recibido: '" + apellido + "'");
 		}
 	}
@@ -684,7 +684,8 @@ public class UsuarioService implements CRUDoperation<UsuarioDTO> {
 					contrasena.length(), LONGITUD_MAXIMA_CONTRASENA);
 		}
 		if (contrasena.length() < LONGITUD_MINIMA_CONTRASENA
-				|| !contrasena.matches(".*[a-zA-Z].*")
+				|| !contrasena.matches(".*[A-Z].*")
+				|| !contrasena.matches(".*[a-z].*")
 				|| !contrasena.matches(".*[0-9].*")) {
 			lanzador.lanzarContrasenaInvalida();
 		}
